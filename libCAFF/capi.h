@@ -53,13 +53,13 @@ EXPORTED bool CIFFWriter_to_bytes(CIFFImage_h *image, uint8_t *out_data, size_t 
 //CIFFImage
 EXPORTED CIFFImage_h* CIFFImage_new(int64_t width, int64_t height, char *caption, char **tags, size_t numOfTags, uint8_t *content, uint64_t content_size);
 EXPORTED void CIFFImage_delete(CIFFImage_h* image);
-EXPORTED int64_t getWidth(CIFFImage_h* image);
-EXPORTED int64_t getHeight(CIFFImage_h* image);
-EXPORTED int64_t getContentSize(CIFFImage_h* image);
-EXPORTED uint8_t* getContent(CIFFImage_h* image);
-EXPORTED char* getCaption(CIFFImage_h *image);
-EXPORTED size_t getTagCount(CIFFImage_h* image);
-EXPORTED char** getTags(CIFFImage_h* image);
+EXPORTED int64_t CIFFImage_getWidth(CIFFImage_h* image);
+EXPORTED int64_t CIFFImage_getHeight(CIFFImage_h* image);
+EXPORTED int64_t CIFFImage_getContentSize(CIFFImage_h* image);
+EXPORTED uint8_t* CIFFImage_getContent(CIFFImage_h* image);
+EXPORTED char* CIFFImage_getCaption(CIFFImage_h *image);
+EXPORTED size_t CIFFImage_getTagCount(CIFFImage_h* image);
+EXPORTED char** CIFFImage_getTags(CIFFImage_h* image);
 
 #ifdef __cplusplus
 }

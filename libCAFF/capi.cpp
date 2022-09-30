@@ -39,24 +39,24 @@ CIFFImage_h *CIFFImage_new(int64_t width, int64_t height, char *caption, char **
 void CIFFImage_delete(CIFFImage_h *image) {
     delete ((CIFFImage*) image);
 }
-int64_t getWidth(CIFFImage_h *image) {
+int64_t CIFFImage_getWidth(CIFFImage_h *image) {
     return ((CIFFImage*)image)->getWidth();
 }
-int64_t getHeight(CIFFImage_h *image) {
+int64_t CIFFImage_getHeight(CIFFImage_h *image) {
     return ((CIFFImage*)image)->getHeight();
 }
-int64_t getContentSize(CIFFImage_h *image) {
+int64_t CIFFImage_getContentSize(CIFFImage_h *image) {
     return ((CIFFImage*)image)->getContent_size();
 }
-uint8_t *getContent(CIFFImage_h *image) {
+uint8_t *CIFFImage_getContent(CIFFImage_h *image) {
     return ((CIFFImage*)image)->getContent();
 }
-char *getCaption(CIFFImage_h *image) {
+char *CIFFImage_getCaption(CIFFImage_h *image) {
     return ((CIFFImage*)image)->getCaption();
 }
-size_t getTagCount(CIFFImage_h *image) {
+size_t CIFFImage_getTagCount(CIFFImage_h *image) {
     return ((CIFFImage*)image)->getTag_count();
 }
-char **getTags(CIFFImage_h *image) {
+char **CIFFImage_getTags(CIFFImage_h *image) {
     return ((CIFFImage*)image)->getTags();
 }
