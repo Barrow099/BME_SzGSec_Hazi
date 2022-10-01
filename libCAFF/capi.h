@@ -40,7 +40,15 @@
 extern "C" {
 #endif
 
-typedef struct CIFFImage_h {} CIFFImage_h;
+typedef struct CIFFImage_h {
+    char placeholder;
+} CIFFImage_h;
+typedef struct CAFFAnimation_h {
+    char placeholder;
+} CAFFAnimation_h;
+typedef struct CAFFAnimationFrame_h {
+    char placeholder;
+} CAFFAnimationFrame_h;
 // CIFFLoader
 EXPORTED CIFFImage_h* CIFFLoader_from_bytes(uint8_t *bytes, size_t len);
 EXPORTED CIFFImage_h* CIFFLoader_from_file(const char* path);
@@ -60,6 +68,20 @@ EXPORTED uint8_t* CIFFImage_getContent(CIFFImage_h* image);
 EXPORTED char* CIFFImage_getCaption(CIFFImage_h *image);
 EXPORTED size_t CIFFImage_getTagCount(CIFFImage_h* image);
 EXPORTED char** CIFFImage_getTags(CIFFImage_h* image);
+
+//CAFFLoader
+EXPORTED CAFFAnimation_h *CAFFLoader_from_file(const char* path);
+EXPORTED char *CAFFLoader_error_message();
+
+//CAFFAnimation
+EXPORTED const char *CAFFAnimation_getCreator(CAFFAnimation_h *);
+EXPORTED void CAFFAnimation_delete(CAFFAnimation_h *);
+EXPORTED CAFFAnimationFrame_h *CAFFAnimation_getFrames(CAFFAnimation_h *);
+EXPORTED int64_t CAFFAnimation_getFrameCount(CAFFAnimation_h *);
+
+//CAFFAnimationFrame
+EXPORTED int64_t CAFFAnimationFrame_getDuration(CAFFAnimationFrame_h* frame);
+EXPORTED CIFFImage_h *CAFFAnimationFrame_getImage(CAFFAnimationFrame_h* frame);
 
 #ifdef __cplusplus
 }

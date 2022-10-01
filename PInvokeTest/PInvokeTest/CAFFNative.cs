@@ -33,4 +33,22 @@ public class CAFFNative
     public static extern long CIFFImage_getTagCount(IntPtr image);
     [DllImport("CAFF")]
     public static extern IntPtr CIFFImage_getTags(IntPtr image);
+
+    [DllImport("CAFF")]
+    public static extern IntPtr CAFFLoader_from_file(string path);
+    [DllImport("CAFF")]
+    public static extern IntPtr CAFFLoader_error_message();
+    [DllImport("CAFF")]
+    public static extern IntPtr CAFFAnimation_getCreator(IntPtr animationHandle);
+    [DllImport("CAFF")]
+    public static extern void CAFFAnimation_delete(IntPtr animationHandle);
+    [DllImport("CAFF")]
+    public static extern IntPtr CAFFAnimation_getFrames(IntPtr animationHandle);
+    [DllImport("CAFF")]
+    public static extern long CAFFAnimation_getFrameCount(IntPtr animationHandle);
+    [DllImport("CAFF")]
+    public static extern long CAFFAnimationFrame_getDuration(IntPtr frameHandle);
+    [DllImport("CAFF")]
+    public static extern IntPtr CAFFAnimationFrame_getImage(IntPtr frameHandle);
+    
 }

@@ -21,7 +21,8 @@ public:
     CAFFCreditsFrame();
 };
 
-class CAFFAnimationFrame {
+
+class __attribute__ ((packed)) CAFFAnimationFrame {
     uint64_t duration;
     CIFFImage *image;
 
@@ -60,6 +61,11 @@ struct CAFFAnimation {
     std::vector<CAFFAnimationFrame> frames;
 public:
     CAFFAnimation(CAFFCreditsFrame credits, std::vector<CAFFAnimationFrame> frames);
+    virtual ~CAFFAnimation() {
+        std::for_each(frames.begin(), frames.end(), [](CAFFAnimationFrame frame) {
+            delete frame.getImage();
+        });
+    }
 };
 
 

@@ -10,7 +10,7 @@ public class CIFFImage
     public Int64 Height {get; set; }
     public string Caption {get; set; }
 
-    private CIFFImage(IntPtr handle)
+    internal CIFFImage(IntPtr handle)
     {
         this._handle = handle;
 

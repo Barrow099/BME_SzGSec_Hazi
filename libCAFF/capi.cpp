@@ -5,6 +5,7 @@
 #include "capi.h"
 #include "CIFFLoader.h"
 #include "CIFFWriter.h"
+#include "CAFFLoader.h"
 
 CIFFImage_h *CIFFLoader_from_bytes(uint8_t *bytes, size_t len) {
     return reinterpret_cast<CIFFImage_h *>(CIFFLoader::from_bytes(bytes, len));
@@ -59,4 +60,28 @@ size_t CIFFImage_getTagCount(CIFFImage_h *image) {
 }
 char **CIFFImage_getTags(CIFFImage_h *image) {
     return ((CIFFImage*)image)->getTags();
+}
+CAFFAnimation_h *CAFFLoader_from_file(const char *path) {
+    return reinterpret_cast<CAFFAnimation_h *>(CAFFLoader::from_file(path));
+}
+char *CAFFLoader_error_message() {
+    return CAFFLoader::get_error_message();
+}
+const char *CAFFAnimation_getCreator(CAFFAnimation_h *anim) {
+    return ((CAFFAnimation*)anim)->credits.creator.c_str();
+}
+void CAFFAnimation_delete(CAFFAnimation_h *anim) {
+    delete anim;
+}
+CAFFAnimationFrame_h *CAFFAnimation_getFrames(CAFFAnimation_h *anim) {
+    return reinterpret_cast<CAFFAnimationFrame_h *>(((CAFFAnimation *) anim)->frames.data());
+}
+int64_t CAFFAnimation_getFrameCount(CAFFAnimation_h *anim) {
+    return ((CAFFAnimation *) anim)->frames.size();
+}
+int64_t CAFFAnimationFrame_getDuration(CAFFAnimationFrame_h *frame) {
+    return ((CAFFAnimationFrame *) frame)->getDuration();
+}
+CIFFImage_h *CAFFAnimationFrame_getImage(CAFFAnimationFrame_h *frame) {
+    return reinterpret_cast<CIFFImage_h *>(((CAFFAnimationFrame *) frame)->getImage());
 }
