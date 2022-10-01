@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <cstring>
 class CIFFImage {
 private:
     int64_t width;

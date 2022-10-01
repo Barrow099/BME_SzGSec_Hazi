@@ -3,6 +3,7 @@
 //
 
 #include "CAFFAnimation.h"
+#include <cstring>
 CAFFCreditsFrame::CAFFCreditsFrame(uint16_t yy, uint8_t m, uint8_t d, uint8_t h, uint8_t m1, const std::string &creator) : YY(yy), M(m), D(d), h(h), m(m1), creator(creator) {}
 CAFFCreditsFrame::CAFFCreditsFrame() {}
 uint8_t CAFFBlock::getType() const {

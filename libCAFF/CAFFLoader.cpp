@@ -2,8 +2,12 @@
 // Created by Barrow099 on 2022. 10. 01..
 //
 
+#include <cstring>
 #include "CAFFLoader.h"
 #include "CIFFLoader.h"
+
+#define MAX_BLOCK_SIZE (512 * 1024 * 1024)
+
 char CAFFLoader::error_message_arr[128];
 void CAFFLoader::set_error(const char *error_msg) {
     strncpy(error_message_arr, error_msg,128);
@@ -11,6 +15,8 @@ void CAFFLoader::set_error(const char *error_msg) {
     printf("CAFFLoader: %s\n", error_msg);
 #endif
 }
+
+
 
 size_t CAFFLoader::read_block(FILE *file, CAFFBlock& out_block) {
     uint8_t id;
@@ -23,6 +29,10 @@ size_t CAFFLoader::read_block(FILE *file, CAFFBlock& out_block) {
     read = fread(&len, 8,1,file);
     if(read != 1) {
         set_error("len read failed");
+        return 0;
+    }
+    if(len < 0 || len > MAX_BLOCK_SIZE) {
+        set_error("uristen very big");
         return 0;
     }
     auto *bfr = new uint8_t[len];

@@ -8,6 +8,7 @@
 #include "CIFFImage.h"
 #include <cstdint>
 #include <string>
+#include <algorithm>
 struct CAFFCreditsFrame {
     uint16_t YY;
     uint8_t M;
