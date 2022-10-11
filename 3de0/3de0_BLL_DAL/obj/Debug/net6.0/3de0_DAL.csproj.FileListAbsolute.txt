@@ -1,0 +1,12 @@
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\obj\Debug\net6.0\3de0_DAL.csproj.AssemblyReference.cache
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\obj\Debug\net6.0\3de0_DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\obj\Debug\net6.0\3de0_DAL.AssemblyInfoInputs.cache
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\obj\Debug\net6.0\3de0_DAL.AssemblyInfo.cs
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\obj\Debug\net6.0\3de0_DAL.csproj.CoreCompileInputs.cache
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\bin\Debug\net6.0\3de0_DAL.deps.json
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\bin\Debug\net6.0\3de0_DAL.dll
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\bin\Debug\net6.0\3de0_DAL.pdb
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\obj\Debug\net6.0\3de0_DAL.dll
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\obj\Debug\net6.0\refint\3de0_DAL.dll
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\obj\Debug\net6.0\3de0_DAL.pdb
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL_DAL\obj\Debug\net6.0\ref\3de0_DAL.dll

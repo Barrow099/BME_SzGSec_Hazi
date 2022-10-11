@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "Y2BZl72pSEzox8Q3p9tn2W52k0cP0CSeXcezdyFf/oHLUPjaFJ3aMnoqgSW8WaJmW+csVhTgiNWqgHJ7UljGoQ==",
+  "success": true,
+  "projectFilePath": "C:\\BME_Anyagok\\msc\\it-sec\\BME_SzGSec_Hazi\\3de0\\3de0_BLL\\3de0_BLL.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\varga\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
+    "C:\\Users\\varga\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

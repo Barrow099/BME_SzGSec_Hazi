@@ -1,0 +1,12 @@
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\obj\Debug\net6.0\3de0_BLL.csproj.AssemblyReference.cache
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\obj\Debug\net6.0\3de0_BLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\obj\Debug\net6.0\3de0_BLL.AssemblyInfoInputs.cache
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\obj\Debug\net6.0\3de0_BLL.AssemblyInfo.cs
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\obj\Debug\net6.0\3de0_BLL.csproj.CoreCompileInputs.cache
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\bin\Debug\net6.0\3de0_BLL.deps.json
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\bin\Debug\net6.0\3de0_BLL.dll
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\bin\Debug\net6.0\3de0_BLL.pdb
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\obj\Debug\net6.0\3de0_BLL.dll
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\obj\Debug\net6.0\refint\3de0_BLL.dll
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\obj\Debug\net6.0\3de0_BLL.pdb
+C:\BME_Anyagok\msc\it-sec\BME_SzGSec_Hazi\3de0\3de0_BLL\obj\Debug\net6.0\ref\3de0_BLL.dll
