@@ -33,8 +33,9 @@ class _LandingPageState extends State<LandingPage> {
                         "Caff Shop",
                         style: TextStyle(
                             fontSize: 300,
-                            // shadows: [Shadow(color: Color.fromARGB(100, 7, 82, 128), blurRadius: 90)],
-                            fontWeight: FontWeight.w300
+                            shadows: [Shadow(color: Color.fromARGB(100, 45, 78, 128), blurRadius: 90)],
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white,
                         ),
                         maxLines: 1,
                       )),

@@ -10,6 +10,6 @@ class DownloadsPage extends StatefulWidget {
 class DownloadsPageState extends State<DownloadsPage> {
   @override
   Widget build(BuildContext context) {
-    return Text("Downloads");
+    return const Text("Downloads");
   }
 }

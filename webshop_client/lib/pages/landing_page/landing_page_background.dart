@@ -9,13 +9,13 @@ class WelcomePagesBackground extends StatelessWidget {
     return Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color.fromARGB(255, 174, 210, 232),
-                      Color.fromARGB(255, 216, 224, 226),
+                      Colors.blue.shade500.withAlpha(255),
+                      Colors.blue.shade600.withAlpha(255),
                     ],
                     stops: [0.0, 1.0]
                 )

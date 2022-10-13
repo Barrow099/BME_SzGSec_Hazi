@@ -11,14 +11,14 @@ class AuthRepository {
 
   Future<AuthState> login() async {
     await Future.delayed(const Duration(seconds: 2));
-    //return Future.error("LOLOLOL");
-    userModel = UserModel(uid: "fdsfasd", userName: "dfdsfd");
+    //return Future.error("ERROR");
+    userModel = UserModel(uid: "666UID", userName: "user1");
     return AuthState.loggedIn;
   }
 
   Future<AuthState> signUp() async {
     await Future.delayed(const Duration(seconds: 2));
-    userModel = UserModel(uid: "fdsfasd", userName: "dfdsfd");
+    userModel = UserModel(uid: "666UID", userName: "user1");
     return AuthState.loggedIn;
   }
 

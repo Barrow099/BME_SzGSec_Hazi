@@ -41,18 +41,18 @@ class HomePageState extends ConsumerState<HomePage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_basket_rounded),
-            label: "Browse"
+            icon: const Icon(Icons.shopping_basket_rounded),
+            label: _pageTitles[0],
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.download_rounded),
-              label: "My Downloads"
+              icon: const Icon(Icons.download_rounded),
+              label: _pageTitles[1],
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded),
-              label: "Browse"
+              icon: const Icon(Icons.person_rounded),
+              label: _pageTitles[2],
           ),
         ],
         currentIndex: _currentPageIndex,
