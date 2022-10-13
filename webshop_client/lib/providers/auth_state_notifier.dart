@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:webshop_client/Repository/auth_repository.dart';
+import 'package:webshop_client/repository/auth_repository.dart';
 import 'package:webshop_client/data/auth_state.dart';
 
 class AuthStateNotifier extends StateNotifier<AsyncValue<AuthState>> {
