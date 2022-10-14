@@ -5,7 +5,7 @@ class AuthRepository {
   UserModel? userModel;
 
   Future<AuthState> getAuthState() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     return AuthState.loggedOut;
   }
 

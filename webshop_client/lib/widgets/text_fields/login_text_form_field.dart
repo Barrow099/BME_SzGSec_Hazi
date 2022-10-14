@@ -1,0 +1,79 @@
+import 'package:flutter/material.dart';
+
+class LoginTextFormField extends StatefulWidget {
+
+  final String labelText;
+  final String hintText;
+  TextEditingController? controller;
+  bool obscureText;
+  List<String> autofillHints;
+  FormFieldValidator<String> validator;
+  final IconData icon;
+  bool autofocus;
+  final TextInputAction textInputAction;
+
+
+  LoginTextFormField({
+    required this.labelText,
+    required this.hintText,
+    required this.controller,
+    required this.autofillHints,
+    required this.validator,
+    required this.icon,
+    this.obscureText=false,
+    this.autofocus=false,
+    this.textInputAction = TextInputAction.next,
+  });
+
+  @override
+  State<LoginTextFormField> createState() => _LoginTextFormFieldState();
+}
+
+class _LoginTextFormFieldState extends State<LoginTextFormField> {
+  bool hidePassword=false;
+
+  @override
+  void initState() {
+    super.initState();
+    hidePassword=widget.obscureText;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return TextFormField(
+      controller: widget.controller,
+      obscureText: widget.obscureText && hidePassword,
+      autofillHints: widget.autofillHints,
+      autofocus: widget.autofocus,
+      enableSuggestions: true,
+      autovalidateMode: AutovalidateMode.disabled,
+      validator: widget.validator,
+      textInputAction: widget.textInputAction,
+      decoration: InputDecoration (
+          prefixIcon: Icon(widget.icon),
+          labelText: widget.labelText,
+          hintText: widget.hintText,
+          //make password obscured/visible
+          suffixIcon: getObscureButton()
+      ),
+    );
+  }
+
+  Widget? getObscureButton() {
+    if (widget.obscureText) {
+      return InkWell(
+          canRequestFocus: false, //solves bug: this gains focus on edit next ime action instead of the next textfield
+          customBorder: const CircleBorder(),
+          child: Icon(hidePassword? Icons.visibility: Icons.visibility_off),
+          onTap: (){
+            setState(() {
+              hidePassword=!hidePassword;
+            });
+          },
+        );
+    } else {
+      return null;
+    }
+  }
+}

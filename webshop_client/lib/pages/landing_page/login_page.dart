@@ -1,8 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:webshop_client/provider_objects.dart';
 import 'package:webshop_client/data/auth_state.dart';
+import 'package:webshop_client/model/input_validators/login_validator.dart';
+import 'package:webshop_client/provider_objects.dart';
 import 'package:webshop_client/widgets/buttons/loadable_button.dart';
+
+import '../../widgets/text_fields/login_text_form_field.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,16 +16,13 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  bool isLoading = false;
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final loginValidator = LoginValidator();
 
-  @override
-  void initState() {
-    super.initState();
-  }
-  
   @override
   Widget build(BuildContext context) {
-
 
     ref.listen(authStateNotifier, (previous, next) {
       next.when(
@@ -57,46 +58,48 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: AutofillGroup(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                      child: TextFormField(
-                        autofocus: true,
-                        autofillHints: const [AutofillHints.username],
-                        enableSuggestions: true,
-                        decoration: const InputDecoration (
-                          prefixIcon: Icon(Icons.person_rounded),
+            child: Form(
+              key: _formKey,
+              child: AutofillGroup(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                        child: LoginTextFormField(
+                          autofocus: true,
+                          icon: Icons.person_rounded,
                           labelText: "Username",
-                          hintText: "Enter username"
+                          hintText: "Enter username",
+                          autofillHints: const [AutofillHints.username],
+                          controller: userNameController,
+                          validator: loginValidator.validateUserName,
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                      child: TextFormField(
-                        obscureText: true,
-                        autofillHints: const [AutofillHints.password],
-                        enableSuggestions: true,
-                        decoration: const InputDecoration (
-                          prefixIcon: Icon(Icons.lock_rounded),
-                          labelText: "Password",
-                          hintText: "Enter your password"
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                        child: LoginTextFormField(
+                          obscureText: true,
+                          autofillHints: const [AutofillHints.password],
+                            labelText: "Password",
+                            hintText: "Enter your password",
+                          icon: Icons.lock_rounded,
+                          controller: passwordController,
+                          validator: loginValidator.validatePassword,
+                          textInputAction: TextInputAction.done,
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: LoadableButton(
-                          onPressed: ref.read(authStateNotifier.notifier).login,
-                          text: "Login",
-                          isLoading: authStateFuture.isLoading,
-                          icon: Icons.login_rounded,
-                      ),
-                    )
-                  ],
-                )
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: LoadableButton(
+                            onPressed: validateAndLogin,
+                            text: "Login",
+                            isLoading: authStateFuture.isLoading,
+                            icon: Icons.login_rounded,
+                        ),
+                      )
+                    ],
+                  )
+              ),
             ),
           ),
           const Spacer( flex: 40, ),
@@ -105,6 +108,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
+  validateAndLogin() {
+    if(_formKey.currentState!.validate()) {
+      ref.read(authStateNotifier.notifier).login();
+    }
+  }
 
 }
 
