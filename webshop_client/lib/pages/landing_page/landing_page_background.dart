@@ -17,7 +17,7 @@ class WelcomePagesBackground extends StatelessWidget {
                       Colors.blue.shade500.withAlpha(255),
                       Colors.blue.shade600.withAlpha(255),
                     ],
-                    stops: [0.0, 1.0]
+                    stops: const [0.0, 1.0]
                 )
             ),
           ),

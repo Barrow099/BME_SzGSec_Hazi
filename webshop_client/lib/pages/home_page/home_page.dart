@@ -27,7 +27,7 @@ class HomePageState extends ConsumerState<HomePage> {
       ),
       body: PageView(
         controller: pageController,
-        physics: BouncingScrollPhysics(), //TODO extract
+        physics: const BouncingScrollPhysics(), //TODO extract
         onPageChanged: (id) {
           setState(() {
             pageController=PageController(initialPage: id);
@@ -63,7 +63,7 @@ class HomePageState extends ConsumerState<HomePage> {
   }
 
   void _onItemTapped(int index) {
-    pageController.animateToPage(index, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+    pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
     setState(() {
       _currentPageIndex = index;
     });

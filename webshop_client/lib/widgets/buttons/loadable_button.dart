@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class LoadableButton extends StatelessWidget {
-  IconData? icon;
-  Function onPressed;
-  String text;
-  bool isLoading;
+  final IconData? icon;
+  final Function onPressed;
+  final String text;
+  final bool isLoading;
 
-  LoadableButton({
+  const LoadableButton({super.key,
     required this.onPressed,
     required this.text,
     required this.isLoading,

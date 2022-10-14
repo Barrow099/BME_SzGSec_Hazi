@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/data/auth_state.dart';
@@ -110,7 +109,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   validateAndLogin() {
     if(_formKey.currentState!.validate()) {
-      ref.read(authStateNotifier.notifier).login();
+      String userName = userNameController.text;
+      userName = userName.trim();
+      final password = passwordController.text;
+
+      ref.read(authStateNotifier.notifier).login(userName, password);
     }
   }
 

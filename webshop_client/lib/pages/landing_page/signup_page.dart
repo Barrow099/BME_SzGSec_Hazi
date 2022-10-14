@@ -128,7 +128,11 @@ class SignupPageState extends ConsumerState<SignupPage> {
 
   validateAndSignup() {
     if(_formKey.currentState!.validate()) {
-      ref.read(authStateNotifier.notifier).signUp();
+      String userName = userNameController.text;
+      userName = userName.trim();
+      final password = passwordController.text;
+
+      ref.read(authStateNotifier.notifier).signUp(userName, password);
     }
   }
 }

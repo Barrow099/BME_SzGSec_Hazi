@@ -1,29 +1,38 @@
+import 'package:webshop_client/api/api.dart';
 import 'package:webshop_client/data/auth_state.dart';
 import 'package:webshop_client/model/user_model.dart';
 
 class AuthRepository {
+  final AppRestApi appRestApi;
+
   UserModel? userModel;
+
+  AuthRepository(this.appRestApi);
+
+
 
   Future<AuthState> getAuthState() async {
     await Future.delayed(const Duration(seconds: 1));
+    //TODO check local data for session
     return AuthState.loggedOut;
   }
 
-  Future<AuthState> login() async {
-    await Future.delayed(const Duration(seconds: 2));
-    //return Future.error("ERROR");
-    userModel = UserModel(uid: "666UID", userName: "user1");
+  Future<AuthState> login(String username, String password) async {
+    userModel = await appRestApi.login(username, password);
     return AuthState.loggedIn;
   }
 
-  Future<AuthState> signUp() async {
-    await Future.delayed(const Duration(seconds: 2));
-    userModel = UserModel(uid: "666UID", userName: "user1");
+  Future<AuthState> signUp(String username, String password) async {
+    userModel = await appRestApi.signUp(username, password);
     return AuthState.loggedIn;
   }
 
   Future<AuthState> logout() async {
-    await Future.delayed(const Duration(seconds: 2));
+    if(userModel == null) {
+      return Future.error("Invalid user model state: is null, but shouldn't");
+    }
+
+    await appRestApi.logout(userModel!);
     userModel = null;
     return AuthState.loggedOut;
   }

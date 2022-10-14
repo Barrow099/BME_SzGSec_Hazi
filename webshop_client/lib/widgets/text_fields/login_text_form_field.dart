@@ -4,16 +4,16 @@ class LoginTextFormField extends StatefulWidget {
 
   final String labelText;
   final String hintText;
-  TextEditingController? controller;
-  bool obscureText;
-  List<String> autofillHints;
-  FormFieldValidator<String> validator;
+  final TextEditingController? controller;
+  final bool obscureText;
+  final List<String> autofillHints;
+  final FormFieldValidator<String> validator;
   final IconData icon;
-  bool autofocus;
+  final bool autofocus;
   final TextInputAction textInputAction;
 
 
-  LoginTextFormField({
+  const LoginTextFormField({super.key,
     required this.labelText,
     required this.hintText,
     required this.controller,

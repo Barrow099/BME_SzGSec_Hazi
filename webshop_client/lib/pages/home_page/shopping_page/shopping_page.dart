@@ -10,6 +10,6 @@ class ShoppingPage extends StatefulWidget {
 class ShoppingPageState extends State<ShoppingPage> {
   @override
   Widget build(BuildContext context) {
-    return Text("Shopping");
+    return const Text("Shopping");
   }
 }

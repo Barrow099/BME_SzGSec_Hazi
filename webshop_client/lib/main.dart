@@ -32,16 +32,16 @@ class MyApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(128)),
-              textStyle: TextStyle(fontSize: 24),
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-              disabledBackgroundColor: Color.fromARGB(255, 117, 191, 245)
+              textStyle: const TextStyle(fontSize: 24),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+              disabledBackgroundColor: const Color.fromARGB(255, 117, 191, 245)
           )
         ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32),
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         )
       );
   }
