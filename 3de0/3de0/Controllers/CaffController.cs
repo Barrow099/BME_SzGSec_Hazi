@@ -1,13 +1,19 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _3de0.Controllers
 { 
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class CaffController : ControllerBase
     {
         //CAFF feltöltés
-        
+        [HttpPost]
+        public IActionResult Test() 
+        {
+            return Ok();
+        }
     }
 }
 
