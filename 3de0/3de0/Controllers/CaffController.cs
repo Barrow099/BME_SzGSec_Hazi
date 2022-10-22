@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace _3de0.Controllers
 { 
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [Route("[controller]")]
     public class CaffController : ControllerBase
     {

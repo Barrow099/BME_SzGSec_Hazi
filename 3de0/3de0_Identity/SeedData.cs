@@ -67,6 +67,7 @@ namespace _3de0_Identity
                             new Claim(JwtClaimTypes.GivenName, "Alice"),
                             new Claim(JwtClaimTypes.FamilyName, "Smith"),
                             new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+                            new Claim(JwtClaimTypes.Role, "user")
                         }).Result;
                     if (!result.Succeeded)
                     {
@@ -104,7 +105,8 @@ namespace _3de0_Identity
                             new Claim(JwtClaimTypes.GivenName, "Bob"),
                             new Claim(JwtClaimTypes.FamilyName, "Smith"),
                             new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-                            new Claim("location", "somewhere")
+                            new Claim("location", "somewhere"),
+                            new Claim(JwtClaimTypes.Role, "admin")
                         }).Result;
                     if (!result.Succeeded)
                     {
