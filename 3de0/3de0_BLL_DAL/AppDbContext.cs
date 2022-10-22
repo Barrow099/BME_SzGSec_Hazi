@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace _3de0_BLL_DAL
 {
-    public class AppDbContext : IdentityDbContext<User>
+    public class AppDbContext : DbContext
     {
         public DbSet<CaffFile> Files { get; set; }
         public DbSet<Comment> Comments { get; set; }

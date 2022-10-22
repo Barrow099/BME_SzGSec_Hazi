@@ -14,6 +14,5 @@ namespace _3de0_BLL_DAL
         public int Rating { get; set; }
 
         public string UserId { get; set; }
-        public User User { get; set; }
     }
 }

@@ -13,7 +13,6 @@ namespace _3de0_BLL_DAL
         public int Price { get; set; }
 
         public string OwnerId { get; set; }
-        public User Owner { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
     }
