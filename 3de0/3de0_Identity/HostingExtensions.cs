@@ -1,4 +1,5 @@
 ﻿using _3de0_Identity.Data;
+using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -36,7 +37,8 @@ namespace _3de0_Identity
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients(builder.Configuration))
-                .AddAspNetIdentity<IdentityUser>();
+                .AddAspNetIdentity<IdentityUser>()
+                .AddProfileService<ProfileService>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
