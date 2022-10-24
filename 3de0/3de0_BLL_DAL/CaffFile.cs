@@ -11,6 +11,7 @@ namespace _3de0_BLL_DAL
         public string Title { get; set; }
         public DateTime CreationDate { get; set; }
         public int Price { get; set; }
+        public string FilePath { get; set; }
 
         public string OwnerId { get; set; }
 
