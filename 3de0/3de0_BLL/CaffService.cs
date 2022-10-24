@@ -65,8 +65,9 @@ namespace _3de0_BLL
             {
                 Id = caffFile.Id,
                 CreationDate = caffFile.CreationDate,
+                Creator = caffFile.Creator,
                 Price = caffFile.Price,
-                Title = caffFile.Title,
+                Caption = caffFile.Caption,
                 File = File.ReadAllBytes(caffFile.FilePath),
                 Comments = caffFile.Comments
                         .Select(comment => new CommentDto()
@@ -93,7 +94,8 @@ namespace _3de0_BLL
                     Id = caff.Id,
                     CreationDate = caff.CreationDate,
                     Price = caff.Price,
-                    Title = caff.Title,
+                    Creator = caff.Creator,
+                    Caption = caff.Caption,
                     File = File.ReadAllBytes(caff.FilePath)
                 })
                 .ToListAsync();
@@ -117,7 +119,7 @@ namespace _3de0_BLL
             }
             else if (!string.IsNullOrEmpty(modifyCaffFile.Title))
             {
-                caffFile.Title = modifyCaffFile.Title;
+                caffFile.Caption = modifyCaffFile.Title;
             }
             else if (modifyCaffFile.File.Length != 0)
             {
@@ -194,7 +196,8 @@ namespace _3de0_BLL
                 CreationDate = DateTime.Now,
                 FilePath = path,
                 Price = uploadCaffFile.Price,
-                Title = uploadCaffFile.Title,
+                Creator = uploadCaffFile.Title,
+                Caption = uploadCaffFile.Title,
                 OwnerId = user.Id
             };
 
@@ -207,8 +210,9 @@ namespace _3de0_BLL
             {
                 Id = dbResult.Entity.Id,
                 CreationDate = dbResult.Entity.CreationDate,
+                Creator = dbResult.Entity.Creator,
                 Price = dbResult.Entity.Price,
-                Title = dbResult.Entity.Title,
+                Caption = dbResult.Entity.Caption,
                 File = File.ReadAllBytes(dbResult.Entity.FilePath)
             };
         }
