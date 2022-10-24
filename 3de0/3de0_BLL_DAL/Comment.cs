@@ -14,5 +14,8 @@ namespace _3de0_BLL_DAL
         public int Rating { get; set; }
 
         public string UserId { get; set; }
+
+        public CaffFile CaffFile { get; set; }
+        public int CaffFileId { get; set; }
     }
 }
