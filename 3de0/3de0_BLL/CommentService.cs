@@ -68,6 +68,7 @@ namespace _3de0_BLL
                 CreationDate = result.Entity.CreationDate,
                 Rating = result.Entity.Rating,
                 UserId = result.Entity.UserId,
+                UserName = user.UserName,
             };
         }
 

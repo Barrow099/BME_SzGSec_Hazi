@@ -14,6 +14,7 @@ namespace _3de0_BLL.Dtos
         public int Rating { get; set; }
 
         public string UserId { get; set; }
+        public string UserName { get; set; }
         public int CaffFileId { get; set; }
     }
 }

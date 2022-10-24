@@ -76,6 +76,8 @@ namespace _3de0_BLL
                             CreationDate = comment.CreationDate,
                             Rating = comment.Rating,
                             UserId = comment.UserId,
+                            UserName = owner.UserName,
+                            CaffFileId = caffFile.Id,
                         })
                         .ToList(),
                 OwnerId = owner.Id,
