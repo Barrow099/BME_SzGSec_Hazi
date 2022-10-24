@@ -2,6 +2,7 @@
 using _3de0_BLL_DAL;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -96,7 +97,7 @@ namespace _3de0_BLL
                 .ToListAsync();
         }
 
-        public async Task ModifyCaffFile(int id, UploadCaffFileDto modifyCaffFile)
+        public async Task ModifyCaffFile(int id, UploadCaffFileDto modifyCaffFile, string userId)
         {
             var caffFile = await _caffDbContext.Files
                 .Where(caff => caff.Id == id)
@@ -121,10 +122,20 @@ namespace _3de0_BLL
                 await File.WriteAllBytesAsync(caffFile.FilePath, modifyCaffFile.File);
             }
 
+            var user = await _identityDbContext.Users
+                .SingleOrDefaultAsync(user => user.Id == userId);
+
+            if (user == null)
+            {
+                throw new Exception("Owner doesn't exists.");
+            }
+
             await _caffDbContext.SaveChangesAsync();
+
+            Log.Logger.Information($"User {user.UserName} [id: {user.Id}] modified a CAFF file. [file path: {caffFile.FilePath}]");
         }
 
-        public async Task RemoveCaffFileById(int id)
+        public async Task RemoveCaffFileById(int id, string userId)
         {
             var caffFile = await _caffDbContext.Files
                 .Where(caff => caff.Id == id)
@@ -136,10 +147,22 @@ namespace _3de0_BLL
                 throw new FileNotFoundException("File not found.");
             }
 
+            string filePath = caffFile.FilePath;
+
+            var user = await _identityDbContext.Users
+                .SingleOrDefaultAsync(user => user.Id == userId);
+
+            if (user == null)
+            {
+                throw new Exception("Owner doesn't exists.");
+            }
+
             File.Delete(caffFile.FilePath);
 
             _caffDbContext.Remove(caffFile);
             await _caffDbContext.SaveChangesAsync();
+
+            Log.Logger.Information($"User {user.UserName} [id: {user.Id}] deleted a CAFF file. [file path: {filePath}]");
         }
 
         public async Task<CaffFilePreviewDto> UploadCaffFile(UploadCaffFileDto uploadCaffFile, string userId)
@@ -154,6 +177,14 @@ namespace _3de0_BLL
 
             await File.WriteAllBytesAsync(path, uploadCaffFile.File);
 
+            var user = await _identityDbContext.Users
+                .SingleOrDefaultAsync(user => user.Id == userId);
+
+            if (user == null)
+            {
+                throw new Exception("Owner doesn't exists.");
+            }
+
             // TODO parser lefuttatása
             // TODO: Ezt lehet a fájlból kéne kiszedni
             var caffFile = new CaffFile()
@@ -162,11 +193,13 @@ namespace _3de0_BLL
                 FilePath = path,
                 Price = uploadCaffFile.Price,
                 Title = uploadCaffFile.Title,
-                OwnerId = userId
+                OwnerId = user.Id
             };
 
             var dbResult = _caffDbContext.Add(caffFile);
             await _caffDbContext.SaveChangesAsync();
+
+            Log.Logger.Information($"User {user.UserName} [id: {user.Id}] uploaded a new CAFF file. [file path: {dbResult.Entity.FilePath}]");
 
             return new CaffFilePreviewDto()
             {

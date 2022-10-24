@@ -12,8 +12,8 @@ namespace _3de0_BLL
     {
         Task<IEnumerable<CaffFilePreviewDto>> GetCaffFileList();
         Task<CaffFileDto> GetCaffFileDetails(int id);
-        Task ModifyCaffFile(int id, UploadCaffFileDto modifyCaffFile);
-        Task RemoveCaffFileById(int id);
+        Task ModifyCaffFile(int id, UploadCaffFileDto modifyCaffFile, string userId);
+        Task RemoveCaffFileById(int id, string userId);
 
         Task<CaffFilePreviewDto> UploadCaffFile(UploadCaffFileDto uploadCaffFile, string userId);
         Task<byte[]> DownloadCaffFile(int id);
