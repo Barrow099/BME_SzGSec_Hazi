@@ -159,7 +159,7 @@ namespace _3de0_BLL
 
             File.Delete(caffFile.FilePath);
 
-            _caffDbContext.Remove(caffFile);
+            _caffDbContext.Files.Remove(caffFile);
             await _caffDbContext.SaveChangesAsync();
 
             Log.Logger.Information($"User {user.UserName} [id: {user.Id}] deleted a CAFF file. [file path: {filePath}]");
@@ -196,7 +196,7 @@ namespace _3de0_BLL
                 OwnerId = user.Id
             };
 
-            var dbResult = _caffDbContext.Add(caffFile);
+            var dbResult = _caffDbContext.Files.Add(caffFile);
             await _caffDbContext.SaveChangesAsync();
 
             Log.Logger.Information($"User {user.UserName} [id: {user.Id}] uploaded a new CAFF file. [file path: {dbResult.Entity.FilePath}]");
