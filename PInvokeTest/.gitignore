@@ -1,0 +1,4 @@
+bin/
+.idea/
+*.user
+obj/
