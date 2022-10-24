@@ -33,7 +33,7 @@ namespace _3de0.Controllers
             return await _caffService.GetCaffFileDetails(id);
         }
 
-        [Route("{id}")]
+        [Route("{id}/download")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
