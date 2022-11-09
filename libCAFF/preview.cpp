@@ -28,11 +28,25 @@ int main(int argc, char **argv) {
     fclose(f);
 
 
-    CAFFAnimation *animation = CAFFLoader::from_file(argv[2]);
+    CAFFAnimation *animation = CAFFLoader::from_file(argv[1]);
+    if(animation == nullptr) {
+        fprintf(stderr, "caff parsing failed: %s\n", CAFFLoader::get_error_message());
+        delete[] string;
+        return 1;
+    }
+
+    CIFFImage *previewImage = animation->preview();
+    if (previewImage == nullptr) {
+        fprintf(stderr, "file has no preview\n");
+        delete animation;
+        delete[] string;
+        return 2;
+    }
     FILE *out = fopen(argv[2], "wb");
-    animation.
+    fwrite(previewImage->getContent(), 1,previewImage->getContent_size(), out);
     fclose(out);
     delete animation;
+    delete[] string;
 
     return 0;
 }
