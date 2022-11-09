@@ -1,6 +1,7 @@
 BUILD_DIR = build
 OBJ = $(addprefix $(BUILD_DIR)/, CAFFAnimation.o CAFFLoader.o capi.o CIFFImage.o CIFFLoader.o CIFFWriter.o)
 SHARED_LIB_NAME = libCAFF.so
+EXE_NAME = caff_preview
 
 .PHONY: all clean
 all: $(BUILD_DIR)/$(SHARED_LIB_NAME)
@@ -12,6 +13,9 @@ $(BUILD_DIR)/%.o: %.cpp $(BUILD_DIR)
 
 $(BUILD_DIR)/$(SHARED_LIB_NAME): $(OBJ)
 	$(CXX) $(LDFLAGS) -shared $(OBJ) -o $@
+
+$(BUILD_DIR)/$(EXE_NAME): $(preview.o)
+	$(CXX) $(LDFLAGS) -L $(BUILD_DIR) -lCAFF -o $@
 
 clean:
 	@rm -rf $(BUILD_DIR)

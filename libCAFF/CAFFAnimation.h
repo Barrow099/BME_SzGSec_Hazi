@@ -55,6 +55,8 @@ public:
     void setLength(uint64_t length);
     uint8_t *getData() const;
     void setData(uint8_t *data);
+
+    virtual ~CAFFBlock();
 };
 
 struct CAFFAnimation {
