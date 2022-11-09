@@ -78,6 +78,10 @@ EXPORTED const char *CAFFAnimation_getCreator(CAFFAnimation_h *);
 EXPORTED void CAFFAnimation_delete(CAFFAnimation_h *);
 EXPORTED CAFFAnimationFrame_h *CAFFAnimation_getFrames(CAFFAnimation_h *);
 EXPORTED int64_t CAFFAnimation_getFrameCount(CAFFAnimation_h *);
+EXPORTED uint8_t* CAFFAnimation_getPreview(CAFFAnimation_h *);
+EXPORTED int64_t CAFFAnimation_getPreviewSize(CAFFAnimation_h *);
+EXPORTED int64_t CAFFAnimation_getPreviewWidth(CAFFAnimation_h *);
+EXPORTED int64_t CAFFAnimation_getPreviewHeight(CAFFAnimation_h *);
 
 //CAFFAnimationFrame
 EXPORTED int64_t CAFFAnimationFrame_getDuration(CAFFAnimationFrame_h* frame);

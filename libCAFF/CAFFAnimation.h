@@ -67,6 +67,12 @@ public:
             delete frame.getImage();
         });
     }
+    CIFFImage *preview() const {
+        if(!frames.empty()) {
+            return frames[0].getImage();
+        }
+        return nullptr;
+    }
 };
 
 

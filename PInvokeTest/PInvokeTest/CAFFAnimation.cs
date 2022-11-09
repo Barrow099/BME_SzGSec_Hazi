@@ -13,7 +13,7 @@ public class CAFFAnimation
         IntPtr animHandle = CAFFNative.CAFFLoader_from_file(path);
         if (animHandle == IntPtr.Zero)
         {
-            var msg = Marshal.PtrToStringUTF8(CAFFNative.CIFFLoader_error_message());
+            var msg = Marshal.PtrToStringUTF8(CAFFNative.CAFFLoader_error_message());
             throw new Exception("CAFFAnimation loading failed:" + msg);
         }
 
@@ -35,6 +35,37 @@ public class CAFFAnimation
         }
 
         Frames = frames;
+    }
+
+    public byte[]? GetPreview()
+    {
+        long size = CAFFNative.CAFFAnimation_getPreviewSize(_handle);
+        if (size > 0)
+        {
+            var preview_bitmap = new byte[size];
+            var preview_base = CAFFNative.CAFFAnimation_getPreview(_handle);
+            if (preview_base == IntPtr.Zero)
+            {
+                throw new Exception("CAFFAnimation preview loading failed");
+            }
+            for (var offset = 0; offset < size; offset++)
+            {
+                preview_bitmap[offset] = Marshal.ReadByte(preview_base, offset);
+            }
+            return preview_bitmap;
+        }
+
+        return null;
+    }
+
+    public long GetPreviewWidth()
+    {
+        return CAFFNative.CAFFAnimation_getPreviewWidth(_handle);
+    }
+
+    public long GetPreviewHeight()
+    {
+        return CAFFNative.CAFFAnimation_getPreviewHeight(_handle);
     }
 
     ~CAFFAnimation()
