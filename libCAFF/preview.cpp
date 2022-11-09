@@ -45,6 +45,11 @@ int main(int argc, char **argv) {
     FILE *out = fopen(argv[2], "wb");
     fwrite(previewImage->getContent(), 1,previewImage->getContent_size(), out);
     fclose(out);
+    char path_buf[PATH_MAX];
+    sprintf(path_buf, "%s.info", argv[2]);
+    FILE *out_info = fopen(path_buf, "w");
+    fprintf(out_info, "%lldx%lld", previewImage->getWidth(), previewImage->getHeight());
+    fclose(out_info);
     delete animation;
     delete[] string;
 
