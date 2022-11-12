@@ -26,6 +26,9 @@ namespace _3de0
             builder.Services.AddDbContext<IdentityAppDbContext>(options => options
              .UseSqlServer(builder.Configuration.GetConnectionString("IdentityDbConnection"), opt => opt.MigrationsAssembly(typeof(IdentityAppDbContext).Assembly.GetName().Name)));
 
+            builder.Services.AddScoped<ICaffService, CaffService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle           
             builder.Services.AddSwaggerGen(config =>

@@ -1,5 +1,6 @@
 ﻿using _3de0_BLL.Dtos;
 using _3de0_BLL_DAL;
+using _3de0_Identity.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -16,11 +17,11 @@ namespace _3de0_BLL
     public class CaffService : ICaffService
     {
         private readonly AppDbContext _caffDbContext;
-        private readonly IdentityDbContext _identityDbContext;
+        private readonly IdentityAppDbContext _identityDbContext;
 
         private readonly string pathDir = "CaffFiles/";
 
-        public CaffService(AppDbContext caffDbContext, IdentityDbContext identityDbContext)
+        public CaffService(AppDbContext caffDbContext, IdentityAppDbContext identityDbContext)
         {
             _caffDbContext = caffDbContext;
             _identityDbContext = identityDbContext;
