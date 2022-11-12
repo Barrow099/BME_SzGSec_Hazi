@@ -8,7 +8,6 @@ namespace _3de0_BLL.Dtos
 {
     public class UploadCaffFileDto
     {
-        public string Title { get; set; }
         public int Price { get; set; }
         public byte[] File { get; set; }
     }

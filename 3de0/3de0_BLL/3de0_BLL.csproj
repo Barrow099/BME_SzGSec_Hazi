@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\3de0_BLL_DAL\3de0_DAL.csproj" />
+    <ProjectReference Include="..\3de0_Identity\3de0_Identity.csproj" />
   </ItemGroup>
 
 </Project>

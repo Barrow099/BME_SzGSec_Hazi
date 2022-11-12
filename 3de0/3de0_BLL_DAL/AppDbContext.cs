@@ -15,7 +15,7 @@ namespace _3de0_BLL_DAL
         public DbSet<Comment> Comments { get; set; }
 
    
-        public AppDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
