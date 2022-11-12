@@ -10,14 +10,14 @@
 
 
 int main(int argc, char **argv) {
-    FILE *f = fopen("test_images/1.ciff", "rb");
+   /* FILE *f = fopen("test_ciff/1.ciff", "rb");
     if (!f) {
         printf("failed to open file\n");
         return 1;
     }
     fseek(f, 0, SEEK_END);
     long fsize = ftell(f);
-    fseek(f, 0, SEEK_SET); /* same as rewind(f); */
+    fseek(f, 0, SEEK_SET); *//* same as rewind(f); *//*
 
     char *string = new char[fsize];
     fread(string, fsize, 1, f);
@@ -35,12 +35,13 @@ int main(int argc, char **argv) {
     fclose(out);
     printf("%lldx%lld\n", image->getWidth(), image->getHeight());
 
-    CIFFWriter::write_to_file(image, "out.ciff");
+    CIFFWriter::write_to_file(image, "out.ciff");*/
 
 
-    CAFFAnimation *anim = CAFFLoader::from_file("test_images/3_fixed.caff");
+    CAFFAnimation *anim = CAFFLoader::from_file("../test_images/crash.caff");
     if(anim == nullptr) {
         printf("CAFFLoader failed: %s\n", CAFFLoader::get_error_message());
+        return 1;
     }
     printf("Loaded %lu frames by %s\n", anim->frames.size(), anim->credits.creator.c_str());
     int id = 0;

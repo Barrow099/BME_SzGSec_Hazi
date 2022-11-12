@@ -26,6 +26,10 @@ void CAFFBlock::setData(uint8_t *data) {
 }
 CAFFBlock::CAFFBlock(uint8_t type, uint64_t length, uint8_t *data) : type(type), length(length), data(data) {}
 CAFFBlock::CAFFBlock() : type(0), length(0), data(nullptr) {}
+CAFFBlock::~CAFFBlock() {
+    delete[] this->data;
+    this->data = nullptr;
+}
 
 CAFFAnimationFrame::CAFFAnimationFrame(uint64_t duration, CIFFImage *image) : duration(duration), image(image) {}
 CIFFImage *CAFFAnimationFrame::getImage() const {

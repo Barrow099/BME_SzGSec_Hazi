@@ -55,6 +55,8 @@ public:
     void setLength(uint64_t length);
     uint8_t *getData() const;
     void setData(uint8_t *data);
+
+    virtual ~CAFFBlock();
 };
 
 struct CAFFAnimation {
@@ -66,6 +68,12 @@ public:
         std::for_each(frames.begin(), frames.end(), [](CAFFAnimationFrame frame) {
             delete frame.getImage();
         });
+    }
+    CIFFImage *preview() const {
+        if(!frames.empty()) {
+            return frames[0].getImage();
+        }
+        return nullptr;
     }
 };
 

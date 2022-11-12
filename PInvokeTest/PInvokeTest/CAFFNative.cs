@@ -45,6 +45,14 @@ public class CAFFNative
     [DllImport("CAFF")]
     public static extern IntPtr CAFFAnimation_getFrames(IntPtr animationHandle);
     [DllImport("CAFF")]
+    public static extern IntPtr CAFFAnimation_getPreview(IntPtr animationHandle);
+    [DllImport("CAFF")]
+    public static extern long CAFFAnimation_getPreviewSize(IntPtr animationHandle);
+    [DllImport("CAFF")]
+    public static extern long CAFFAnimation_getPreviewWidth(IntPtr animationHandle);
+    [DllImport("CAFF")]
+    public static extern long CAFFAnimation_getPreviewHeight(IntPtr animationHandle);
+    [DllImport("CAFF")]
     public static extern long CAFFAnimation_getFrameCount(IntPtr animationHandle);
     [DllImport("CAFF")]
     public static extern long CAFFAnimationFrame_getDuration(IntPtr frameHandle);

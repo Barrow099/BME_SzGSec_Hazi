@@ -79,9 +79,28 @@ CAFFAnimationFrame_h *CAFFAnimation_getFrames(CAFFAnimation_h *anim) {
 int64_t CAFFAnimation_getFrameCount(CAFFAnimation_h *anim) {
     return ((CAFFAnimation *) anim)->frames.size();
 }
+
+uint8_t *CAFFAnimation_getPreview(CAFFAnimation_h *anim) {
+    return ((CAFFAnimation *) anim)->preview()->getContent();
+}
+
+int64_t CAFFAnimation_getPreviewSize(CAFFAnimation_h *frame) {
+    return ((CAFFAnimation *) frame)->preview()->getContent_size();
+}
+
+int64_t CAFFAnimation_getPreviewWidth(CAFFAnimation_h *frame) {
+    return ((CAFFAnimation *) frame)->preview()->getWidth();
+}
+
+int64_t CAFFAnimation_getPreviewHeight(CAFFAnimation_h *frame) {
+    return ((CAFFAnimation *) frame)->preview()->getHeight();
+}
+
 int64_t CAFFAnimationFrame_getDuration(CAFFAnimationFrame_h *frame) {
     return ((CAFFAnimationFrame *) frame)->getDuration();
 }
+
+
 CIFFImage_h *CAFFAnimationFrame_getImage(CAFFAnimationFrame_h *frame) {
     return reinterpret_cast<CIFFImage_h *>(((CAFFAnimationFrame *) frame)->getImage());
 }

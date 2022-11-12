@@ -39,6 +39,7 @@ size_t CAFFLoader::read_block(FILE *file, CAFFBlock& out_block) {
     read = fread(bfr, 1,len,file);
     if(read != len) {
         set_error("data read failed");
+        delete[] bfr;
         return 0;
     }
     out_block.setType(id);
