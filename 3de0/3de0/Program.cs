@@ -1,4 +1,5 @@
 using _3de0_BLL;
+using _3de0_BLL.Exceptions;
 using _3de0_BLL_DAL;
 using _3de0_Identity.Data;
 using Hellang.Middleware.ProblemDetails;
@@ -104,6 +105,12 @@ namespace _3de0
                 // This will map HttpRequestException to the 503 Service Unavailable status code.
                 opt.MapToStatusCode<HttpRequestException>(StatusCodes.Status503ServiceUnavailable);
 
+                opt.MapToStatusCode<NotFoundException>(StatusCodes.Status404NotFound);
+
+                opt.MapToStatusCode<InvalidParameterException>(StatusCodes.Status400BadRequest);
+
+                opt.MapToStatusCode<CaffException>(StatusCodes.Status406NotAcceptable);
+
                 // Because exceptions are handled polymorphically, this will act as a "catch all" mapping, which is why it's added last.
                 // If an exception other than NotImplementedException and HttpRequestException is thrown, this will handle it.
                 opt.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
@@ -130,6 +137,7 @@ namespace _3de0
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseProblemDetails();
 
             app.MapControllers();
 
