@@ -1,5 +1,6 @@
 using _3de0_BLL;
 using _3de0_BLL.Dtos;
+using _3de0_BLL.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -81,13 +82,12 @@ namespace _3de0.Controllers
             }
             else
             {
-                throw new FileNotFoundException("File not found.");
+                throw new NotFoundException("File not found.");
             }
         }
 
         [Route("new")]
         [HttpPost]
-        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<CaffFilePreviewDto> UploadCaffFile([FromForm] UploadCaffFileDto uploadCaffFile)
@@ -107,7 +107,7 @@ namespace _3de0.Controllers
             }
             else
             {
-                throw new FileNotFoundException("File not found.");
+                throw new NotFoundException("File not found.");
             }
 
         }
