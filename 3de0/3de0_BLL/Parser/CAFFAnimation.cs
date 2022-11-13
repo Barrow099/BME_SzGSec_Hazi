@@ -1,3 +1,4 @@
+using _3de0_BLL.Exceptions;
 using System.Runtime.InteropServices;
 
 namespace PInvokeTest;
@@ -14,7 +15,7 @@ public class CAFFAnimation
         if (animHandle == IntPtr.Zero)
         {
             var msg = Marshal.PtrToStringUTF8(CAFFNative.CAFFLoader_error_message());
-            throw new Exception("CAFFAnimation loading failed:" + msg);
+            throw new CaffException("CAFFAnimation loading failed:" + msg);
         }
 
         return new CAFFAnimation(animHandle);
@@ -46,7 +47,7 @@ public class CAFFAnimation
             var preview_base = CAFFNative.CAFFAnimation_getPreview(_handle);
             if (preview_base == IntPtr.Zero)
             {
-                throw new Exception("CAFFAnimation preview loading failed");
+                throw new CaffException("CAFFAnimation preview loading failed");
             }
             for (var offset = 0; offset < size; offset++)
             {
