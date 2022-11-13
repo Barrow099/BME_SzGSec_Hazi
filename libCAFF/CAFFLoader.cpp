@@ -124,8 +124,9 @@ CAFFAnimation *CAFFLoader::from_file(const std::string &path) {
         std::for_each(frames.begin(), frames.end(), [](CAFFAnimationFrame frame) {
             delete frame.getImage();
         });
+        fclose(inf);
         return nullptr;
     }
-
+    fclose(inf);
     return new CAFFAnimation(creditsFrame, frames);
 }
