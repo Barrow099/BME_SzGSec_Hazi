@@ -30,4 +30,8 @@
     <ProjectReference Include="..\3de0_Identity\3de0_Identity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CaffFiles\" />
+  </ItemGroup>
+
 </Project>
