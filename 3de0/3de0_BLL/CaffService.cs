@@ -3,12 +3,17 @@ using _3de0_BLL_DAL;
 using _3de0_Identity.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PInvokeTest;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +30,24 @@ namespace _3de0_BLL
         {
             _caffDbContext = caffDbContext;
             _identityDbContext = identityDbContext;
+        }
+
+        // TODO: CAFFID alapján preview -> controller
+        public async Task<byte[]> GetPreviewImageByCaffId(int id)
+        {
+            var caffFile = await _caffDbContext.Files
+                .Where(caff => caff.Id == id)
+                .Include(caff => caff.Comments)
+                .SingleOrDefaultAsync();
+
+            if (caffFile == null)
+            {
+                throw new FileNotFoundException("File not found.");
+            }
+
+            var result = ImagePreviewFromPath(caffFile.FilePath);
+
+            return result;
         }
 
         public async Task<byte[]> DownloadCaffFile(int id)
@@ -69,7 +92,7 @@ namespace _3de0_BLL
                 Creator = caffFile.Creator,
                 Price = caffFile.Price,
                 Caption = caffFile.Caption,
-                File = File.ReadAllBytes(caffFile.FilePath),
+                File = ImagePreviewFromPath(caffFile.FilePath),
                 Comments = caffFile.Comments
                         .Select(comment => new CommentDto()
                         {
@@ -97,12 +120,12 @@ namespace _3de0_BLL
                     Price = caff.Price,
                     Creator = caff.Creator,
                     Caption = caff.Caption,
-                    File = File.ReadAllBytes(caff.FilePath)
+                    File = ImagePreviewFromPath(caff.FilePath)
                 })
                 .ToListAsync();
         }
 
-        public async Task ModifyCaffFile(int id, UploadCaffFileDto modifyCaffFile, string userId)
+        public async Task ModifyCaffFile(int id, UploadCaffFileDto modifyCaffFile, string userId, string path)
         {
             var caffFile = await _caffDbContext.Files
                 .Where(caff => caff.Id == id)
@@ -118,26 +141,37 @@ namespace _3de0_BLL
             {
                 caffFile.Price = modifyCaffFile.Price;
             }
-            else if (!string.IsNullOrEmpty(modifyCaffFile.Title))
-            {
-                caffFile.Caption = modifyCaffFile.Title;
-            }
-            else if (modifyCaffFile.File.Length != 0)
-            {
-                await File.WriteAllBytesAsync(caffFile.FilePath, modifyCaffFile.File);
-            }
 
-            var user = await _identityDbContext.Users
+            try
+            {
+                var user = await _identityDbContext.Users
                 .SingleOrDefaultAsync(user => user.Id == userId);
 
-            if (user == null)
-            {
-                throw new Exception("Owner doesn't exists.");
+                if (user == null)
+                {
+                    throw new Exception("Owner doesn't exists.");
+                }
+
+                CAFFAnimation animation = CAFFAnimation.fromFile(path);
+                var firstFrame = animation.Frames.FirstOrDefault();
+
+                caffFile.Creator = animation.Creator;
+                caffFile.CreationDate = DateTime.Now;
+                caffFile.Caption = firstFrame == null ? "" : firstFrame.Image.Caption;
+
+                // Előző fájl kitörlése, majd az új útvonalának módosítása
+                File.Delete(caffFile.FilePath);
+                caffFile.FilePath = path;
+
+                await _caffDbContext.SaveChangesAsync();
+
+                Log.Logger.Information($"User {user.UserName} [id: {user.Id}] modified a CAFF file. [file path: {caffFile.FilePath}]");
             }
-
-            await _caffDbContext.SaveChangesAsync();
-
-            Log.Logger.Information($"User {user.UserName} [id: {user.Id}] modified a CAFF file. [file path: {caffFile.FilePath}]");
+            catch (Exception)
+            {
+                File.Delete(path);
+                throw new Exception("Invalid CAFF file, unable to upload.");
+            }
         }
 
         public async Task RemoveCaffFileById(int id, string userId)
@@ -170,61 +204,94 @@ namespace _3de0_BLL
             Log.Logger.Information($"User {user.UserName} [id: {user.Id}] deleted a CAFF file. [file path: {filePath}]");
         }
 
-        public async Task<CaffFilePreviewDto> UploadCaffFile(UploadCaffFileDto uploadCaffFile, string userId)
+        public async Task<CaffFilePreviewDto> UploadCaffFile(UploadCaffFileDto uploadCaffFile, string userId, string path)
         {
-            if (!checkCaffModel(uploadCaffFile))
+            if (uploadCaffFile.Price < 0)
             {
-                throw new Exception("Invalid upload model.");
+                throw new Exception("Invalid price for CAFF file. It can't be negative number.");
             }
 
-            string newFileName = Guid.NewGuid().ToString() + "_" + uploadCaffFile.Title + ".caff";
-            string path = $"{pathDir}{newFileName}";
-
-            await File.WriteAllBytesAsync(path, uploadCaffFile.File);
-
-            var user = await _identityDbContext.Users
-                .SingleOrDefaultAsync(user => user.Id == userId);
-
-            if (user == null)
+            try
             {
-                throw new Exception("Owner doesn't exists.");
+                CAFFAnimation animation = CAFFAnimation.fromFile(path);
+
+                var user = await _identityDbContext.Users
+                    .SingleOrDefaultAsync(user => user.Id == userId);
+
+                if (user == null)
+                {
+                    throw new Exception("Owner doesn't exists.");
+                }
+
+                var firstFrame = animation.Frames.FirstOrDefault();
+                var caffFile = new CaffFile()
+                {
+                    CreationDate = DateTime.Now,
+                    FilePath = path,
+                    Price = uploadCaffFile.Price,
+                    Creator = animation.Creator,
+                    Caption = firstFrame == null ? "" : firstFrame.Image.Caption,
+                    OwnerId = user.Id
+                };
+
+                var dbResult = _caffDbContext.Files.Add(caffFile);
+                await _caffDbContext.SaveChangesAsync();
+
+                Log.Logger.Information($"User {user.UserName} [id: {user.Id}] uploaded a new CAFF file. [file path: {dbResult.Entity.FilePath}]");
+
+                var image = ImagePreviewFromPath(path);
+                return new CaffFilePreviewDto()
+                {
+                    Id = dbResult.Entity.Id,
+                    CreationDate = dbResult.Entity.CreationDate,
+                    Creator = dbResult.Entity.Creator,
+                    Price = dbResult.Entity.Price,
+                    Caption = dbResult.Entity.Caption,
+                    File = image
+                };
             }
-
-            // TODO parser lefuttatása
-            // TODO: Ezt lehet a fájlból kéne kiszedni
-            var caffFile = new CaffFile()
+            catch (Exception)
             {
-                CreationDate = DateTime.Now,
-                FilePath = path,
-                Price = uploadCaffFile.Price,
-                Creator = uploadCaffFile.Title,
-                Caption = uploadCaffFile.Title,
-                OwnerId = user.Id
-            };
-
-            var dbResult = _caffDbContext.Files.Add(caffFile);
-            await _caffDbContext.SaveChangesAsync();
-
-            Log.Logger.Information($"User {user.UserName} [id: {user.Id}] uploaded a new CAFF file. [file path: {dbResult.Entity.FilePath}]");
-
-            return new CaffFilePreviewDto()
-            {
-                Id = dbResult.Entity.Id,
-                CreationDate = dbResult.Entity.CreationDate,
-                Creator = dbResult.Entity.Creator,
-                Price = dbResult.Entity.Price,
-                Caption = dbResult.Entity.Caption,
-                File = File.ReadAllBytes(dbResult.Entity.FilePath)
-            };
+                File.Delete(path);
+                throw new Exception("Invalid CAFF file, unable to upload.");
+            }
         }
 
-        private bool checkCaffModel(UploadCaffFileDto caffModel)
+        static private byte[] ImagePreviewFromPath(string path)
         {
-            if (caffModel.File.Length == 0) return false;
-            if (string.IsNullOrEmpty(caffModel.Title)) return false;
-            if (caffModel.Price < 0) return false;
+            CAFFAnimation CaffAnimation = CAFFAnimation.fromFile(path);
 
-            return true;
+            Bitmap bitmap = new Bitmap((int)CaffAnimation.GetPreviewWidth(), (int)CaffAnimation.GetPreviewHeight(), System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            var bitmapData = bitmap.LockBits(new Rectangle(0, 0, (int)CaffAnimation.GetPreviewWidth(), (int)CaffAnimation.GetPreviewHeight()), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+
+            var preview = CaffAnimation.GetPreview();
+            var scan = bitmapData.Scan0;
+            Marshal.Copy(preview!, 0, scan, preview.Length);
+
+            bitmap.UnlockBits(bitmapData);
+            RGBtoBGR(bitmap);
+
+            byte[] result = null;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                bitmap.Save(stream, ImageFormat.Png);
+                result = stream.ToArray();
+            }
+
+            bitmap.Dispose();
+
+            return result;
+        }
+
+        public static void RGBtoBGR(Bitmap bmp)
+        {
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+            int length = Math.Abs(data.Stride) * bmp.Height;
+            unsafe { byte* rgbValues = (byte*)data.Scan0.ToPointer();
+               for (int i = 0; i < length; i += 3) { byte dummy = rgbValues[i]; rgbValues[i] = rgbValues[i + 2]; rgbValues[i + 2] = dummy; }
+            }
+            bmp.UnlockBits(data);
         }
     }
 }
