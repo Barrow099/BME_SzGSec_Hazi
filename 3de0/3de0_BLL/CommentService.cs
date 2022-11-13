@@ -1,4 +1,5 @@
 ﻿using _3de0_BLL.Dtos;
+using _3de0_BLL.Exceptions;
 using _3de0_BLL_DAL;
 using _3de0_Identity.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -31,7 +32,7 @@ namespace _3de0_BLL
 
             if (caffFile == null)
             {
-                throw new FileNotFoundException("File not found.");
+                throw new NotFoundException($"File is not found by id {comment.CaffFileId}.");
             }
 
             var user = await _identityDbContext.Users
@@ -39,12 +40,12 @@ namespace _3de0_BLL
 
             if (user == null)
             {
-                throw new Exception("User doesn't exists.");
+                throw new NotFoundException($"User is not found by id {comment.UserId}.");
             }
 
             if (string.IsNullOrEmpty(comment.Content) || comment.Rating < 0 || comment.Rating > 5)
             {
-                throw new Exception("Invalid parameters for creating comment.");
+                throw new InvalidParameterException("Invalid parameters for creating comment.");
             }
 
             var newComment = new Comment()
@@ -73,7 +74,7 @@ namespace _3de0_BLL
             };
         }
 
-        public async Task ModifyCommentById(int id, CreateCommentDto modifyComment, string userId)
+        public async Task ModifyCommentById(int id, ModifyCommentDto modifyComment, string userId)
         {
             var comment = await _caffDbContext.Comments
                 .Include(com => com.CaffFile)
@@ -81,7 +82,7 @@ namespace _3de0_BLL
 
             if (comment == null)
             {
-                throw new Exception("Comment doesn't exists.");
+                throw new NotFoundException($"Comment is not found by id {id}.");
             }
 
             var modifierUser = await _identityDbContext.Users
@@ -89,14 +90,14 @@ namespace _3de0_BLL
 
             if (modifierUser == null)
             {
-                throw new Exception("User doesn't exists.");
+                throw new NotFoundException($"User is not found by id {userId}.");
             }
 
             if (!string.IsNullOrEmpty(modifyComment.Content))
             {
                 comment.Content = modifyComment.Content;
             }
-            else if (modifyComment.Rating >= 0 && modifyComment.Rating <= 5)
+            if (modifyComment.Rating >= 0 && modifyComment.Rating <= 5)
             {
                 comment.Rating = modifyComment.Rating;
             }
@@ -114,7 +115,7 @@ namespace _3de0_BLL
 
             if (comment == null)
             {
-                throw new Exception("Comment doesn't exists.");
+                throw new NotFoundException($"Comment is not found by id {id}.");
             }
 
             var modifierUser = await _identityDbContext.Users
@@ -122,7 +123,7 @@ namespace _3de0_BLL
 
             if (modifierUser == null)
             {
-                throw new Exception("User doesn't exists.");
+                throw new NotFoundException($"User is not found by id {userId}.");
             }
 
             _caffDbContext.Comments.Remove(comment);

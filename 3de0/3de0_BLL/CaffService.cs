@@ -1,4 +1,5 @@
 ﻿using _3de0_BLL.Dtos;
+using _3de0_BLL.Exceptions;
 using _3de0_BLL_DAL;
 using _3de0_Identity.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -32,7 +33,6 @@ namespace _3de0_BLL
             _identityDbContext = identityDbContext;
         }
 
-        // TODO: CAFFID alapján preview -> controller
         public async Task<byte[]> GetPreviewImageByCaffId(int id)
         {
             var caffFile = await _caffDbContext.Files
@@ -42,7 +42,7 @@ namespace _3de0_BLL
 
             if (caffFile == null)
             {
-                throw new FileNotFoundException("File not found.");
+                throw new NotFoundException($"File is not found by id {id}.");
             }
 
             var result = ImagePreviewFromPath(caffFile.FilePath);
@@ -59,7 +59,7 @@ namespace _3de0_BLL
 
             if (caffFile == null)
             {
-                throw new FileNotFoundException("File not found.");
+                throw new NotFoundException($"File is not found by id {id}.");
             }
 
             return File.ReadAllBytes(caffFile.FilePath);
@@ -74,7 +74,7 @@ namespace _3de0_BLL
 
             if (caffFile == null)
             {
-                throw new FileNotFoundException("File not found.");
+                throw new NotFoundException($"File is not found by id {id}.");
             }
 
             var owner = await _identityDbContext.Users
@@ -82,7 +82,7 @@ namespace _3de0_BLL
 
             if (owner == null)
             {
-                throw new Exception("Owner doesn't exists.");
+                throw new NotFoundException($"User is not found by id {caffFile.OwnerId}.");
             }
 
             return new CaffFileDto()
@@ -134,12 +134,17 @@ namespace _3de0_BLL
 
             if (caffFile == null)
             {
-                throw new FileNotFoundException("File not found.");
+                File.Delete(path);
+                throw new NotFoundException($"File is not found by id {id}.");
             }
 
             if (modifyCaffFile.Price >= 0)
             {
                 caffFile.Price = modifyCaffFile.Price;
+            } else
+            {
+                File.Delete(path);
+                throw new InvalidParameterException("Invalid price for CAFF file. It can't be negative number.");
             }
 
             try
@@ -149,7 +154,7 @@ namespace _3de0_BLL
 
                 if (user == null)
                 {
-                    throw new Exception("Owner doesn't exists.");
+                    throw new NotFoundException($"Owner is not found by id {userId}.");
                 }
 
                 CAFFAnimation animation = CAFFAnimation.fromFile(path);
@@ -170,7 +175,7 @@ namespace _3de0_BLL
             catch (Exception)
             {
                 File.Delete(path);
-                throw new Exception("Invalid CAFF file, unable to upload.");
+                throw new InvalidParameterException("Invalid CAFF file, unable to upload.");
             }
         }
 
@@ -183,7 +188,7 @@ namespace _3de0_BLL
 
             if (caffFile == null)
             {
-                throw new FileNotFoundException("File not found.");
+                throw new NotFoundException($"File is not found by id {id}.");
             }
 
             string filePath = caffFile.FilePath;
@@ -193,7 +198,7 @@ namespace _3de0_BLL
 
             if (user == null)
             {
-                throw new Exception("Owner doesn't exists.");
+                throw new NotFoundException($"Owner is not found by id {userId}.");
             }
 
             File.Delete(caffFile.FilePath);
@@ -208,7 +213,8 @@ namespace _3de0_BLL
         {
             if (uploadCaffFile.Price < 0)
             {
-                throw new Exception("Invalid price for CAFF file. It can't be negative number.");
+                File.Delete(path);
+                throw new InvalidParameterException("Invalid price for CAFF file. It can't be negative number.");
             }
 
             try
@@ -220,7 +226,7 @@ namespace _3de0_BLL
 
                 if (user == null)
                 {
-                    throw new Exception("Owner doesn't exists.");
+                    throw new NotFoundException($"User is not found by id {userId}.");
                 }
 
                 var firstFrame = animation.Frames.FirstOrDefault();
@@ -253,7 +259,7 @@ namespace _3de0_BLL
             catch (Exception)
             {
                 File.Delete(path);
-                throw new Exception("Invalid CAFF file, unable to upload.");
+                throw new InvalidParameterException("Invalid CAFF file, unable to upload.");
             }
         }
 
