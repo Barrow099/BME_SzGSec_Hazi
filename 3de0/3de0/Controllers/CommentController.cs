@@ -32,7 +32,7 @@ namespace _3de0.Controllers
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> ModifyComment(int id, [FromBody] CreateCommentDto comment)
+        public async Task<IActionResult> ModifyComment(int id, [FromBody] ModifyCommentDto comment)
         {
             var userId = HttpContext.User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier)?.Value;
             await _commentService.ModifyCommentById(id, comment, userId!);
