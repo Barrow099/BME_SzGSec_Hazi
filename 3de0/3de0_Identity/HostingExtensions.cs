@@ -66,7 +66,7 @@ namespace _3de0_Identity
             app.UseRouting();
             app.UseCors("MyPolicy");
             app.UseIdentityServer();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
 
