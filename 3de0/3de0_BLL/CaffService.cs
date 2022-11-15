@@ -92,7 +92,6 @@ namespace _3de0_BLL
                 Creator = caffFile.Creator,
                 Price = caffFile.Price,
                 Caption = caffFile.Caption,
-                File = ImagePreviewFromPath(caffFile.FilePath),
                 Comments = caffFile.Comments
                         .Select(comment => new CommentDto()
                         {
@@ -119,8 +118,7 @@ namespace _3de0_BLL
                     CreationDate = caff.CreationDate,
                     Price = caff.Price,
                     Creator = caff.Creator,
-                    Caption = caff.Caption,
-                    File = ImagePreviewFromPath(caff.FilePath)
+                    Caption = caff.Caption
                 })
                 .ToListAsync();
         }
@@ -252,8 +250,7 @@ namespace _3de0_BLL
                     CreationDate = dbResult.Entity.CreationDate,
                     Creator = dbResult.Entity.Creator,
                     Price = dbResult.Entity.Price,
-                    Caption = dbResult.Entity.Caption,
-                    File = image
+                    Caption = dbResult.Entity.Caption
                 };
             }
             catch (Exception)

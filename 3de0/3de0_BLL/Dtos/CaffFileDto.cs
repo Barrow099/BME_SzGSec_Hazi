@@ -13,7 +13,6 @@ namespace _3de0_BLL.Dtos
         public DateTime CreationDate { get; set; }
         public string Creator { get; set; }
         public int Price { get; set; }
-        public byte[] File { get; set; }
 
         public string OwnerId { get; set; }
         public string OwnerName { get; set; }
