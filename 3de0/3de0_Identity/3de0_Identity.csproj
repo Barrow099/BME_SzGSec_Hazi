@@ -7,6 +7,7 @@
     <RootNamespace>_3de0_Identity</RootNamespace>
     <UserSecretsId>8d467a2b-b6ae-4a9c-869b-eb0d085af3b5</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>

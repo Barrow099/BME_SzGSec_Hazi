@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  db:
+    image: db
+    build:
+      context: .
+      dockerfile: Db/Dockerfile
+    ports:
+        - "1433:1433" 
+  3de0_identity:
+    image: ${DOCKER_REGISTRY-}3de0identity
+    build:
+      context: .
+      dockerfile: 3de0_Identity/Dockerfile
+    ports:       
+        - 80
+        - "44315:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=S3cur3P@ssW0rd!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:r
+    depends_on:
+        - db
+  3de0_api:
+    image: ${DOCKER_REGISTRY-}3de0api
+    build:
+      context: .
+      dockerfile: 3de0/Dockerfile
+    ports:
+        - 80
+        - "44384:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=S3cur3P@ssW0rd!
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:r
+    depends_on:
+        - db

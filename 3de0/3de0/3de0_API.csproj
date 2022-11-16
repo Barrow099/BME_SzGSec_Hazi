@@ -7,6 +7,7 @@
     <RootNamespace>_3de0</RootNamespace>
     <UserSecretsId>aefef191-69cf-4a8b-9262-64d5bb186999</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
   <ItemGroup>

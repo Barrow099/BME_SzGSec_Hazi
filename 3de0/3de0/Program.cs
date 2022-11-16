@@ -132,7 +132,7 @@ namespace _3de0
                 });
             }
             app.UseCors("MyPolicy");
-            app.UseHttpsRedirection();
+           // app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
