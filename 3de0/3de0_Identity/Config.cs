@@ -38,7 +38,7 @@ namespace _3de0_Identity
                     },
                     AllowedCorsOrigins =
                     {
-                        configuration["Identity:Cors:Swagger"],                      
+                        configuration["Identity:Cors:Swagger"],
                     },
                 },
 
