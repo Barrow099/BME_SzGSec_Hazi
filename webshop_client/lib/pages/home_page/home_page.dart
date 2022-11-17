@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/pages/home_page/downloads_page/downloads_page.dart';
@@ -24,6 +25,20 @@ class HomePageState extends ConsumerState<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_pageTitles[_currentPageIndex]),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: IconButton(
+                visualDensity: VisualDensity.compact,
+                icon: Badge(
+                    badgeContent: Text("2"),
+                    animationType: BadgeAnimationType.scale,
+                    child: const Icon(Icons.shopping_cart_rounded)
+                ),
+              onPressed: () {},
+            ),
+          )
+        ],
       ),
       body: PageView(
         controller: pageController,
