@@ -15,8 +15,17 @@ namespace _3de0_Identity
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
-                new ApiScope("caffApi", "CAFF API"),
+                new ApiScope("apiScope", "CAFF API"),
             };
+
+        public static IEnumerable<ApiResource> ApiResources =>
+           new ApiResource[]
+           {
+                new ApiResource("apiResource", "Api Resource")
+                {
+                    Scopes = { "apiScope" }
+                },
+           };
 
         public static IEnumerable<Client> Clients(IConfiguration configuration) =>
             new Client[]
@@ -34,7 +43,7 @@ namespace _3de0_Identity
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "caffApi",
+                        "apiScope",
                     },
                     AllowedCorsOrigins =
                     {
@@ -62,7 +71,7 @@ namespace _3de0_Identity
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "caffApi",
+                        "apiScope",
                     },
                     AllowedCorsOrigins =
                     {

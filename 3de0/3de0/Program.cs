@@ -77,11 +77,11 @@ namespace _3de0
             .AddJwtBearer("Bearer", options =>
             {
                 options.Authority = builder.Configuration["Identity:Authority"];
+                options.Audience = builder.Configuration["Identity:Audience"];
 
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = false
-                };
+                options.TokenValidationParameters.ValidateAudience = true;
+                options.TokenValidationParameters.ValidateIssuer = true;
+                options.TokenValidationParameters.ValidateIssuerSigningKey = true;
             });
 
             builder.Services.AddAuthorization(options => options.AddPolicy("ApiScope", policy =>
@@ -130,9 +130,15 @@ namespace _3de0
                     config.OAuthClientSecret(builder.Configuration["ClientSecrets:Swagger"]);
                     config.OAuthUsePkce();
                 });
+
+                app.Use((context, next) =>
+                {
+                    context.Request.Scheme = "https";
+                    return next(context);
+                });
             }
             app.UseCors("MyPolicy");
-           // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
