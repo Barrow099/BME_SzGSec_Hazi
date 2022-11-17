@@ -35,4 +35,13 @@
     <Folder Include="CaffFiles\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="CAFF.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="libCAFF.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

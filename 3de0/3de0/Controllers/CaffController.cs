@@ -45,7 +45,7 @@ namespace _3de0.Controllers
         public async Task<IActionResult> DownloadCaffFile(int id)
         {
             var file = await _caffService.DownloadCaffFile(id);
-            return File(file, "application/octet-stream");
+            return File(file.data, "application/octet-stream", fileDownloadName: file.name);
         }
 
         [Route("{id}/preview")]
@@ -69,6 +69,7 @@ namespace _3de0.Controllers
 
             if (modifyCaffFile.File.Length > 0)
             {
+                Directory.CreateDirectory(pathDir);
                 string newFileName = Guid.NewGuid().ToString() + ".caff";
                 string path = $"{pathDir}{newFileName}";
 
@@ -96,6 +97,7 @@ namespace _3de0.Controllers
 
             if (uploadCaffFile.File.Length > 0)
             {
+                Directory.CreateDirectory(pathDir);
                 string newFileName = Guid.NewGuid().ToString() + ".caff";
                 string path = $"{pathDir}{newFileName}";
 

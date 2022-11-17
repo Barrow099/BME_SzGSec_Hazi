@@ -45,6 +45,7 @@ namespace _3de0_Identity
                     }
                 }
             }
+            claims.Add(new Claim(JwtClaimTypes.Name, user.UserName));
 
             context.IssuedClaims = claims;
         }

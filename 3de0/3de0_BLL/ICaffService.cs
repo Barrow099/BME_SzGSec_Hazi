@@ -16,7 +16,7 @@ namespace _3de0_BLL
         Task RemoveCaffFileById(int id, string userId);
 
         Task<CaffFilePreviewDto> UploadCaffFile(UploadCaffFileDto uploadCaffFile, string userId, string path);
-        Task<byte[]> DownloadCaffFile(int id);
+        Task<(byte[] data, string name)> DownloadCaffFile(int id);
         Task<byte[]> GetPreviewImageByCaffId(int id);
     }
 }

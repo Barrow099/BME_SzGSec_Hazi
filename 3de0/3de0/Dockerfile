@@ -11,6 +11,7 @@ COPY ["3de0/3de0_API.csproj", "3de0/"]
 COPY ["3de0_Identity/3de0_Identity.csproj", "3de0_Identity/"]
 COPY ["3de0_BLL/3de0_BLL.csproj", "3de0_BLL/"]
 COPY ["3de0_BLL_DAL/3de0_DAL.csproj", "3de0_BLL_DAL/"]
+COPY ["3de0/libCAFF.so", "/usr/lib"]
 RUN dotnet restore "3de0/3de0_API.csproj"
 COPY . .
 WORKDIR "/src/3de0"

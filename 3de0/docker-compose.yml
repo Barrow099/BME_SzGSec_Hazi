@@ -39,6 +39,7 @@ services:
         - ASPNETCORE_URLS=https://+:44384
         - ASPNETCORE_Kestrel__Certificates__Default__Password=Password0 
         - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
+      #  - LD_DEBUG=libs
     ports:
         - "44384:44384"
     volumes:
