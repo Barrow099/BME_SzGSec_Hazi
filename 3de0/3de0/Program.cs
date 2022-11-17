@@ -79,9 +79,10 @@ namespace _3de0
                 options.Authority = builder.Configuration["Identity:Authority"];
                 options.Audience = builder.Configuration["Identity:Audience"];
 
-                options.TokenValidationParameters.ValidateAudience = true;
-                options.TokenValidationParameters.ValidateIssuer = true;
-                options.TokenValidationParameters.ValidateIssuerSigningKey = true;
+                // Dont use it in production
+                options.TokenValidationParameters.ValidateAudience = false;
+                options.TokenValidationParameters.ValidateIssuer = false;
+                options.TokenValidationParameters.ValidateIssuerSigningKey = false;
             });
 
             builder.Services.AddAuthorization(options => options.AddPolicy("ApiScope", policy =>
