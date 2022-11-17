@@ -13,32 +13,34 @@ services:
     build:
       context: .
       dockerfile: 3de0_Identity/Dockerfile
-    ports:       
-        - 80
-        - "44315:443"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=S3cur3P@ssW0rd!
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-    volumes:
-      - ~/.aspnet/https:/https:r
     depends_on:
         - db
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet 3de0_Identity.dll"
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=https://+:44315
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password0 
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
+    ports:
+        - "44315:44315"
+    volumes:
+        - ./localhost.pfx:/https/localhost.pfx:ro
+        - ./localhost.crt:/usr/local/share/ca-certificates/localhost.crt:ro
   3de0_api:
     image: ${DOCKER_REGISTRY-}3de0api
     build:
       context: .
       dockerfile: 3de0/Dockerfile
-    ports:
-        - 80
-        - "44384:443"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=S3cur3P@ssW0rd!
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-    volumes:
-      - ~/.aspnet/https:/https:r
     depends_on:
-        - db
+        - 3de0_identity
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet 3de0_API.dll"
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=https://+:44384
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password0 
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
+    ports:
+        - "44384:44384"
+    volumes:
+        - ./localhost.pfx:/https/localhost.pfx:ro
+        - ./localhost.crt:/usr/local/share/ca-certificates/localhost.crt:ro
