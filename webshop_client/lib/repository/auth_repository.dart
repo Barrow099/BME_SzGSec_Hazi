@@ -17,8 +17,8 @@ class AuthRepository {
     return AuthState.loggedOut;
   }
 
-  Future<AuthState> login(String username, String password) async {
-    userModel = await appRestApi.login(username, password);
+  Future<AuthState> login() async {
+    userModel = await appRestApi.login();
     return AuthState.loggedIn;
   }
 

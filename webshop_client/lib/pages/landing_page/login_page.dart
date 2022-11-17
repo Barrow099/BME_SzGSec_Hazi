@@ -113,7 +113,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       userName = userName.trim();
       final password = passwordController.text;
 
-      ref.read(authStateNotifier.notifier).login(userName, password);
+      ref.read(authStateNotifier.notifier).login();
     }
   }
 

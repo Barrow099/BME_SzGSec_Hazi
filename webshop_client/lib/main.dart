@@ -1,13 +1,25 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/Pages/root_page.dart';
 
 
-final counterStateProvider = StateProvider<int>((ref) {
-  return 0;
-});
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 
 void main() {
+  //=========================================
+  // THIS IS STRICTLY FOR DEV PURPOSES ONLY!!
+  // fixes issue an issue where android does
+  // not trusts self signed certificate
+  HttpOverrides.global = MyHttpOverrides();
+  //=========================================
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
