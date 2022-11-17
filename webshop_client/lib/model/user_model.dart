@@ -4,7 +4,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 enum UserRole {
   Basic,
-  Admin
+  Admin;
+
+  String toString() {
+    return this == UserRole.Admin ? "Admin" : "User";
+  }
 }
 
 @JsonSerializable()
@@ -13,7 +17,7 @@ class UserModel {
   String userId;
   UserRole role;
 
-  UserModel({required this.userId, required this.role, this.userName="Not implemented"});
+  UserModel({required this.userId, required this.role, required this.userName});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(

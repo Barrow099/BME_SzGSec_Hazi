@@ -31,22 +31,23 @@ class AppRestApi {
   }
 
   Future<UserModel> login() async {
-    AccessTokenResponse? token = await oauthClient.helper.getToken();
-
-    if(token == null || token.accessToken == null) {
-      return Future.error("Couldn't acquire auth token!");
-    }
-
-    _updateAccessToken(token.accessToken);
-
-    try {
-      final resp = await secureDio.get("/Caff");
-    } on DioError catch(e) {
-      print(e);
-    }
-
-    Map<String, dynamic> payload = Jwt.parseJwt(token.accessToken!);
-    return UserModel.fromJson(payload);
+    // AccessTokenResponse? token = await oauthClient.helper.getToken();
+    //
+    // if(token == null || token.accessToken == null) {
+    //   return Future.error("Couldn't acquire auth token!");
+    // }
+    //
+    // _updateAccessToken(token.accessToken);
+    //
+    // try {
+    //   final resp = await secureDio.get("/Caff");
+    // } on DioError catch(e) {
+    //   print(e);
+    // }
+    //
+    // Map<String, dynamic> payload = Jwt.parseJwt(token.accessToken!);
+    //return UserModel.fromJson(payload);
+    return UserModel(userId: "666", role: UserRole.Admin, userName: "Teszt Elek");
   }
 
   Future<UserModel> signUp(String userName, String password) async {
@@ -69,10 +70,16 @@ class AppRestApi {
   Future<List<CAFFData>> getCaffList() async {
     await Future.delayed(const Duration(seconds: 1));
 
+    // try {
+    //   final response = await secureDio.get("/Caff");
+    // } on DioError catch(e) {
+    //   print(e);
+    // }
+
     return [
-      CAFFData("https://picsum.photos/800/1200"),
-      CAFFData("https://picsum.photos/1200/1000"),
-      CAFFData("https://picsum.photos/1200/1200"),
+      CAFFData("https://picsum.photos/800/1200", 2),
+      CAFFData("https://picsum.photos/1200/1000", 2),
+      CAFFData("https://picsum.photos/1200/1200", 3),
     ];
   }
 

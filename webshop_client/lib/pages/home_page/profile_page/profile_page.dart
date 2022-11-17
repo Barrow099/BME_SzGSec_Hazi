@@ -34,7 +34,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
               child: Icon(Icons.account_circle_rounded, size: 50,),
             ),
             title: Text(userModel.userName),
-            subtitle: Text(userModel.userId),
+            subtitle: Text("${userModel.role.toString()} | ${userModel.userId}"),
             contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           ),
         ),
