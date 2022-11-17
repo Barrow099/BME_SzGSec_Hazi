@@ -69,6 +69,7 @@ namespace _3de0.Controllers
 
             if (modifyCaffFile.File.Length > 0)
             {
+                Directory.CreateDirectory(pathDir);
                 string newFileName = Guid.NewGuid().ToString() + ".caff";
                 string path = $"{pathDir}{newFileName}";
 
@@ -96,6 +97,7 @@ namespace _3de0.Controllers
 
             if (uploadCaffFile.File.Length > 0)
             {
+                Directory.CreateDirectory(pathDir);
                 string newFileName = Guid.NewGuid().ToString() + ".caff";
                 string path = $"{pathDir}{newFileName}";
 
