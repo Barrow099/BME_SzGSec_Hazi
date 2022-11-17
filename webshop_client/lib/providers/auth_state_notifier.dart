@@ -15,10 +15,10 @@ class AuthStateNotifier extends StateNotifier<AsyncValue<AuthState>> {
     });
   }
 
-  Future login(String userName, String password) async {
+  Future login() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() {
-      return authRepository.login(userName, password);
+      return authRepository.login();
     });
   }
 

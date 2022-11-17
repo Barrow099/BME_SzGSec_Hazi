@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class WelcomePagesBackground extends StatelessWidget {
+class LandingPagesBackground extends StatelessWidget {
   final Widget child;
-  const WelcomePagesBackground({Key? key, required this.child}) : super(key: key);
+  const LandingPagesBackground({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
