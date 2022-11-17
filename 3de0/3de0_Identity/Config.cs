@@ -54,29 +54,29 @@ namespace _3de0_Identity
                 // interactive ASP.NET Core Web App
                 new Client
                 {
-                    ClientId = configuration["Identity:ClientIds:SPA"],
-                    ClientSecrets = { new Secret(configuration["ClientSecrets:SPA"].Sha256()) },
+                    ClientId = configuration["Identity:ClientIds:Flutter"],
+                    RequireClientSecret = false,
+                    AllowOfflineAccess = true,
 
                     AllowedGrantTypes = GrantTypes.Code,
                     
                     // where to redirect to after login
-                    RedirectUris = { configuration["Identity:RedirectUris:SPA"] },
+                    RedirectUris = { configuration["Identity:RedirectUris:Flutter"] },
 
                     // where to redirect to after logout
                     PostLogoutRedirectUris = { configuration["Identity:PostLogoutRedirectUris"]  },
-
-                    AllowOfflineAccess = true,
 
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         "apiScope",
                     },
-                    AllowedCorsOrigins =
+                    /*AllowedCorsOrigins =
                     {
                         configuration["Identity:Cors:SPA"],
-                    },
+                    },*/
                 }
             };
     }
