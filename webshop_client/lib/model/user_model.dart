@@ -18,7 +18,7 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
         userId: json["client_id"],
-        //userName: json[""],
+        userName: json["name"],
         role: json["role"] == "admin" ? UserRole.Admin : UserRole.Basic
     );
   }

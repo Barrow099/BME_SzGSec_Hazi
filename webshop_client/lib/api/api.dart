@@ -9,19 +9,24 @@ import 'package:webshop_client/model/user_model.dart';
 class AppRestApi {
   //https://pub.dev/packages/dio
 
-  final apiUrl = "http://placeholder.com/api";
+  final apiUrl = "https://10.0.2.2:44384";
 
   final dio = Dio();
   final secureDio = Dio();
 
   final oauthClient = WebshopOAuth2Client();
 
-
   String? accessToken;
 
   AppRestApi() {
     dio.options.baseUrl = apiUrl;
     secureDio.options.baseUrl = apiUrl;
+  }
+
+  _updateAccessToken(String? accessToken) async {
+    this.accessToken = accessToken;
+    //TODO add interceptor to update outdated tokens
+    secureDio.options.headers["Authorization"] = 'Bearer $accessToken';
   }
 
   Future<UserModel> login() async {
@@ -31,7 +36,13 @@ class AppRestApi {
       return Future.error("Couldn't acquire auth token!");
     }
 
-    accessToken = token.accessToken;
+    _updateAccessToken(token.accessToken);
+
+    try {
+      final resp = await secureDio.get("/Caff");
+    } on DioError catch(e) {
+      print(e);
+    }
 
     Map<String, dynamic> payload = Jwt.parseJwt(token.accessToken!);
     return UserModel.fromJson(payload);

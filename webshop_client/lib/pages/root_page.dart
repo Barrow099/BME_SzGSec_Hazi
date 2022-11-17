@@ -33,7 +33,7 @@ class RootPage extends ConsumerWidget {
 
   Widget getLoginErrorContent(error, stackTrace) {
     return Scaffold(
-      body: Center(child: Text("Error: $error\n$stackTrace"))
+      body: SafeArea(child: Center(child: Text("Error: $error\n$stackTrace")))
     );
   }
 
