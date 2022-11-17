@@ -596,10 +596,12 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Files](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Title] [nvarchar](max) NULL,
+	[Creator] [nvarchar](max) NULL,
 	[CreationDate] [datetime2](7) NOT NULL,
 	[Price] [int] NOT NULL,
-	[OwnerId] [nvarchar](450) NULL,
+	[OwnerId] [nvarchar](max) NULL,
+	[FilePath] [nvarchar](max) NULL,
+	[Caption] [nvarchar](max) NULL,
  CONSTRAINT [PK_Files] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
