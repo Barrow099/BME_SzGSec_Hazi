@@ -17,6 +17,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using SkiaSharp;
 
 namespace _3de0_BLL
 {
@@ -50,7 +51,7 @@ namespace _3de0_BLL
             return result;
         }
 
-        public async Task<byte[]> DownloadCaffFile(int id)
+        public async Task<(byte[] data, string name)> DownloadCaffFile(int id)
         {
             var caffFile = await _caffDbContext.Files
                 .Where(caff => caff.Id == id)
@@ -62,7 +63,7 @@ namespace _3de0_BLL
                 throw new NotFoundException($"File is not found by id {id}.");
             }
 
-            return File.ReadAllBytes(caffFile.FilePath);
+            return (File.ReadAllBytes(caffFile.FilePath), caffFile.FilePath.Split("/")[1]);
         }
 
         public async Task<CaffFileDto> GetCaffFileDetails(int id)
@@ -214,10 +215,10 @@ namespace _3de0_BLL
                 File.Delete(path);
                 throw new InvalidParameterException("Invalid price for CAFF file. It can't be negative number.");
             }
-
+            CAFFAnimation animation = null;
             try
             {
-                CAFFAnimation animation = CAFFAnimation.fromFile(path);
+                animation = CAFFAnimation.fromFile(path);
 
                 var user = await _identityDbContext.Users
                     .SingleOrDefaultAsync(user => user.Id == userId);
@@ -243,7 +244,7 @@ namespace _3de0_BLL
 
                 Log.Logger.Information($"User {user.UserName} [id: {user.Id}] uploaded a new CAFF file. [file path: {dbResult.Entity.FilePath}]");
 
-                var image = ImagePreviewFromPath(path);
+                //var image = ImagePreviewFromPath(path);
                 return new CaffFilePreviewDto()
                 {
                     Id = dbResult.Entity.Id,
@@ -253,48 +254,59 @@ namespace _3de0_BLL
                     Caption = dbResult.Entity.Caption
                 };
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 File.Delete(path);
-                throw new InvalidParameterException("Invalid CAFF file, unable to upload.");
+                throw new InvalidParameterException($"Invalid CAFF file, unable to upload. {e.Message}", e);
             }
         }
 
         static private byte[] ImagePreviewFromPath(string path)
         {
-            CAFFAnimation CaffAnimation = CAFFAnimation.fromFile(path);
-
-            Bitmap bitmap = new Bitmap((int)CaffAnimation.GetPreviewWidth(), (int)CaffAnimation.GetPreviewHeight(), System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-            var bitmapData = bitmap.LockBits(new Rectangle(0, 0, (int)CaffAnimation.GetPreviewWidth(), (int)CaffAnimation.GetPreviewHeight()), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+      /*      CAFFAnimation CaffAnimation = CAFFAnimation.fromFile(path);
+            int width = (int)CaffAnimation.GetPreviewWidth();
+            int height = (int)CaffAnimation.GetPreviewHeight();
+            SkiaSharp.SKBitmap bitmap = new SkiaSharp.SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Opaque); 
+            
+            SKColor[] pixels = new SKColor[width * height];
+                for (int row = 0; row < height; row++)
+                    for (int col = 0; col < width; col++)
+            {
+                pixels[width * row + col] = new SKColor(0,0,0,255);
+            }
+            bitmap.Pixels = pixels;
 
             var preview = CaffAnimation.GetPreview();
-            var scan = bitmapData.Scan0;
-            Marshal.Copy(preview!, 0, scan, preview.Length);
-
-            bitmap.UnlockBits(bitmapData);
-            RGBtoBGR(bitmap);
+            var bgra_preview = BGR2BGRA(preview!);
+            Marshal.Copy(bgra_preview, 0, bitmap.GetPixels(), bgra_preview.Length);
 
             byte[] result = null;
             using (MemoryStream stream = new MemoryStream())
             {
-                bitmap.Save(stream, ImageFormat.Png);
+                bitmap.Encode(stream, SKEncodedImageFormat.Png, 10);
                 result = stream.ToArray();
             }
 
-            bitmap.Dispose();
+            bitmap.Dispose();*/
 
-            return result;
+            return null;
         }
 
-        public static void RGBtoBGR(Bitmap bmp)
+        public static byte[] BGR2BGRA(byte[] data)
         {
-            BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
-            int length = Math.Abs(data.Stride) * bmp.Height;
-            unsafe { byte* rgbValues = (byte*)data.Scan0.ToPointer();
-               for (int i = 0; i < length; i += 3) { byte dummy = rgbValues[i]; rgbValues[i] = rgbValues[i + 2]; rgbValues[i + 2] = dummy; }
+            var retval = new byte[data.Length / 3 * 4];
+            
+            int index = 0;
+            int out_index = 0;
+            while(index < data.Length) {
+                for(int offset = 0; offset < 3; offset++) {
+                    retval[out_index + offset] = data[index + offset];
+                }
+                retval[out_index + 3] = 255;
+                index += 3;
+                out_index += 4;
             }
-            bmp.UnlockBits(data);
+            return retval;
         }
     }
 }
