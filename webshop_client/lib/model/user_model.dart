@@ -3,8 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 //part 'user_model.g.dart';
 
 enum UserRole {
-  Basic,
-  Admin;
+  basic,
+  admin;
 
   String toString() {
     return this == UserRole.Admin ? "Admin" : "User";
@@ -23,7 +23,7 @@ class UserModel {
     return UserModel(
         userId: json["client_id"],
         userName: json["name"],
-        role: json["role"] == "admin" ? UserRole.Admin : UserRole.Basic
+        role: json["role"] == "admin" ? UserRole.admin : UserRole.basic
     );
   }
 
