@@ -7,7 +7,7 @@ enum UserRole {
   admin;
 
   String toString() {
-    return this == UserRole.Admin ? "Admin" : "User";
+    return this == UserRole.admin ? "Admin" : "User";
   }
 }
 
