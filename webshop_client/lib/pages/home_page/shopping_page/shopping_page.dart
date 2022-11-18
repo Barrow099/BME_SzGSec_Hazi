@@ -35,16 +35,21 @@ class ShoppingPageState extends ConsumerState<ShoppingPage> {
       onRefresh: () {
         return ref.read(shopNotifier.notifier).refresh();
       },
-      child: ListView.builder(
-        physics: BouncingScrollPhysics(),
-        itemCount: caffs.length,
-        itemBuilder: (context, idx) {
-          return ShoppingListItem(
-            caffData: caffs[idx],
-            onClickFunction: goToCaffPage,
-          );
-        }
-      ),
+      child:
+      caffs.isNotEmpty ?
+        ListView.builder(
+          physics: BouncingScrollPhysics(),
+          itemCount: caffs.length,
+          itemBuilder: (context, idx) {
+            return ShoppingListItem(
+              caffData: caffs[idx],
+              onClickFunction: goToCaffPage,
+            );
+          }
+        )
+      :
+        Center(child: Text("Nothin to see here 👀"),)
+      ,
     );
   }
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:webshop_client/api/webshop_oauth2_client.dart';
@@ -12,7 +13,6 @@ class AppRestApi {
 
   final apiUrl = "https://10.0.2.2:44384";
 
-  final dio = Dio();
   final secureDio = Dio();
 
   final oauthClient = WebshopOAuth2Client();
@@ -20,8 +20,8 @@ class AppRestApi {
   String? accessToken;
 
   AppRestApi() {
-    dio.options.baseUrl = apiUrl;
     secureDio.options.baseUrl = apiUrl;
+    secureDio.interceptors.add(PrettyDioLogger());
   }
 
   _updateSecureDio(String? accessToken) async {

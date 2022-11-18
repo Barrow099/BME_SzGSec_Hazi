@@ -47,6 +47,7 @@ dependencies:
   oauth2: ^2.0.1
   url_launcher: ^6.1.6
   uni_links: ^0.5.1
+  pretty_dio_logger: ^1.2.0-beta-1
 
 dev_dependencies:
   flutter_test:
