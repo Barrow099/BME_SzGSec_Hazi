@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-import 'package:oauth2_client/access_token_response.dart';
 import 'package:webshop_client/api/webshop_oauth2_client.dart';
 import 'package:webshop_client/model/user_model.dart';
 
@@ -23,28 +22,18 @@ class AppRestApi {
     secureDio.options.baseUrl = apiUrl;
   }
 
-  _updateAccessToken(String? accessToken) async {
+  _updateSecureDio(String? accessToken) async {
     this.accessToken = accessToken;
     //TODO add interceptor to update outdated tokens
     secureDio.options.headers["Authorization"] = 'Bearer $accessToken';
   }
 
   Future<UserModel> login() async {
-    AccessTokenResponse? token = await oauthClient.helper.getToken();
+    String accessToken = await oauthClient.getAccessToken();
 
-    if(token == null || token.accessToken == null) {
-      return Future.error("Couldn't acquire auth token!");
-    }
+    _updateSecureDio(accessToken);
 
-    _updateAccessToken(token.accessToken);
-
-    try {
-      final resp = await secureDio.get("/Caff");
-    } on DioError catch(e) {
-      print(e);
-    }
-
-    Map<String, dynamic> payload = Jwt.parseJwt(token.accessToken!);
+    Map<String, dynamic> payload = Jwt.parseJwt(accessToken);
     return UserModel.fromJson(payload);
   }
 

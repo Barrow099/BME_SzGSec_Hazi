@@ -111,7 +111,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     if(_formKey.currentState!.validate()) {
       String userName = userNameController.text;
       userName = userName.trim();
-      final password = passwordController.text;
+      //final password = passwordController.text;
 
       ref.read(authStateNotifier.notifier).login();
     }

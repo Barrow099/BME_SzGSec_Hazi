@@ -1,29 +1,57 @@
-import 'package:oauth2_client/oauth2_client.dart';
-import 'package:oauth2_client/oauth2_helper.dart';
+import 'package:oauth2/oauth2.dart';
+import 'package:uni_links/uni_links.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-const uriScheme = "my.test.app";
-const authorizationEndpoint = 'https://10.0.2.2:44315/connect/authorize';
-const tokenEndpoint = 'https://10.0.2.2:44315/connect/token';
-const redirectUrl = '$uriScheme:/oauth2-redirect.html';
+final authorizationEndpoint = Uri.parse("https://10.0.2.2:44315/connect/authorize");
+final tokenEndpoint = Uri.parse("https://10.0.2.2:44315/connect/token");
+final redirectUrl =  Uri.parse("com.example.flutterapp://callback");
 
-const identifier = 'a8917271-3a4e-48dc-ba79-9dedcfebcacf';
-const secret = 'a22939d0-2e41-40e6-8d33-f201c5e78016';
+const identifier = 'flutter';
 
-class WebshopOAuth2Client extends OAuth2Client {
+class WebshopOAuth2Client {
+  Future<String> getAccessToken() async {
+    AuthorizationCodeGrant grant = AuthorizationCodeGrant(
+        identifier,
+        authorizationEndpoint,
+        tokenEndpoint
+    );
 
-  late OAuth2Helper helper;
+    Uri authorizationUrl = grant.getAuthorizationUrl(
+      redirectUrl,
+      scopes: ['openid', 'profile', 'offline_access', 'apiScope'],
+    );
 
-  WebshopOAuth2Client(): super(
-      authorizeUrl: authorizationEndpoint,
-      tokenUrl: tokenEndpoint,
-      redirectUri: redirectUrl,
-      customUriScheme: uriScheme
-  ) {
-    helper = OAuth2Helper(this,
-        grantType: OAuth2Helper.authorizationCode,
-        clientId: identifier,
-        clientSecret: secret,
-        scopes: ["openid", "profile", "apiScope"]
+    await redirect(authorizationUrl);
+    Uri? responseUrl = await listen(redirectUrl);
+
+    if (responseUrl == null) {
+      throw Exception('Response URL was null');
+    }
+
+    Client client = await grant.handleAuthorizationResponse(responseUrl.queryParameters);
+    return client.credentials.accessToken;
+  }
+
+  Future<void> redirect(Uri authorizationUrl) async {
+    // TODO find equivalent non depricated functions (launchUri does not work)
+    // ignore: deprecated_member_use
+    if (await canLaunch(authorizationUrl.toString())) {
+      // ignore: deprecated_member_use
+      await launch(authorizationUrl.toString());
+    }
+    else {
+      throw Exception('Unable to launch authorization URL.');
+    }
+  }
+
+  Future<Uri?> listen(Uri redirectUrl) async {
+    return await uriLinkStream.firstWhere(
+          (element) => element.toString().startsWith(
+        redirectUrl.toString(),
+      ),
     );
   }
+
+
+
 }

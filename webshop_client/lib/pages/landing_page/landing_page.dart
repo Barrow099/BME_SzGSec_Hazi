@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../provider_objects.dart';
 import 'landing_page_background.dart';
-import 'login_page.dart';
 import 'signup_page.dart';
 
 class LandingPage extends ConsumerStatefulWidget {
