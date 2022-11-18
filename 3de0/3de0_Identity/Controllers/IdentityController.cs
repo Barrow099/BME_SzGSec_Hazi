@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Security.Claims;
 
@@ -17,11 +18,13 @@ namespace _3de0_Identity.Controllers
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IdentityAppDbContext context;
 
-        public IdentityController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public IdentityController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IdentityAppDbContext context)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.context = context;
         }
 
         [Route("Register")]
@@ -57,7 +60,7 @@ namespace _3de0_Identity.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        [Authorize(Roles = "admin")]      
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] UserRegistrationDto dto)
         {
             var user = new IdentityUser()
@@ -88,7 +91,7 @@ namespace _3de0_Identity.Controllers
         [HttpPut]
         [HideInDocs]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> PromoteUserToAdmin([FromQuery] string userId) 
+        public async Task<IActionResult> PromoteUserToAdmin([FromQuery] string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
 
@@ -97,7 +100,7 @@ namespace _3de0_Identity.Controllers
                 Log.Logger.Information($"User promotion with missing id: {userId} failed!");
                 return NotFound($"User with id {userId} not found!");
             }
-            
+
             var role = await roleManager.FindByNameAsync("admin");
             if (role == null)
             {
@@ -117,7 +120,7 @@ namespace _3de0_Identity.Controllers
         [HttpPut]
         [HideInDocs]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> UpdateProfile([FromRoute] string userId, [FromBody] ProfileUpdateDto updateDto) 
+        public async Task<IActionResult> UpdateProfile([FromRoute] string userId, [FromBody] ProfileUpdateDto updateDto)
         {
             var user = await userManager.FindByIdAsync(userId);
 
@@ -141,7 +144,7 @@ namespace _3de0_Identity.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut]
         [Authorize]
-        [HideInDocs]      
+        [HideInDocs]
         public async Task<IActionResult> UpdateProfile([FromBody] ProfileUpdateDto updateDto)
         {
             string userId = HttpContext.User.Claims.First(x => x.Type == "sub").Value;
@@ -167,7 +170,7 @@ namespace _3de0_Identity.Controllers
         [Authorize(Roles = "admin")]
         [HideInDocs]
         [HttpDelete]
-        public async Task<IActionResult> DeleteAccount([FromRoute] string userId) 
+        public async Task<IActionResult> DeleteAccount([FromRoute] string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
 
@@ -177,6 +180,23 @@ namespace _3de0_Identity.Controllers
                 return BadRequest($"Error during the user deletion {result.Errors.Select(x => x.Description)}");
 
             return Ok();
+        }
+
+        [Route("")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HideInDocs]
+        [HttpGet]
+        public async Task<IActionResult> GetAccounts() 
+        {
+            var users = await context.Users
+                .Select(x => new UserProfileDto()
+                { 
+                    DisplayName = x.UserName,
+                    Email = x.Email,
+                    Id = x.Id
+                }).ToListAsync();
+
+            return Ok(users);
         }
 
 
