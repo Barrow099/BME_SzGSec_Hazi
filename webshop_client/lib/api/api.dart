@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
@@ -56,19 +57,37 @@ class AppRestApi {
   }
 
   Future<List<CAFFData>> getCaffList() async {
-    await Future.delayed(const Duration(seconds: 1));
+    List<CAFFData> caffs = [];
 
-    // try {
-    //   final response = await secureDio.get("/Caff");
-    // } on DioError catch(e) {
-    //   print(e);
-    // }
+    try {
+      final response = await secureDio.get("/Caff");
+      List<dynamic> caffMaps =  response.data;
 
-    return [
-      CAFFData("https://picsum.photos/800/1200", 2),
-      CAFFData("https://picsum.photos/1200/1000", 2),
-      CAFFData("https://picsum.photos/1200/1200", 3),
-    ];
+
+      caffMaps.forEach((element) {
+        caffs.add(CAFFData.fromJson(element));
+      });
+
+    } on DioError catch(e) {
+      Future.error(e, e.stackTrace);
+    }
+
+    return caffs;
+  }
+
+  String getCaffPreviewUrl(int caffId) {
+    //return "$apiUrl/Caff/$caffId/preview"; TODO preview
+    return "https://picsum.photos/seed/$caffId/1200/1200";
+  }
+
+  Map<String, String> get authHeader {
+    Map<String, String> stringHeaders = {};
+
+    secureDio.options.headers.forEach((key, value) {
+      stringHeaders[key] = value.toString();
+    });
+
+    return stringHeaders;
   }
 
 

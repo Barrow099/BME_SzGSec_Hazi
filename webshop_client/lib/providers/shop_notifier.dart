@@ -8,10 +8,10 @@ class ShopNotifier extends StateNotifier<AsyncValue<ShopModel>> {
 
 
   ShopNotifier({required this.shopRepository}) : super(const AsyncLoading()) {
-    loadModel();
+    refresh();
   }
 
-  loadModel() async {
+  refresh() async {
     state = await AsyncValue.guard(() => shopRepository.getShopModel());
   }
 

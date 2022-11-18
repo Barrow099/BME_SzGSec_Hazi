@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
 import 'package:webshop_client/model/shop_model.dart';
-import 'package:webshop_client/pages/ViewCaffPage/view_caff_page.dart';
 import 'package:webshop_client/pages/home_page/shopping_page/shopping_list_item.dart';
 import 'package:webshop_client/provider_objects.dart';
+
+import '../../view_caff_page/view_caff_page.dart';
 
 class ShoppingPage extends ConsumerStatefulWidget {
   const ShoppingPage({Key? key}) : super(key: key);
@@ -32,10 +33,10 @@ class ShoppingPageState extends ConsumerState<ShoppingPage> {
 
     return RefreshIndicator(
       onRefresh: () {
-        //TODO implement refresh
-        return Future.delayed(Duration(seconds: 2));
+        return ref.read(shopNotifier.notifier).refresh();
       },
       child: ListView.builder(
+        physics: BouncingScrollPhysics(),
         itemCount: caffs.length,
         itemBuilder: (context, idx) {
           return ShoppingListItem(

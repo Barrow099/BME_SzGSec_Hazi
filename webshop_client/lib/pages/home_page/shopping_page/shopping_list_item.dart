@@ -1,16 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
+import 'package:webshop_client/provider_objects.dart';
 
-class ShoppingListItem extends StatelessWidget {
+class ShoppingListItem extends ConsumerWidget {
   final CAFFData caffData;
   final Function onClickFunction;
 
   const ShoppingListItem({required this.caffData,required this.onClickFunction}) : super();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       height: MediaQuery.of(context).size.height / 2,
       child: Padding(
@@ -25,7 +27,9 @@ class ShoppingListItem extends StatelessWidget {
               fit: StackFit.expand,
               children: [
                 CachedNetworkImage (
-                  imageUrl: caffData.imgUrl,
+                  imageUrl: ref.read(appRestApi).getCaffPreviewUrl(caffData.id),
+                  //TODO preview
+                  //httpHeaders: ref.read(appRestApi).authHeader,
                   fit: BoxFit.fitHeight,
                   placeholder: (BuildContext context, url) {
                     return const Center(child: CircularProgressIndicator());
