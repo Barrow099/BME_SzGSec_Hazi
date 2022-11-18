@@ -21,6 +21,9 @@ services:
         - ASPNETCORE_URLS=https://+:44315
         - ASPNETCORE_Kestrel__Certificates__Default__Password=Password0 
         - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
+        - ConnectionStrings__DefaultConnection=Server=db;Database=3de0db_Identity;User=sa;Password=S3cur3P@ssW0rd!;
+        - Identity__RedirectUris__Swagger=https://3de0_api:44384/swagger/oauth2-redirect.html
+        - Identity__Cors__Swagger=https://3de0_api:44384
     ports:
         - "44315:44315"
     volumes:
@@ -39,7 +42,12 @@ services:
         - ASPNETCORE_URLS=https://+:44384
         - ASPNETCORE_Kestrel__Certificates__Default__Password=Password0 
         - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
-      #  - LD_DEBUG=libs
+        - ConnectionStrings__DefaultConnection=Server=db;Database=3de0db;User=sa;Password=S3cur3P@ssW0rd!;
+        - ConnectionStrings__IdentityDbConnection=Server=db;Database=3de0db_Identity;User=sa;Password=S3cur3P@ssW0rd!;
+        - Identity__AuthorizationUrl=https://3de0_identity:44315/connect/authorize
+        - Identity__TokenUrl=https://3de0_identity:44315/connect/token
+        - Identity__Authority=https://3de0_identity:44315
+        #  - LD_DEBUG=libs
     ports:
         - "44384:44384"
     volumes:
