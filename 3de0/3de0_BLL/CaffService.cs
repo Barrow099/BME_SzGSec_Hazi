@@ -266,7 +266,7 @@ namespace _3de0_BLL
             CAFFAnimation CaffAnimation = CAFFAnimation.fromFile(path);
             int width = (int)CaffAnimation.GetPreviewWidth();
             int height = (int)CaffAnimation.GetPreviewHeight();
-            SkiaSharp.SKBitmap bitmap = new SkiaSharp.SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Opaque); 
+            SkiaSharp.SKBitmap bitmap = new SkiaSharp.SKBitmap(width, height, SKColorType.Rgba8888, SKAlphaType.Opaque); 
             
             SKColor[] pixels = new SKColor[width * height];
                 for (int row = 0; row < height; row++)
