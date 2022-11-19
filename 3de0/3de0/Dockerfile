@@ -20,7 +20,7 @@ RUN dotnet build "3de0_API.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "3de0_API.csproj" -c Release -o /app/publish
 
-FROM base AS final
+FROM publish AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "3de0_API.dll"]
