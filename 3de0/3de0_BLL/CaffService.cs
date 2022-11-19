@@ -263,7 +263,7 @@ namespace _3de0_BLL
 
         static private byte[] ImagePreviewFromPath(string path)
         {
-      /*      CAFFAnimation CaffAnimation = CAFFAnimation.fromFile(path);
+            CAFFAnimation CaffAnimation = CAFFAnimation.fromFile(path);
             int width = (int)CaffAnimation.GetPreviewWidth();
             int height = (int)CaffAnimation.GetPreviewHeight();
             SkiaSharp.SKBitmap bitmap = new SkiaSharp.SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Opaque); 
@@ -280,16 +280,15 @@ namespace _3de0_BLL
             var bgra_preview = BGR2BGRA(preview!);
             Marshal.Copy(bgra_preview, 0, bitmap.GetPixels(), bgra_preview.Length);
 
-            byte[] result = null;
+            byte[] result;
             using (MemoryStream stream = new MemoryStream())
             {
                 bitmap.Encode(stream, SKEncodedImageFormat.Png, 10);
                 result = stream.ToArray();
             }
 
-            bitmap.Dispose();*/
-
-            return null;
+            bitmap.Dispose();
+            return result;
         }
 
         public static byte[] BGR2BGRA(byte[] data)
