@@ -6,7 +6,6 @@
 #define LIBCAFF_CIFFLOADER_H
 
 #include "CIFFImage.h"
-#include <string_view>
 
 class CIFFLoader {
 private:
