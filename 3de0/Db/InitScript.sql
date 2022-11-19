@@ -358,6 +358,8 @@ begin
 EXEC [3de0db].[dbo].[sp_fulltext_database] @action = 'enable'
 end
 GO
+USE [3de0db]
+GO
 ALTER DATABASE [3de0db] SET ANSI_NULL_DEFAULT OFF 
 GO
 ALTER DATABASE [3de0db] SET ANSI_NULLS OFF 
@@ -430,7 +432,7 @@ ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
 GO
 USE [3de0db]
 GO
-/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 2022. 11. 19. 10:36:00 ******/
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 2022. 11. 16. 12:46:47 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
