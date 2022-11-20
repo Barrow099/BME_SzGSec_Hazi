@@ -9,7 +9,7 @@ class ShoppingListItem extends ConsumerWidget {
   final CAFFData caffData;
   final Function onClickFunction;
 
-  const ShoppingListItem({required this.caffData,required this.onClickFunction}) : super();
+  const ShoppingListItem({super.key, required this.caffData,required this.onClickFunction});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,15 +26,18 @@ class ShoppingListItem extends ConsumerWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                CachedNetworkImage (
-                  imageUrl: ref.read(appRestApi).getCaffPreviewUrl(caffData.id),
-                  //TODO preview
-                  //httpHeaders: ref.read(appRestApi).authHeader,
-                  fit: BoxFit.fitHeight,
-                  placeholder: (BuildContext context, url) {
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                  errorWidget: (context, url, error) => const Center(child: Icon(Icons.error)),
+                Hero(
+                  tag: "caff${caffData.id}",
+                  child: CachedNetworkImage (
+                    imageUrl: ref.read(appRestApi).getCaffPreviewUrl(caffData.id),
+                    //TODO preview
+                    //httpHeaders: ref.read(appRestApi).authHeader,
+                    fit: BoxFit.fitHeight,
+                    placeholder: (BuildContext context, url) {
+                      return const Center(child: CircularProgressIndicator());
+                    },
+                    errorWidget: (context, url, error) => const Center(child: Icon(Icons.error)),
+                  ),
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,

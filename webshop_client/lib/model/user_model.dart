@@ -6,6 +6,7 @@ enum UserRole {
   basic,
   admin;
 
+  @override
   String toString() {
     return this == UserRole.admin ? "Admin" : "User";
   }

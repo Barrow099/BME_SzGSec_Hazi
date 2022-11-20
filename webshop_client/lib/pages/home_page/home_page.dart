@@ -1,9 +1,10 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/pages/home_page/downloads_page/downloads_page.dart';
 import 'package:webshop_client/pages/home_page/profile_page/profile_page.dart';
 import 'package:webshop_client/pages/home_page/shopping_page/shopping_page.dart';
+
+import '../../widgets/buttons/CartButton.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,22 +22,13 @@ class HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(_pageTitles[_currentPageIndex]),
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: IconButton(
-                visualDensity: VisualDensity.compact,
-                icon: Badge(
-                    badgeContent: Text("2"),
-                    animationType: BadgeAnimationType.scale,
-                    child: const Icon(Icons.shopping_cart_rounded)
-                ),
-              onPressed: () {},
-            ),
+            padding: EdgeInsets.only(right: 16.0),
+            child: CartButton(),
           )
         ],
       ),
@@ -84,3 +76,5 @@ class HomePageState extends ConsumerState<HomePage> {
     });
   }
 }
+
+

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -22,6 +21,16 @@ class AppRestApi {
   AppRestApi() {
     secureDio.options.baseUrl = apiUrl;
     secureDio.interceptors.add(PrettyDioLogger());
+  }
+
+  Map<String, String> get authHeader {
+    Map<String, String> stringHeaders = {};
+
+    secureDio.options.headers.forEach((key, value) {
+      stringHeaders[key] = value.toString();
+    });
+
+    return stringHeaders;
   }
 
   _updateSecureDio(String? accessToken) async {
@@ -64,9 +73,9 @@ class AppRestApi {
       List<dynamic> caffMaps =  response.data;
 
 
-      caffMaps.forEach((element) {
-        caffs.add(CAFFData.fromJson(element));
-      });
+      for (var caffJson in caffMaps) {
+        caffs.add(CAFFData.fromJson(caffJson));
+      }
 
     } on DioError catch(e) {
       Future.error(e, e.stackTrace);
@@ -76,18 +85,15 @@ class AppRestApi {
   }
 
   String getCaffPreviewUrl(int caffId) {
-    //return "$apiUrl/Caff/$caffId/preview"; TODO preview
-    return "https://picsum.photos/seed/$caffId/1200/1200";
+    return "$apiUrl/Caff/$caffId/preview";
+    //return "https://picsum.photos/seed/$caffId/1400/1200";
   }
 
-  Map<String, String> get authHeader {
-    Map<String, String> stringHeaders = {};
 
-    secureDio.options.headers.forEach((key, value) {
-      stringHeaders[key] = value.toString();
-    });
 
-    return stringHeaders;
+  Future<CAFFData> getCaff(int caffId) async {
+    final response = await secureDio.get("/Caff/$caffId");
+    return CAFFData.fromJson(response.data);
   }
 
 
