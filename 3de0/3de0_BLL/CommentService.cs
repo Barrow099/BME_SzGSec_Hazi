@@ -91,6 +91,11 @@ namespace _3de0_BLL
                 throw new NotFoundException($"Comment is not found by id {id}.");
             }
 
+            if (comment.Rating == null && modifyComment.Rating != null)
+            {
+                throw new InvalidParameterException("You can't change a comment to a rating.");
+            }
+
             var modifierUser = await _identityDbContext.Users
                 .SingleOrDefaultAsync(user => user.Id == userId);
 
@@ -103,7 +108,19 @@ namespace _3de0_BLL
             {
                 comment.Content = modifyComment.Content;
             }
-            if (modifyComment.Rating >= 0 && modifyComment.Rating <= 5)
+            if (modifyComment.Rating != null)
+            {
+                if (modifyComment.Rating >= 0 && modifyComment.Rating <= 5)
+                {
+                    comment.Rating = modifyComment.Rating;
+                } 
+                else
+                {
+                    throw new InvalidParameterException("Invalid rating range.");
+                }
+                    
+            }
+            else
             {
                 comment.Rating = modifyComment.Rating;
             }
