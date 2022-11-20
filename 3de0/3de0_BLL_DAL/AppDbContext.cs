@@ -13,6 +13,7 @@ namespace _3de0_BLL_DAL
     {
         public DbSet<CaffFile> Files { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<History> Histories { get; set; }
 
    
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)

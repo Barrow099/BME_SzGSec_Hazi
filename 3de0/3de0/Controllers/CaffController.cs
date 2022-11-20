@@ -38,6 +38,24 @@ namespace _3de0.Controllers
             return await _caffService.GetCaffFileListWithPaging(filter, pagination);
         }
 
+        [Route("histories")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IEnumerable<HistoryDto>> GetAllHistories()
+        {
+            var userId = HttpContext.User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier)?.Value;
+            return await _caffService.GetHistories(userId);
+        }
+
+        [Route("histories/paged")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<PagedResult<HistoryDto>> GetAllHistoriesPaged([FromQuery] PaginationData pagination)
+        {
+            var userId = HttpContext.User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier)?.Value;
+            return await _caffService.GetHistoriesWithPaging(userId, pagination);
+        }
+
         [Route("{id}")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -53,7 +71,8 @@ namespace _3de0.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DownloadCaffFile(int id)
         {
-            var file = await _caffService.DownloadCaffFile(id);
+            var userId = HttpContext.User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier)?.Value;
+            var file = await _caffService.DownloadCaffFile(id, userId);
             return File(file.data, "application/octet-stream", fileDownloadName: file.name);
         }
 

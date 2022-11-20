@@ -54,7 +54,7 @@ namespace _3de0_BLL
             return result;
         }
 
-        public async Task<(byte[] data, string name)> DownloadCaffFile(int id)
+        public async Task<(byte[] data, string name)> DownloadCaffFile(int id, string userId)
         {
             var caffFile = await _caffDbContext.Files
                 .Where(caff => caff.Id == id)
@@ -66,7 +66,45 @@ namespace _3de0_BLL
                 throw new NotFoundException($"File is not found by id {id}.");
             }
 
+            var history = new History()
+            {
+                CaffFileId = caffFile.Id,
+                CaffFileName = caffFile.FilePath.Split("/")[1],
+                DownloadedDate = DateTime.Now,
+                UserId = userId,
+            };
+            _caffDbContext.Histories.Add(history);
+            await _caffDbContext.SaveChangesAsync();
+
             return (File.ReadAllBytes(caffFile.FilePath), caffFile.FilePath.Split("/")[1]);
+        }
+
+        public async Task<IEnumerable<HistoryDto>> GetHistories(string userId)
+        {
+            return await _caffDbContext.Histories
+                .Select(h => new HistoryDto()
+                {
+                    CaffFileId = h.CaffFileId,
+                    CaffFileName = h.CaffFileName,
+                    DownloadedDate = h.DownloadedDate,
+                    UserId = h.UserId,
+                })
+                .Where(h => h.UserId == userId)
+                .ToListAsync();
+        }
+
+        public async Task<PagedResult<HistoryDto>> GetHistoriesWithPaging(string userId, PaginationData pagination)
+        {
+            return await _caffDbContext.Histories
+                .Select(h => new HistoryDto()
+                {
+                    CaffFileId = h.CaffFileId,
+                    CaffFileName = h.CaffFileName,
+                    DownloadedDate = h.DownloadedDate,
+                    UserId = h.UserId,
+                })
+                .Where(h => h.UserId == userId)
+                .ToPagedListAsync(pagination);
         }
 
         public async Task<CaffFileDto> GetCaffFileDetails(int id)
