@@ -24,7 +24,7 @@ namespace _3de0_BLL
             _identityDbContext = identityDbContext;
         }
 
-        public async Task<CommentDto> AddComment(CreateCommentDto comment)
+        public async Task<CommentDto> AddComment(CreateCommentDto comment, string userId)
         {
             var caffFile = await _caffDbContext.Files
                 .Where(caff => caff.Id == comment.CaffFileId)
@@ -36,11 +36,11 @@ namespace _3de0_BLL
             }
 
             var user = await _identityDbContext.Users
-                .SingleOrDefaultAsync(user => user.Id == comment.UserId);
+                .SingleOrDefaultAsync(user => user.Id == userId);
 
             if (user == null)
             {
-                throw new NotFoundException($"User is not found by id {comment.UserId}.");
+                throw new NotFoundException($"User is not found by id {userId}.");
             }
 
             if (string.IsNullOrEmpty(comment.Content) || comment.Rating < 0 || comment.Rating > 5)
