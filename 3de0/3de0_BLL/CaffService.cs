@@ -18,6 +18,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SkiaSharp;
+using _3de0_BLL.Paging;
+using System.ComponentModel;
+using System.Linq.Expressions;
 
 namespace _3de0_BLL
 {
@@ -110,7 +113,7 @@ namespace _3de0_BLL
             };
         }
 
-        public async Task<IEnumerable<CaffFilePreviewDto>> GetCaffFileList()
+        public async Task<IEnumerable<CaffFilePreviewDto>> GetCaffFileList(Filter filter)
         {
             return await _caffDbContext.Files
                 .Select(caff => new CaffFilePreviewDto()
@@ -121,7 +124,33 @@ namespace _3de0_BLL
                     Creator = caff.Creator,
                     Caption = caff.Caption
                 })
+                .Where(Filter(filter))
                 .ToListAsync();
+        }
+
+        public async Task<PagedResult<CaffFilePreviewDto>> GetCaffFileListWithPaging(Filter filter, PaginationData pagination)
+        {
+            return await _caffDbContext.Files
+                .Select(caff => new CaffFilePreviewDto()
+                {
+                    Id = caff.Id,
+                    CreationDate = caff.CreationDate,
+                    Price = caff.Price,
+                    Creator = caff.Creator,
+                    Caption = caff.Caption
+                })
+                .Where(Filter(filter))
+                .ToPagedListAsync(pagination);
+        }
+
+        Expression<Func<CaffFilePreviewDto, bool>> Filter(Filter filterData)
+        {
+            Expression<Func<CaffFilePreviewDto, bool>> filter = caff =>
+               (filterData.Caption != null ? caff.Caption.ToLower().Contains(filterData.Caption) : true) &&
+               (filterData.MinPrice != null ? caff.Price >= filterData.MinPrice : true) &&
+               (filterData.MaxPrice != null ? caff.Price <= filterData.MaxPrice : true);
+
+            return filter;
         }
 
         public async Task ModifyCaffFile(int id, UploadCaffFileDto modifyCaffFile, string userId, string path)
