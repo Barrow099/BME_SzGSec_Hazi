@@ -28,6 +28,7 @@ namespace _3de0_BLL
         {
             var caffFile = await _caffDbContext.Files
                 .Where(caff => caff.Id == comment.CaffFileId)
+                .Include(c => c.Comments)
                 .SingleOrDefaultAsync();
 
             if (caffFile == null)
@@ -43,7 +44,12 @@ namespace _3de0_BLL
                 throw new NotFoundException($"User is not found by id {userId}.");
             }
 
-            if (string.IsNullOrEmpty(comment.Content) || comment.Rating < 0 || comment.Rating > 5)
+            if (caffFile.Comments.Any(c => c.UserId == userId && c.Rating != null) && comment.Rating != null)
+            {
+                throw new InvalidParameterException($"You have already rated this CAFF file.");
+            }
+
+            if (string.IsNullOrEmpty(comment.Content) || (comment.Rating != null && (comment.Rating < 0 || comment.Rating > 5)))
             {
                 throw new InvalidParameterException("Invalid parameters for creating comment.");
             }
