@@ -9,11 +9,13 @@ final redirectUrl =  Uri.parse("com.example.flutterapp://callback");
 const identifier = 'flutter';
 
 class WebshopOAuth2Client {
+  Client? client;
+
   Future<String> getAccessToken() async {
     AuthorizationCodeGrant grant = AuthorizationCodeGrant(
         identifier,
         authorizationEndpoint,
-        tokenEndpoint
+        tokenEndpoint,
     );
 
     Uri authorizationUrl = grant.getAuthorizationUrl(
@@ -28,8 +30,8 @@ class WebshopOAuth2Client {
       throw Exception('Response URL was null');
     }
 
-    Client client = await grant.handleAuthorizationResponse(responseUrl.queryParameters);
-    return client.credentials.accessToken;
+    client = await grant.handleAuthorizationResponse(responseUrl.queryParameters);
+    return client!.credentials.accessToken;
   }
 
   Future<void> redirect(Uri authorizationUrl) async {
