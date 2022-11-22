@@ -13,8 +13,12 @@ class SignupValidator {
     return null;
   }
 
-  String? validateEmailAddress(String value){
+  String? validateEmailAddress(String? value){
     //do we need both checks?
+
+    if(value == null) {
+      return "* Error?"; //TODO is this possible?
+    }
 
     bool emailValid = RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(value);
     if(!emailValid){

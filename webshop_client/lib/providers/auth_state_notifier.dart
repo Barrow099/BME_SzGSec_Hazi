@@ -22,10 +22,10 @@ class AuthStateNotifier extends StateNotifier<AsyncValue<AuthState>> {
     });
   }
 
-  Future signUp(String userName, String password) async {
+  Future signUp(String email, String userName, String password) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() {
-      return authRepository.signUp(userName, password);
+      return authRepository.signUp(email, userName, password);
     });
   }
 

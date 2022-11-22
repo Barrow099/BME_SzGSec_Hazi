@@ -19,6 +19,7 @@ class SignupPageState extends ConsumerState<SignupPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   late SignupValidator signupValidator;
 
@@ -84,6 +85,18 @@ class SignupPageState extends ConsumerState<SignupPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                         child: LoginTextFormField(
+                          controller: emailController,
+                          autofocus: true,
+                          autofillHints: const [AutofillHints.email],
+                          validator: signupValidator.validateEmailAddress,
+                          icon: Icons.person_rounded,
+                          labelText: "Email",
+                          hintText: "Enter an email address",
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                        child: LoginTextFormField(
                             controller: passwordController,
                             obscureText: true,
                             autofillHints: const [AutofillHints.newPassword],
@@ -128,11 +141,12 @@ class SignupPageState extends ConsumerState<SignupPage> {
 
   validateAndSignup() {
     if(_formKey.currentState!.validate()) {
+      String email = emailController.text;
       String userName = userNameController.text;
       userName = userName.trim();
       final password = passwordController.text;
 
-      ref.read(authStateNotifier.notifier).signUp(userName, password);
+      ref.read(authStateNotifier.notifier).signUp(email, userName, password);
     }
   }
 }

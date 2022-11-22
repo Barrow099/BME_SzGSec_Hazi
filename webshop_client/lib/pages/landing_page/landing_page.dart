@@ -52,12 +52,12 @@ class _LandingPageState extends ConsumerState<LandingPage> {
                   onPressed: goToLoginPage,
                   child: const Text("Login"),
                 )),
-            // Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            //     child: ElevatedButton(
-            //       onPressed: goToSignupPage,
-            //       child: const Text("Sign up"),
-            //     )),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                child: ElevatedButton(
+                  onPressed: goToSignupPage,
+                  child: const Text("Sign up"),
+                )),
             const Spacer(
               flex: 5,
             )

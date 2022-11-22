@@ -22,8 +22,8 @@ class AuthRepository {
     return AuthState.loggedIn;
   }
 
-  Future<AuthState> signUp(String username, String password) async {
-    userModel = await appRestApi.signUp(username, password);
+  Future<AuthState> signUp(String email, String username, String password) async {
+    userModel = await appRestApi.signUp(email, username, password);
     return AuthState.loggedIn;
   }
 
