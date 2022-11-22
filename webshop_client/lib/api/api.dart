@@ -11,23 +11,33 @@ import 'package:webshop_client/model/user_model.dart';
 class AppRestApi {
   //https://pub.dev/packages/dio
 
-  final apiUrl = "https://10.0.2.2:44384";
+  final caffUrl = "https://10.0.2.2:44384";
+  final userUrl = "https://10.0.2.2:44315";
 
-  final secureDio = Dio();
+  final secureCaffDio = Dio();
+  final secureUserDio = Dio();
+  final unsecureUserDio = Dio();
 
   final oauthClient = WebshopOAuth2Client();
 
   String? accessToken;
 
   AppRestApi() {
-    secureDio.options.baseUrl = apiUrl;
-    secureDio.interceptors.add(PrettyDioLogger());
+    secureCaffDio.options.baseUrl = caffUrl;
+    secureCaffDio.interceptors.add(PrettyDioLogger());
+
+    secureUserDio.options.baseUrl = userUrl;
+    secureUserDio.interceptors.add(PrettyDioLogger());
+
+    unsecureUserDio.options.baseUrl = userUrl;
+    unsecureUserDio.interceptors.add(PrettyDioLogger());
   }
 
   _updateSecureDio(String? accessToken) async {
     this.accessToken = accessToken;
     //TODO add interceptor to update outdated tokens
-    secureDio.options.headers["Authorization"] = 'Bearer $accessToken';
+    secureCaffDio.options.headers["Authorization"] = 'Bearer $accessToken';
+    secureUserDio.options.headers["Authorization"] = 'Bearer $accessToken';
   }
 
   Future<UserModel> login() async {
@@ -39,28 +49,37 @@ class AppRestApi {
     return UserModel.fromJson(payload);
   }
 
-  Future<UserModel> signUp(String userName, String password) async {
-    await Future.delayed(const Duration(seconds: 1));
+  Future<UserModel> signUp(String email, String userName, String password) async {
     Map m = {
-      "userName": "ApiUser",
-      "uid": "666API666"
+      "displayName": userName,
+      "password": password,
+      "email": email,
     };
-    final userStr = jsonEncode(m);
 
-    return UserModel.fromJson(jsonDecode(userStr));
+    try {
+      final response = await unsecureUserDio.post("/Identity/Register", data: m);
+      return login();
+    } on DioError catch(e) {
+      if (e.response?.statusCode == 400) {
+        return Future.error(e.response?.data ?? "Response Error!");
+      } else {
+        return Future.error(e);
+      }
+    }
   }
 
   Future logout(UserModel userModel) async {
-    //await Future.delayed(const Duration(seconds: 1));
-    // TODO implement logout
-    throw UnimplementedError("Logout not implemented!!");
+    await Future.delayed(const Duration(seconds: 1));
+    secureCaffDio.options.headers["Authorization"] = '';
+    secureUserDio.options.headers["Authorization"] = '';
+    // TODO check logout
   }
 
   Future<List<CAFFData>> getCaffList() async {
     List<CAFFData> caffs = [];
 
     try {
-      final response = await secureDio.get("/Caff");
+      final response = await secureCaffDio.get("/Caff");
       List<dynamic> caffMaps =  response.data;
 
 
@@ -83,7 +102,7 @@ class AppRestApi {
   Map<String, String> get authHeader {
     Map<String, String> stringHeaders = {};
 
-    secureDio.options.headers.forEach((key, value) {
+    secureCaffDio.options.headers.forEach((key, value) {
       stringHeaders[key] = value.toString();
     });
 
