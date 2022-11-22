@@ -1,8 +1,4 @@
-import 'dart:math';
-
 import 'package:json_annotation/json_annotation.dart';
-import 'package:webshop_client/api/api.dart';
-import 'package:webshop_client/provider_objects.dart';
 
 part 'CAFF_data.g.dart';
 
