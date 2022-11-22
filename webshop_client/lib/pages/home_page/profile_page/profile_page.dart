@@ -44,6 +44,20 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
           ),
           elevation: 4,
           child: ListTile(
+            title: const Text("Delete Account"),
+            leading: const Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.delete_forever),
+            ),
+            onTap: deleteAccount,
+          ),
+        ),
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 4,
+          child: ListTile(
             title: const Text("Log out"),
             leading: const Padding(
               padding: EdgeInsets.only(right: 8.0),
@@ -59,5 +73,9 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
 
   logout() {
     ref.read(authStateNotifier.notifier).logout();
+  }
+
+  deleteAccount() {
+    ref.read(authStateNotifier.notifier).login();
   }
 }
