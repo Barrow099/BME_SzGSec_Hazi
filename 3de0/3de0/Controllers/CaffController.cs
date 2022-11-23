@@ -1,6 +1,7 @@
 using _3de0_BLL;
 using _3de0_BLL.Dtos;
 using _3de0_BLL.Exceptions;
+using _3de0_BLL.Paging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -24,9 +25,17 @@ namespace _3de0.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IEnumerable<CaffFilePreviewDto>> GetAllCaffFiles()
+        public async Task<IEnumerable<CaffFilePreviewDto>> GetAllCaffFiles([FromQuery] Filter filter)
         {
-            return await _caffService.GetCaffFileList();
+            return await _caffService.GetCaffFileList(filter);
+        }
+
+        [Route("paged")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<PagedResult<CaffFilePreviewDto>> GetAllCaffFilesPaged([FromQuery] PaginationData pagination,[FromQuery] Filter filter)
+        {
+            return await _caffService.GetCaffFileListWithPaging(filter, pagination);
         }
 
         [Route("{id}")]

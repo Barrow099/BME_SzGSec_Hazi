@@ -24,7 +24,8 @@ namespace _3de0.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<CommentDto> AddNewComment([FromBody] CreateCommentDto comment)
         {
-            return await _commentService.AddComment(comment);
+            var userId = HttpContext.User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier)?.Value;
+            return await _commentService.AddComment(comment, userId);
         }
 
         [Route("{id}")]

@@ -11,6 +11,6 @@ namespace _3de0_BLL
     {
         Task ModifyCommentById(int id, ModifyCommentDto modifyComment, string userId);
         Task RemoveCommentById(int id, string userId);
-        Task<CommentDto> AddComment(CreateCommentDto comment);
+        Task<CommentDto> AddComment(CreateCommentDto comment, string userId);
     }
 }
