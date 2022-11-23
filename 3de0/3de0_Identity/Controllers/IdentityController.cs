@@ -110,31 +110,7 @@ namespace _3de0_Identity.Controllers
             }
 
             await userManager.AddToRoleAsync(user, role.Name);
-            return Ok();
-        }
-
-        [Route("Admin/Profile/{userId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPut]
-        [HideInDocs]
-        [Authorize(Roles = "admin")]
-        public async Task<IActionResult> UpdateProfile([FromRoute] string userId, [FromBody] ProfileUpdateDto updateDto)
-        {
-            var user = await userManager.FindByIdAsync(userId);
-
-            if (user == null)
-                return NotFound($"User with id: {userId} not found");
-
-            var result = await UpdateProfileAsync(user, updateDto);
-
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(x => x.Description);
-                return BadRequest($"Error during the profile update: {string.Join(", ", errors)}");
-            }
-
+            Log.Logger.Information($"User with id {userId} was promoted to admin role!");
             return Ok();
         }
 
@@ -161,6 +137,7 @@ namespace _3de0_Identity.Controllers
                 return BadRequest($"Error during the profile update: {string.Join(", ", errors)}");
             }
 
+            Log.Logger.Information($"{userId}'s profile was updated!");
             return Ok();
         }
 
@@ -179,6 +156,7 @@ namespace _3de0_Identity.Controllers
             if (!result.Succeeded)
                 return BadRequest($"Error during the user deletion {result.Errors.Select(x => x.Description)}");
 
+            Log.Logger.Information($"{userId}'s account was deleted by {HttpContext}!");
             return Ok();
         }
 
@@ -188,6 +166,7 @@ namespace _3de0_Identity.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAccounts() 
         {
+            // Szerepkört is küldjünk vissza
             var users = await context.Users
                 .Select(x => new UserProfileDto()
                 { 
