@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 
 namespace _3de0_Identity.Controllers
@@ -109,6 +110,7 @@ namespace _3de0_Identity.Controllers
                 return errorObjectResult;
             }
 
+            await userManager.RemoveFromRoleAsync(user, "user");
             await userManager.AddToRoleAsync(user, role.Name);
             Log.Logger.Information($"User with id {userId} was promoted to admin role!");
             return Ok();
@@ -156,7 +158,29 @@ namespace _3de0_Identity.Controllers
             if (!result.Succeeded)
                 return BadRequest($"Error during the user deletion {result.Errors.Select(x => x.Description)}");
 
-            Log.Logger.Information($"{userId}'s account was deleted by {HttpContext}!");
+            Log.Logger.Information($"{userId}'s account was deleted by {HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub").Value}!");
+            return Ok();
+        }
+
+        [Route("")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize]
+        [HideInDocs]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAccount() 
+        {
+            var user = await userManager.FindByIdAsync(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub").Value);
+
+            if (user == null)
+                return BadRequest("User not found!");
+
+            var result = await userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+                return BadRequest($"Error during the user deletion {result.Errors.Select(x => x.Description)}");
+
+            Log.Logger.Information($"{user.Id} deleted their account!");
             return Ok();
         }
 
@@ -168,12 +192,19 @@ namespace _3de0_Identity.Controllers
         {
             // Szerepkört is küldjünk vissza
             var users = await context.Users
+                .OrderBy(x => x.Id)
                 .Select(x => new UserProfileDto()
                 { 
                     DisplayName = x.UserName,
                     Email = x.Email,
-                    Id = x.Id
+                    Id = x.Id                   
                 }).ToListAsync();
+
+            var userRoles = context.Users.OrderBy(x => x.Id).Select(user => userManager.GetRolesAsync(user));
+            var roles = await Task.WhenAll(userRoles);
+
+            for (int i = 0; i < users.Count; i++)
+                users.ElementAt(i).Role = roles.ElementAt(i).First();
 
             return Ok(users);
         }
