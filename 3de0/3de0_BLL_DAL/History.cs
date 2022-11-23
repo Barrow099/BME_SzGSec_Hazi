@@ -4,17 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _3de0_BLL.Dtos
+namespace _3de0_BLL_DAL
 {
-    public class CommentDto
+    public class History
     {
         public int Id { get; set; }
-        public string Content { get; set; }
-        public DateTime CreationDate { get; set; }
-        public int? Rating { get; set; }
-
         public string UserId { get; set; }
-        public string UserName { get; set; }
         public int CaffFileId { get; set; }
+        public string CaffFileName { get; set; }
+        public DateTime DownloadedDate { get; set; }
     }
 }

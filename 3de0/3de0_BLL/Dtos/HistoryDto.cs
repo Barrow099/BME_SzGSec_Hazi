@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace _3de0_BLL.Dtos
 {
-    public class CreateCommentDto
+    public class HistoryDto
     {
-        public string Content { get; set; }
-        public int? Rating { get; set; }
-
+        public string UserId { get; set; }
         public int CaffFileId { get; set; }
+        public string CaffFileName { get; set; }
+        public DateTime DownloadedDate { get; set; }
     }
 }

@@ -9,6 +9,6 @@ namespace _3de0_BLL.Dtos
     public class ModifyCommentDto
     {
         public string Content { get; set; }
-        public int Rating { get; set; }
+        public int? Rating { get; set; }
     }
 }
