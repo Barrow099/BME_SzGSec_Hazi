@@ -43,81 +43,90 @@ class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
         physics: const BouncingScrollPhysics(),
         slivers: [
           buildSliverAppBar(),
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: PersistentHeader(
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.white, Colors.transparent],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter
-                  )
-                ),
-                child: Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            RatingsBar(fullCaffFuture),
-                            const Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8,8,16,8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    widget.caffData.caption,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context).textTheme.headline5
-                                  ),
-                                  ElevatedButton.icon(
-                                    onPressed: (){ ref.read(cartStateNotifier.notifier).addToCart(widget.caffData); },
-                                    icon: const Icon(Icons.add_shopping_cart_rounded),
-                                    label: Text("\$${widget.caffData.price}"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider(thickness: 1, indent: 16, endIndent: 16, height: 1,),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                        child: Row(
-                          children: [
-                            Text(widget.caffData.creationDateString, style: TextStyle(color: Colors.grey[600])),
-                            const Spacer(),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 4.0),
-                                  child: Icon(Icons.account_circle_rounded, color: Colors.grey[600],),
-                                ),
-                                Text(widget.caffData.creator, style: TextStyle(color: Colors.grey[600]))
-                              ],
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              fixedHeight: 150
-            ),
-          ),
+          buildHeader(fullCaffFuture),
           WriteCommentWidget(fullCaffFuture, _scrollController ),
           CommentListContainer(fullCaffFuture),
         ],
       ),
     );
+  }
+
+  Widget buildHeader(AsyncValue<CAFFData> fullCaffFuture) {
+    final cartState = ref.watch(cartStateNotifier);
+    final isInCart = cartState.isInCart(widget.caffData);
+
+    return SliverPersistentHeader(
+          pinned: true,
+          delegate: PersistentHeader(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.white, Colors.transparent],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter
+                )
+              ),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          RatingsBar(fullCaffFuture),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(8,8,16,8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  widget.caffData.caption,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.headline5
+                                ),
+                                ElevatedButton.icon(
+                                  onPressed: !isInCart ?
+                                      (){ ref.read(cartStateNotifier.notifier).addToCart(widget.caffData); }:
+                                      null,
+                                  icon: Icon(!isInCart ? Icons.add_shopping_cart_rounded : Icons.check),
+                                  label: Text("\$${widget.caffData.price}"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(thickness: 1, indent: 16, endIndent: 16, height: 1,),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                      child: Row(
+                        children: [
+                          Text(widget.caffData.creationDateString, style: TextStyle(color: Colors.grey[600])),
+                          const Spacer(),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 4.0),
+                                child: Icon(Icons.account_circle_rounded, color: Colors.grey[600],),
+                              ),
+                              Text(widget.caffData.creator, style: TextStyle(color: Colors.grey[600]))
+                            ],
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            fixedHeight: 150
+          ),
+        );
   }
 
   Widget buildSliverAppBar() {

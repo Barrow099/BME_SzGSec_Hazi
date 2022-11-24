@@ -48,9 +48,6 @@ class ShopRepository {
       return Future.error("Save directory not selected");
     }
 
-
-
-
     await appRestApi.downloadCaffs(inCartCaffs, saveDirectory, (double progress, CAFFData caffData) async {
       downloadProgressCallback(progress);
       final inProgressDownload = progress < 1;
