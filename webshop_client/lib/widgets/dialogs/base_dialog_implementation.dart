@@ -58,11 +58,11 @@ class BaseDialogImplementation extends StatelessWidget with DismissibleDialogMix
             },
             style: OutlinedButton.styleFrom(
             ),
-            child: Text(dismissText, style: TextStyle(fontSize: 16)),
+            child: Text(dismissText, style: const TextStyle(fontSize: 16)),
           ),
           ElevatedButton(
             onPressed: onAcceptFunction as void Function()?,
-            child: Text(acceptText, style: TextStyle(fontSize: 16),),
+            child: Text(acceptText, style: const TextStyle(fontSize: 16),),
           ),
         ],
       ),

@@ -11,7 +11,7 @@ class CartButton extends StatelessWidget {
     return IconButton(
       visualDensity: VisualDensity.compact,
       icon: Badge(
-          badgeContent: Text("2"),
+          badgeContent: const Text("2"),
           animationType: BadgeAnimationType.scale,
           child: const Icon(Icons.shopping_cart_rounded)
       ),

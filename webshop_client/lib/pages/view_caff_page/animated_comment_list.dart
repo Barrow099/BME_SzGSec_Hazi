@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 import '../../data/comment.dart';
-import 'CommentCard.dart';
+import 'comment_card.dart';
 
 class AnimatedCommentList extends StatefulWidget {
   final List<Comment> comments;
   const AnimatedCommentList({Key? key, required this.comments}) : super(key: key);
 
   @override
-  _AnimatedCommentListState createState() => _AnimatedCommentListState();
+  AnimatedCommentListState createState() => AnimatedCommentListState();
 }
 
-class _AnimatedCommentListState extends State<AnimatedCommentList> {
+class AnimatedCommentListState extends State<AnimatedCommentList> {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
 
-  late int _initialItemCount = widget.comments.length;
+  late final int _initialItemCount = widget.comments.length;
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +43,13 @@ class _AnimatedCommentListState extends State<AnimatedCommentList> {
     // If an [Item] was in the old but is not in the new, it has
     // been removed
     for (var i = 0; i < oldItems.length; i++) {
-      final _oldItem = oldItems[i];
+      final oldItem = oldItems[i];
       // Here the equality checks use [content] thanks to Equatable
-      if (!newItems.contains(_oldItem)) {
-        print("remove ${i}");
+      if (!newItems.contains(oldItem)) {
         _listKey.currentState?.removeItem(i,
               (context, animation) => SizeTransition(
                 sizeFactor: animation,
-                child: CommentCard(comment: _oldItem, animation: animation),
+                child: CommentCard(comment: oldItem, animation: animation),
           ),
         );
       }
@@ -68,7 +67,6 @@ class _AnimatedCommentListState extends State<AnimatedCommentList> {
       // Here the equality checks use [content] thanks to Equatable
       if (!oldItems.contains(newItems[i])) {
         _listKey.currentState?.insertItem(i);
-        print("insert ${i}");
       }
     }
   }

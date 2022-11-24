@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
 import 'package:webshop_client/data/comment.dart';
-import 'package:webshop_client/pages/view_caff_page/CommentCard.dart';
 import 'package:webshop_client/pages/view_caff_page/animated_comment_list.dart';
 
-import '../../widgets/other/RoundedCard.dart';
+import '../../widgets/other/rounded_card.dart';
 
 class CommentListContainer extends StatelessWidget {
   final AsyncValue<CAFFData> caffDataFuture;
 
-  CommentListContainer(this.caffDataFuture, {Key? key}) : super(key: key);
+  const CommentListContainer(this.caffDataFuture, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

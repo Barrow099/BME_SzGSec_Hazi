@@ -34,7 +34,7 @@ class ShopRepository {
   }
 
   Future addReview(int caffId, String content, int rating) async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 200));
     await appRestApi.addReviewToCaff(caffId, content, rating);
   }
 

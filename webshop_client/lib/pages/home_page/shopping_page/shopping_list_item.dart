@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
@@ -59,7 +58,7 @@ class ShoppingListItem extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text("\$${caffData.price}", style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white)),
-                          SizedBox(height: 24,child: const VerticalDivider(color: Colors.white, thickness: 1,)),
+                          const SizedBox(height: 24,child: VerticalDivider(color: Colors.white, thickness: 1,)),
                           Material(
                             color: Colors.transparent,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),

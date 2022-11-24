@@ -5,7 +5,7 @@ abstract class LoadableDialogMixin {
     showDialog(
       barrierDismissible: false,
       context: context,
-      barrierColor: Color.fromARGB(50, 0, 0, 0),
+      barrierColor: const Color.fromARGB(50, 0, 0, 0),
 
       builder: (BuildContext context) {
         return Stack(
@@ -15,7 +15,7 @@ abstract class LoadableDialogMixin {
               child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.3,
                   height: MediaQuery.of(context).size.width * 0.3,
-                  child: CircularProgressIndicator()),
+                  child: const CircularProgressIndicator()),
             ),
           ],
         );

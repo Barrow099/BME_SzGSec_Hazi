@@ -1,12 +1,11 @@
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_segmented_control/material_segmented_control.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
-import 'package:webshop_client/model/input_validators/ReviewInputValidator.dart';
+import 'package:webshop_client/model/input_validators/review_input_validator.dart';
 import 'package:webshop_client/pages/view_caff_page/rate_review_widget.dart';
 import 'package:webshop_client/provider_objects.dart';
-import 'package:webshop_client/widgets/other/RoundedCard.dart';
+import 'package:webshop_client/widgets/other/rounded_card.dart';
 
 import '../../widgets/other/snackbars.dart';
 
@@ -189,7 +188,7 @@ class WriteCommentWidgetState extends ConsumerState<WriteCommentWidget> {
       reviewTextController.clear();
       widget.scrollController.animateTo(
         widget.scrollController.position.maxScrollExtent + 110,
-        duration: Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 200),
         curve: Curves.fastOutSlowIn,
       );
     });

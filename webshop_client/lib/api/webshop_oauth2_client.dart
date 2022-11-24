@@ -29,7 +29,6 @@ class WebshopOAuth2Client {
     }
 
     Client client = await grant.handleAuthorizationResponse(responseUrl.queryParameters);
-    print("access token refreshed");
     return client.credentials.accessToken;
   }
 

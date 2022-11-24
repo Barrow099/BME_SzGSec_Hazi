@@ -5,7 +5,7 @@ import 'package:webshop_client/data/CAFF_data.dart';
 class RatingsBar extends StatelessWidget {
   final AsyncValue<CAFFData> caffDataFuture;
 
-  const RatingsBar(this.caffDataFuture);
+  const RatingsBar(this.caffDataFuture, {super.key});
 
   @override
   Widget build(BuildContext context) {

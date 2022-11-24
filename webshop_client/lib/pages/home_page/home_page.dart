@@ -4,7 +4,7 @@ import 'package:webshop_client/pages/home_page/downloads_page/downloads_page.dar
 import 'package:webshop_client/pages/home_page/profile_page/profile_page.dart';
 import 'package:webshop_client/pages/home_page/shopping_page/shopping_page.dart';
 
-import '../../widgets/buttons/CartButton.dart';
+import '../../widgets/buttons/cart_button.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);

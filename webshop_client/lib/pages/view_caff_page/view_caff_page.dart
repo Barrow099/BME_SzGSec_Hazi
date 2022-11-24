@@ -1,18 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
-import 'package:webshop_client/data/comment.dart';
-import 'package:webshop_client/pages/view_caff_page/WriteCommentWidget.dart';
+import 'package:webshop_client/pages/view_caff_page/write_comment_widget.dart';
 import 'package:webshop_client/pages/view_caff_page/comment_list_container.dart';
 import 'package:webshop_client/pages/view_caff_page/edit_caff_dialog.dart';
-import 'package:webshop_client/provider_objects.dart';
-import 'package:webshop_client/providers/caff_page_notifier.dart';
 import 'package:webshop_client/pages/view_caff_page/ratings_bar.dart';
+import 'package:webshop_client/provider_objects.dart';
 
-import '../../widgets/buttons/CartButton.dart';
+import '../../widgets/buttons/cart_button.dart';
 
 class ViewCaffPage extends ConsumerStatefulWidget {
   final CAFFData caffData;

@@ -5,13 +5,13 @@ import 'package:webshop_client/pages/view_caff_page/edit_comment_dialog.dart';
 import 'package:webshop_client/provider_objects.dart';
 
 import '../../data/comment.dart';
-import '../../widgets/other/RoundedCard.dart';
+import '../../widgets/other/rounded_card.dart';
 
 class CommentCard extends ConsumerWidget {
   final Comment comment;
 
   final Animation<double> animation;
-  const CommentCard({Key? key, required this.comment, required Animation<double> this.animation}) : super(key: key);
+  const CommentCard({Key? key, required this.comment, required this.animation}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,7 +76,7 @@ class CommentCard extends ConsumerWidget {
           ElevatedButton(
             onPressed: () { editReview(context); },
             style: ElevatedButton.styleFrom(
-              shape: CircleBorder(),
+              shape: const CircleBorder(),
               fixedSize: const Size(34, 34),
               minimumSize: const Size(0, 0),
               padding: EdgeInsets.zero
@@ -88,7 +88,7 @@ class CommentCard extends ConsumerWidget {
               ref.read(caffStateNotifier.notifier).deleteReview(comment.id);
             },
             style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 fixedSize: const Size(34, 34),
                 minimumSize: const Size(0, 0),
                 padding: EdgeInsets.zero,

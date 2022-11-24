@@ -38,7 +38,7 @@ class ShoppingPageState extends ConsumerState<ShoppingPage> {
       child:
       caffs.isNotEmpty ?
         ListView.builder(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           itemCount: caffs.length,
           itemBuilder: (context, idx) {
             return ShoppingListItem(
@@ -48,7 +48,7 @@ class ShoppingPageState extends ConsumerState<ShoppingPage> {
           }
         )
       :
-        Center(child: Text("Nothin to see here 👀"),)
+        const Center(child: Text("Nothin to see here 👀"),)
       ,
     );
   }
