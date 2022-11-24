@@ -45,9 +45,29 @@ class CAFFData {
       return null;
     }
 
-    comments!.forEach((e) {_rating += e.rating;});
-    _rating = _rating / comments!.length;
+    int allRatings = 0;
+    for (Comment c in comments!) {
+      if(c.rating != null && c.rating != 0) {
+        _rating += c.rating!;
+        allRatings++;
+      }
+    }
+    if(allRatings==0) return 0;
+    _rating = _rating / allRatings;
     return _rating;
+  }
+
+  bool userHasReview(String userId) {
+    if(comments == null || comments!.isEmpty) {
+      return false;
+    }
+
+    for(Comment c in comments!) {
+      if(c.userId == userId && c.rating != null && c.rating != 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
   factory CAFFData.fromJson(Map<String, dynamic> json) => _$CAFFDataFromJson(json);

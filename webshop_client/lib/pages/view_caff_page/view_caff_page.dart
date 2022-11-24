@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
 import 'package:webshop_client/data/comment.dart';
-import 'package:webshop_client/pages/view_caff_page/comment_list.dart';
+import 'package:webshop_client/pages/view_caff_page/WriteCommentWidget.dart';
+import 'package:webshop_client/pages/view_caff_page/comment_list_container.dart';
+import 'package:webshop_client/pages/view_caff_page/edit_caff_dialog.dart';
 import 'package:webshop_client/provider_objects.dart';
 import 'package:webshop_client/providers/caff_page_notifier.dart';
 import 'package:webshop_client/pages/view_caff_page/ratings_bar.dart';
@@ -15,21 +17,18 @@ import '../../widgets/buttons/CartButton.dart';
 class ViewCaffPage extends ConsumerStatefulWidget {
   final CAFFData caffData;
 
-  ViewCaffPage(this.caffData, {super.key});
+  const ViewCaffPage(this.caffData, {super.key});
 
   @override
   ViewCaffPageState createState() => ViewCaffPageState();
 }
 
 class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
-
-  late StateNotifierProvider<CaffPageNotifier, AsyncValue<CAFFData>> caffStateNotifier;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    caffStateNotifier = StateNotifierProvider<CaffPageNotifier, AsyncValue<CAFFData>>((ref) {
-      return CaffPageNotifier(shopRepository: ref.watch(shopRepository), caffId: widget.caffData.id);
-    });
+    ref.read(caffStateNotifier.notifier).loadFullCaff(widget.caffData.id);
     super.initState();
   }
 
@@ -38,10 +37,9 @@ class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
 
     final fullCaffFuture = ref.watch(caffStateNotifier);
 
-
-
     return Scaffold(
       body: CustomScrollView(
+        controller: _scrollController,
         physics: const BouncingScrollPhysics(),
         slivers: [
           buildSliverAppBar(),
@@ -66,7 +64,7 @@ class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             RatingsBar(fullCaffFuture),
-                            Spacer(),
+                            const Spacer(),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(8,8,16,8),
                               child: Column(
@@ -115,10 +113,8 @@ class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
               fixedHeight: 150
             ),
           ),
-          CommentList(fullCaffFuture),
-          SliverToBoxAdapter(
-            child: Container(height: 1000,),
-          )
+          WriteCommentWidget(fullCaffFuture, _scrollController ),
+          CommentListContainer(fullCaffFuture),
         ],
       ),
     );
@@ -126,7 +122,7 @@ class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
 
   Widget buildSliverAppBar() {
     return SliverAppBar(
-      systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
       leading: getBackButton(),
       pinned: true,
       floating: false,
@@ -136,8 +132,12 @@ class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
         background: getImage(),
       ),
       expandedHeight: MediaQuery.of(context).size.height / 2,
-      actions: const [
-        Padding(
+      actions: [
+        if (ref.read(userModelNotifier)?.isAdmin ?? false) IconButton(
+            onPressed: editCaff,
+            icon: const Icon(Icons.edit_rounded)
+        ),
+        const Padding(
           padding: EdgeInsets.only(right: 16.0),
           child: CartButton(),
         )
@@ -167,6 +167,15 @@ class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
       ),
     );
   }
+
+  editCaff() async {
+    ref.read(caffStateNotifier).whenData((caffData) {
+      showDialog(context: context, builder: (BuildContext context) {
+        return EditCaffDialog(caffData: caffData,);
+      });
+    });
+
+  }
 }
 
 class PersistentHeader extends SliverPersistentHeaderDelegate {
@@ -178,7 +187,7 @@ class PersistentHeader extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: fixedHeight,
       child: child

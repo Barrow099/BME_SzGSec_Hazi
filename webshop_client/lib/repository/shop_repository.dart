@@ -15,12 +15,34 @@ class ShopRepository {
       return _shopModel!;
     }
 
-    final caffList = await appRestApi.getCaffList();
+    await _refreshShopModel();
 
-    return ShopModel(caffList);
+    if(_shopModel != null) {
+      return _shopModel!;
+    }
+
+    return Future.error("Couldn't obtain shop model");
+  }
+
+  _refreshShopModel() async {
+    final caffList = await appRestApi.getCaffList();
+    _shopModel = ShopModel(caffList);
   }
 
   Future<CAFFData> getFullCaff(int caffId) {
     return appRestApi.getCaff(caffId);
+  }
+
+  Future addReview(int caffId, String content, int rating) async {
+    await Future.delayed(Duration(seconds: 1));
+    await appRestApi.addReviewToCaff(caffId, content, rating);
+  }
+
+  deleteReview(int reviewId) async {
+    await appRestApi.deleteReview(reviewId);
+  }
+
+  editReview(int reviewId, String content, int rating) async {
+    await appRestApi.editReview(reviewId, content, rating);
   }
 }

@@ -5,7 +5,9 @@ import 'package:webshop_client/providers/auth_state_notifier.dart';
 import 'package:webshop_client/providers/shop_notifier.dart';
 import 'package:webshop_client/providers/user_model_notifier.dart';
 import 'package:webshop_client/repository/shop_repository.dart';
+import 'data/CAFF_data.dart';
 import 'model/shop_model.dart';
+import 'providers/caff_page_notifier.dart';
 import 'repository/auth_repository.dart';
 import 'data/auth_state.dart';
 
@@ -32,4 +34,8 @@ final userModelNotifier = StateNotifierProvider<UserModelNotifier, UserModel?>((
 
 final shopNotifier = StateNotifierProvider<ShopNotifier, AsyncValue<ShopModel>>((ref) {
   return ShopNotifier(shopRepository: ref.watch(shopRepository));
+});
+
+final caffStateNotifier = StateNotifierProvider<CaffPageNotifier, AsyncValue<CAFFData>>((ref) {
+  return CaffPageNotifier(shopRepository: ref.watch(shopRepository));
 });

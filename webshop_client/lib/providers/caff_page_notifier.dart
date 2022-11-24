@@ -4,13 +4,31 @@ import 'package:webshop_client/repository/shop_repository.dart';
 
 class CaffPageNotifier extends StateNotifier<AsyncValue<CAFFData>> {
   ShopRepository shopRepository;
-  int caffId;
+  int? currentCaffId;
 
-  CaffPageNotifier({required this.shopRepository, required this.caffId}) : super(const AsyncLoading()) {
-    loadFullCaff(caffId);
-  }
+  CaffPageNotifier({required this.shopRepository}) : super(const AsyncLoading());
   
   loadFullCaff(int caffId) async {
+    currentCaffId = caffId;
     state = await AsyncValue.guard(() => shopRepository.getFullCaff(caffId));
+  }
+
+  Future addReview(String content, {int rating=0}) async {
+    if(currentCaffId==null) return;
+
+    await shopRepository.addReview(currentCaffId!, content, rating);
+    await loadFullCaff(currentCaffId!);
+  }
+
+  Future deleteReview(int reviewId) async {
+    await shopRepository.deleteReview(reviewId);
+    if(currentCaffId==null) return;
+    await loadFullCaff(currentCaffId!);
+  }
+
+  Future editReview(int reviewId, String content, {int rating=0}) async {
+    await shopRepository.editReview(reviewId, content, rating);
+    if(currentCaffId==null) return;
+    await loadFullCaff(currentCaffId!);
   }
 }

@@ -49,11 +49,21 @@ class MyApp extends StatelessWidget {
               disabledBackgroundColor: const Color.fromARGB(255, 117, 191, 245)
           )
         ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(128),
+            ),
+
+          ),
+        ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(32),
+            borderRadius: BorderRadius.circular(23),
+            gapPadding: 4,
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+
         )
       );
   }

@@ -119,5 +119,36 @@ class AppRestApi {
     return CAFFData.fromJson(response.data);
   }
 
+  addReviewToCaff(int caffId, String content, int? rating) async {
+    try {
+      await secureDio.post("/Caff/comment/new", data: {
+        "content": content,
+        "caffFileId": caffId,
+        "rating": rating
+      });
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
+  }
+
+  deleteReview(int reviewId) async {
+    try {
+      await secureDio.delete("/Caff/Comment/delete/$reviewId");
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
+  }
+
+  editReview(int reviewId, String content, int rating) async {
+    try {
+      await secureDio.put("/Caff/comment/$reviewId", data: {
+        "content": content,
+        "rating": rating
+      });
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
+  }
+
 
 }
