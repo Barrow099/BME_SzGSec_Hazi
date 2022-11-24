@@ -32,13 +32,14 @@ class ShoppingListItem extends ConsumerWidget {
                   tag: "caff${caffData.id}",
                   child: CachedNetworkImage (
                     imageUrl: ref.read(appRestApi).getCaffPreviewUrl(caffData.id),
-                    //TODO preview
-                    //httpHeaders: ref.read(appRestApi).authHeader,
+                    httpHeaders: ref.read(appRestApi).authHeader,
                     fit: BoxFit.fitHeight,
                     placeholder: (BuildContext context, url) {
                       return const Center(child: CircularProgressIndicator());
                     },
-                    errorWidget: (context, url, error) => const Center(child: Icon(Icons.error)),
+                    errorWidget: (context, url, error) {
+                      return const Center(child: Icon(Icons.error));
+                    },
                   ),
                 ),
                 Align(

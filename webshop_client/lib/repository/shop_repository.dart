@@ -14,23 +14,10 @@ class ShopRepository {
 
   ShopRepository(this.appRestApi);
 
-  Future<ShopModel> getShopModel() async {
-    if(_shopModel != null) {
-      return _shopModel!;
-    }
-
-    await _refreshShopModel();
-
-    if(_shopModel != null) {
-      return _shopModel!;
-    }
-
-    return Future.error("Couldn't obtain shop model");
-  }
-
-  _refreshShopModel() async {
+  Future<ShopModel> refreshShopModel() async {
     final caffList = await appRestApi.getCaffList();
     _shopModel = ShopModel(caffList);
+    return _shopModel!;
   }
 
   Future<CAFFData> getFullCaff(int caffId) {

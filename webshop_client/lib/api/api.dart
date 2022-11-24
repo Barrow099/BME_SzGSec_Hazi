@@ -112,7 +112,6 @@ class AppRestApi {
 
   String getCaffPreviewUrl(int caffId) {
     return "$apiUrl/Caff/$caffId/preview";
-    //return "https://picsum.photos/seed/$caffId/1400/1200";
   }
 
 
