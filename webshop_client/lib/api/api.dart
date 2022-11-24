@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:webshop_client/data/CAFF_data.dart';
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:webshop_client/api/webshop_oauth2_client.dart';
+import 'package:webshop_client/data/CAFF_data.dart';
 import 'package:webshop_client/model/user_model.dart';
+
+
+
 
 class AppRestApi {
   //https://pub.dev/packages/dio
@@ -151,4 +154,18 @@ class AppRestApi {
   }
 
 
+
+  downloadCaffs(List<CAFFData> inCartCaffs, String targetPath,Future Function(double, CAFFData) downloadProgressCallback) async {
+    for (CAFFData caffData in inCartCaffs) {
+      await secureDio.download(
+          "/Caff/${caffData.id}/download",
+          "$targetPath/caff_${caffData.id}.caff",
+          onReceiveProgress: (recieved, total) async {
+            await downloadProgressCallback(recieved/total, caffData);
+          }
+      );
+      await Future.delayed(Duration(seconds: 3));
+      await downloadProgressCallback(1.0, caffData);
+    }
+  }
 }

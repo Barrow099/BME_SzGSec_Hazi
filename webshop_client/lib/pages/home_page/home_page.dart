@@ -5,6 +5,7 @@ import 'package:webshop_client/pages/home_page/profile_page/profile_page.dart';
 import 'package:webshop_client/pages/home_page/shopping_page/shopping_page.dart';
 
 import '../../widgets/buttons/cart_button.dart';
+import '../../widgets/cart_drawer/cart_drawer.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -66,6 +67,8 @@ class HomePageState extends ConsumerState<HomePage> {
         onTap: _onItemTapped,
 
       ),
+      endDrawer: const CartDrawer(),
+      endDrawerEnableOpenDragGesture: false,
     );
   }
 

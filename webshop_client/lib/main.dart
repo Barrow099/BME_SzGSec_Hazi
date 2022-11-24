@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/Pages/root_page.dart';
+import 'package:webshop_client/api/system/notification_service.dart';
 
 
 class MyHttpOverrides extends HttpOverrides{
@@ -12,13 +14,15 @@ class MyHttpOverrides extends HttpOverrides{
   }
 }
 
-void main() {
+void main() async {
   //=========================================
   // THIS IS STRICTLY FOR DEV PURPOSES ONLY!!
   // fixes issue an issue where android does
   // not trusts self signed certificate
   HttpOverrides.global = MyHttpOverrides();
   //=========================================
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init();
 
   runApp(const ProviderScope(child: MyApp()));
 }

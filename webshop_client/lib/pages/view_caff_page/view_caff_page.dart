@@ -10,6 +10,7 @@ import 'package:webshop_client/pages/view_caff_page/ratings_bar.dart';
 import 'package:webshop_client/provider_objects.dart';
 
 import '../../widgets/buttons/cart_button.dart';
+import '../../widgets/cart_drawer/cart_drawer.dart';
 
 class ViewCaffPage extends ConsumerStatefulWidget {
   final CAFFData caffData;
@@ -35,6 +36,8 @@ class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
     final fullCaffFuture = ref.watch(caffStateNotifier);
 
     return Scaffold(
+      endDrawer: const CartDrawer(),
+      endDrawerEnableOpenDragGesture: false,
       body: CustomScrollView(
         controller: _scrollController,
         physics: const BouncingScrollPhysics(),
@@ -74,7 +77,7 @@ class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
                                     style: Theme.of(context).textTheme.headline5
                                   ),
                                   ElevatedButton.icon(
-                                    onPressed: (){},
+                                    onPressed: (){ ref.read(cartStateNotifier.notifier).addToCart(widget.caffData); },
                                     icon: const Icon(Icons.add_shopping_cart_rounded),
                                     label: Text("\$${widget.caffData.price}"),
                                   ),

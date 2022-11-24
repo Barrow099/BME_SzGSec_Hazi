@@ -12,6 +12,9 @@ class ShoppingListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final cartState = ref.watch(cartStateNotifier);
+    bool canBuy = !cartState.isInCart(caffData);
+
     return SizedBox(
       height: MediaQuery.of(context).size.height / 2,
       child: Padding(
@@ -63,9 +66,16 @@ class ShoppingListItem extends ConsumerWidget {
                             color: Colors.transparent,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
                             clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: IconButton(
-                                onPressed: (){} ,
-                                icon: const Icon(Icons.add_shopping_cart_rounded, color: Colors.white,)
+                            child: AbsorbPointer(
+                              absorbing: !canBuy,
+                              child: IconButton(
+                                  icon: canBuy ?
+                                    const Icon(Icons.add_shopping_cart_rounded, color: Colors.white,) :
+                                    const Icon(Icons.remove_shopping_cart_rounded , color: Colors.grey,),
+                                  onPressed: canBuy ? (){
+                                    ref.read(cartStateNotifier.notifier).addToCart(caffData);
+                                  } : null,
+                              ),
                             )
                           )
                         ],

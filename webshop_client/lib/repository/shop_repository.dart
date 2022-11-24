@@ -1,3 +1,7 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:webshop_client/api/system/caff_picker.dart';
+import 'package:webshop_client/api/system/notification_service.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
 import 'package:webshop_client/model/shop_model.dart';
 
@@ -45,4 +49,43 @@ class ShopRepository {
   editReview(int reviewId, String content, int rating) async {
     await appRestApi.editReview(reviewId, content, rating);
   }
+
+  downloadCaffs(List<CAFFData> inCartCaffs, Function(double) downloadProgressCallback) async {
+    final status = await Permission.storage.request();
+    if(!status.isGranted) {
+      return Future.error("No storage permission");
+    }
+
+    final saveDirectory = await CaffPicker.pickSaveDirectory();
+    if(saveDirectory == null) {
+      return Future.error("Save directory not selected");
+    }
+
+
+
+
+    await appRestApi.downloadCaffs(inCartCaffs, saveDirectory, (double progress, CAFFData caffData) async {
+      downloadProgressCallback(progress);
+      final inProgressDownload = progress < 1;
+      AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+          'dwnload',
+          'Download notification',
+          channelDescription: 'Download progress notfication',
+          importance: Importance.defaultImportance,
+          priority: Priority.high,
+          ticker: 'ticker',
+          showProgress: inProgressDownload,
+          progress: (progress * 100).toInt(),
+          maxProgress: 100
+      );
+      NotificationDetails notificationDetails = NotificationDetails(android: androidNotificationDetails);
+      await NotificationService.localNotifications.show(
+        caffData.id,
+        inProgressDownload ? "Downloading caff..." : "Downloaded caff!",
+        "caff_${caffData.id}.caff",
+        notificationDetails,
+      );
+    });
+  }
+
 }

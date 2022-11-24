@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/api/api.dart';
+import 'package:webshop_client/model/cart_state.dart';
 import 'package:webshop_client/model/user_model.dart';
 import 'package:webshop_client/providers/auth_state_notifier.dart';
+import 'package:webshop_client/providers/cart_notifier.dart';
 import 'package:webshop_client/providers/shop_notifier.dart';
 import 'package:webshop_client/providers/user_model_notifier.dart';
 import 'package:webshop_client/repository/shop_repository.dart';
@@ -39,3 +41,7 @@ final shopNotifier = StateNotifierProvider<ShopNotifier, AsyncValue<ShopModel>>(
 final caffStateNotifier = StateNotifierProvider<CaffPageNotifier, AsyncValue<CAFFData>>((ref) {
   return CaffPageNotifier(shopRepository: ref.watch(shopRepository));
 });
+
+final cartStateNotifier = StateNotifierProvider<CartNotifier, CartState>( (ref) {
+  return CartNotifier(ref.watch(shopRepository));
+},);
