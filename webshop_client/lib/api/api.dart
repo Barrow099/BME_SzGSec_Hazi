@@ -20,7 +20,31 @@ class AppRestApi {
 
   AppRestApi() {
     secureDio.options.baseUrl = apiUrl;
-    secureDio.interceptors.add(PrettyDioLogger());
+    secureDio.interceptors
+      ..add(PrettyDioLogger())
+      ..add(InterceptorsWrapper(  //interceptor that refreshes old token if needed
+          onRequest:(options, handler) => handler.next(options),
+          onResponse:(response,handler) => handler.next(response),
+          onError: (DioError e, ErrorInterceptorHandler  handler) async {
+            if (e.response?.statusCode == 401) { //TODO retries
+              String accessToken = await oauthClient.getAccessToken();
+              _updateSecureDio(accessToken);
+              e.requestOptions.headers["Authorization"] = 'Bearer $accessToken';
+
+              final response = await secureDio.request(
+                e.requestOptions.path,
+                data: e.requestOptions.data,
+                queryParameters: e.requestOptions.queryParameters,
+                options: Options(
+                  method: e.requestOptions.method,
+                  headers: e.requestOptions.headers
+                )
+              );
+              return handler.resolve(response);
+            }
+            return  handler.next(e);//continue
+          }
+      ));
   }
 
   Map<String, String> get authHeader {
@@ -35,7 +59,6 @@ class AppRestApi {
 
   _updateSecureDio(String? accessToken) async {
     this.accessToken = accessToken;
-    //TODO add interceptor to update outdated tokens
     secureDio.options.headers["Authorization"] = 'Bearer $accessToken';
   }
 
