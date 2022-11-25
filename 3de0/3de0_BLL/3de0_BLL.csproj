@@ -6,10 +6,17 @@
     <RootNamespace>_3de0_BLL</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\3de0_BLL_DAL\3de0_DAL.csproj" />
+    <ProjectReference Include="..\3de0_Identity\3de0_Identity.csproj" />
   </ItemGroup>
 
 </Project>
