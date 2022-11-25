@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 final authorizationEndpoint = Uri.parse("https://10.0.2.2:44315/connect/authorize");
 final tokenEndpoint = Uri.parse("https://10.0.2.2:44315/connect/token");
+final revokeEndpoint = Uri.parse("https://10.0.2.2:44315/connect/revocation");
 final redirectUrl =  Uri.parse("com.example.flutterapp://callback");
 
 const identifier = 'flutter';
