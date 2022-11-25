@@ -6,6 +6,7 @@ enum UserRole {
   basic,
   admin;
 
+  @override
   String toString() {
     return this == UserRole.admin ? "Admin" : "User";
   }
@@ -19,9 +20,11 @@ class UserModel {
 
   UserModel({required this.userId, required this.role, required this.userName});
 
+  bool get isAdmin => role == UserRole.admin;
+
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-        userId: json["client_id"],
+        userId: json["sub"],
         userName: json["name"],
         role: json["role"] == "admin" ? UserRole.admin : UserRole.basic
     );

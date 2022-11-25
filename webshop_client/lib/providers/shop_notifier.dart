@@ -12,7 +12,7 @@ class ShopNotifier extends StateNotifier<AsyncValue<ShopModel>> {
   }
 
   refresh() async {
-    state = await AsyncValue.guard(() => shopRepository.getShopModel());
+    state = await AsyncValue.guard(() => shopRepository.refreshShopModel());
   }
 
 
