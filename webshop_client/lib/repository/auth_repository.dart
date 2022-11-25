@@ -37,4 +37,14 @@ class AuthRepository {
     return AuthState.loggedOut;
   }
 
+  Future<AuthState> deleteAccount() async {
+    if(userModel == null) {
+      return Future.error("Invalid user model state: is null, but shouldn't");
+    }
+
+    appRestApi.deleteAccount(userModel!);
+    userModel = null;
+    return AuthState.loggedOut;
+  }
+
 }

@@ -35,4 +35,11 @@ class AuthStateNotifier extends StateNotifier<AsyncValue<AuthState>> {
       return authRepository.logout();
     });
   }
+
+  Future deleteAccount() async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() {
+      return authRepository.deleteAccount();
+    });
+  }
 }
