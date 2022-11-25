@@ -50,14 +50,14 @@ class AppRestApi {
   }
 
   Future<UserModel> signUp(String email, String userName, String password) async {
-    Map m = {
+    Map data = {
       "displayName": userName,
       "password": password,
       "email": email,
     };
 
     try {
-      final response = await unsecureUserDio.post("/Identity/Register", data: m);
+      final response = await unsecureUserDio.post("/Identity/Register", data: data);
       return login();
     } on DioError catch(e) {
       if (e.response?.statusCode == 400) {
@@ -69,10 +69,17 @@ class AppRestApi {
   }
 
   Future logout(UserModel userModel) async {
-    await Future.delayed(const Duration(seconds: 1));
     secureCaffDio.options.headers["Authorization"] = '';
     secureUserDio.options.headers["Authorization"] = '';
     // TODO check logout
+  }
+
+  Future deleteAccount(UserModel userModel) async {
+    try {
+      final response = await secureUserDio.delete("/Identity");
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
   }
 
   Future<List<CAFFData>> getCaffList() async {
@@ -88,7 +95,7 @@ class AppRestApi {
       });
 
     } on DioError catch(e) {
-      Future.error(e, e.stackTrace);
+      return Future.error(e, e.stackTrace);
     }
 
     return caffs;
@@ -109,5 +116,19 @@ class AppRestApi {
     return stringHeaders;
   }
 
+  modifyUserData(String userName, String email, String password) {
+    Map data = {
+      "displayName": userName,
+      "password": password,
+      "email": email,
+    };
+
+    try {
+      final response = secureUserDio.put("/Identity/Profile", data: data);
+      return login();
+    } on DioError catch(e) {
+      return Future.error(e);
+    }
+  }
 
 }
