@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/provider_objects.dart';
 
+import 'delete_account_dialog.dart';
+import 'edit_profile_dialog.dart';
+
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -95,25 +98,13 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
 
   deleteAccount() {
     showDialog(context: context, builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text("Delete Account"),
-        content: const Text(
-            "Are you sure you want to permanently delete your account?"),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("Cancel"),
-          ),
-          ElevatedButton(
-            onPressed: ref.read(authStateNotifier.notifier).deleteAccount,
-            child: const Text("Delete Account"),
-          ),
-        ],
-      );
+      return const DeleteAccountDialog();
     });
   }
 
-  editeProfile() {}
+  editeProfile() {
+    showDialog(context: context, builder: (BuildContext context) {
+      return const EditProfileDialog();
+    });
+  }
 }
