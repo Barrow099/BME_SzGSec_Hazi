@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:webshop_client/api/system/caff_picker.dart';
@@ -70,6 +72,10 @@ class ShopRepository {
         notificationDetails,
       );
     });
+  }
+
+  Future uploadCaff(File selectedCaff, int price) async {
+    await appRestApi.uploadCaff(selectedCaff, price);
   }
 
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:jwt_decode/jwt_decode.dart';
@@ -226,6 +227,19 @@ class AppRestApi {
       );
       await Future.delayed(Duration(seconds: 3));
       await downloadProgressCallback(1.0, caffData);
+    }
+  }
+
+  uploadCaff(File selectedCaff, int price) async {
+    try {
+      final formData = FormData.fromMap({
+        "File": await MultipartFile.fromFile(selectedCaff.path, filename: 'caff.caff'),
+        "Price": price
+      });
+
+      await secureCaffDio.post("/Caff/new", data: formData);
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
     }
   }
 }

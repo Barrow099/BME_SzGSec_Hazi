@@ -11,6 +11,7 @@ class LoginTextFormField extends StatefulWidget {
   final IconData icon;
   final bool autofocus;
   final TextInputAction textInputAction;
+  final TextInputType inputType;
 
 
   const LoginTextFormField({super.key,
@@ -23,6 +24,7 @@ class LoginTextFormField extends StatefulWidget {
     this.obscureText=false,
     this.autofocus=false,
     this.textInputAction = TextInputAction.next,
+    this.inputType = TextInputType.none
   });
 
   @override
@@ -50,6 +52,7 @@ class _LoginTextFormFieldState extends State<LoginTextFormField> {
       autovalidateMode: AutovalidateMode.disabled,
       validator: widget.validator,
       textInputAction: widget.textInputAction,
+      keyboardType: widget.inputType,
       decoration: InputDecoration (
           prefixIcon: Icon(widget.icon),
           labelText: widget.labelText,

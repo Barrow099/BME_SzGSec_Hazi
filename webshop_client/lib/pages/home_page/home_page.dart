@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/pages/home_page/downloads_page/downloads_page.dart';
 import 'package:webshop_client/pages/home_page/profile_page/profile_page.dart';
 import 'package:webshop_client/pages/home_page/shopping_page/shopping_page.dart';
+import 'package:webshop_client/pages/upload_caff_page/upload_caff_page.dart';
 
 import '../../widgets/buttons/cart_button.dart';
 import '../../widgets/cart_drawer/cart_drawer.dart';
@@ -24,6 +25,9 @@ class HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: _currentPageIndex==0 ? FloatingActionButton(
+        onPressed: onShowUploadPage,
+      ) : null,
       appBar: AppBar(
         title: Text(_pageTitles[_currentPageIndex]),
         actions: const [
@@ -77,6 +81,12 @@ class HomePageState extends ConsumerState<HomePage> {
     setState(() {
       _currentPageIndex = index;
     });
+  }
+
+  void onShowUploadPage() {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const UploadCaffPage())
+    );
   }
 }
 
