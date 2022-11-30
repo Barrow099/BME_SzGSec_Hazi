@@ -51,8 +51,8 @@ class AppRestApi {
       ));
 
     // duplicated
-    unsecureUserDio.options.baseUrl = userUrl;
-    unsecureUserDio.interceptors
+    secureUserDio.options.baseUrl = userUrl;
+    secureUserDio.interceptors
       ..add(PrettyDioLogger())
       ..add(InterceptorsWrapper(  //interceptor that refreshes old token if needed
           onRequest:(options, handler) => handler.next(options),
