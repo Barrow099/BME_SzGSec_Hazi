@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
+import 'package:webshop_client/pages/upload_caff_page/upload_caff_widget.dart';
+import 'package:webshop_client/widgets/dialogs/base_dialog.dart';
 import 'package:webshop_client/widgets/dialogs/base_dialog_implementation.dart';
 import 'package:webshop_client/widgets/dialogs/loadable_dialog_mixin.dart';
 
@@ -19,33 +21,13 @@ class EditCaffDialogState extends ConsumerState<EditCaffDialog> with LoadableDia
 
   @override
   Widget build(BuildContext context) {
-    return BaseDialogImplementation(
-      title: "Edit caff",
-      onAcceptFunction: onEditCaff,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextFormField(
-            controller: priceEditingController,
-          ),
-        ],
-      ),
+    return BaseDialog(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.5 ,
+        child: UploadCaffWidget(
+          caffData: widget.caffData,
+          price: widget.caffData.price,
+        ))
     );
-  }
-
-  onEditCaff() async {
-    showErrorSnackbar(context, "TODO unimplemented");
-    Navigator.of(context).pop();
-    // showLoading(context);
-    // ref.read(caffStateNotifier.notifier).editReview(
-    //
-    // ).onError((error, stackTrace) {
-    //   hideLoading(context);
-    //   showErrorSnackbar(context, "Something went wrong. Please try again later 😱");
-    // }).then((value) {
-    //   hideLoading(context);
-    //   Navigator.of(context).pop();
-    // });
-
   }
 }

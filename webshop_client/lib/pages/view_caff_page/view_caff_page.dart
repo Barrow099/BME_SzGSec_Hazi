@@ -8,6 +8,8 @@ import 'package:webshop_client/pages/view_caff_page/comment_list_container.dart'
 import 'package:webshop_client/pages/view_caff_page/edit_caff_dialog.dart';
 import 'package:webshop_client/pages/view_caff_page/ratings_bar.dart';
 import 'package:webshop_client/provider_objects.dart';
+import 'package:webshop_client/widgets/dialogs/loadable_dialog_mixin.dart';
+import 'package:webshop_client/widgets/other/snackbars.dart';
 
 import '../../widgets/buttons/cart_button.dart';
 import '../../widgets/cart_drawer/cart_drawer.dart';
@@ -21,7 +23,7 @@ class ViewCaffPage extends ConsumerStatefulWidget {
   ViewCaffPageState createState() => ViewCaffPageState();
 }
 
-class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
+class ViewCaffPageState extends ConsumerState<ViewCaffPage> with LoadableDialogMixin {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -146,6 +148,10 @@ class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
             onPressed: editCaff,
             icon: const Icon(Icons.edit_rounded)
         ),
+        if (ref.read(userModelNotifier)?.isAdmin ?? false) IconButton(
+            onPressed: deleteCaff,
+            icon: const Icon(Icons.delete_forever_rounded, color: Colors.red)
+        ),
         const Padding(
           padding: EdgeInsets.only(right: 16.0),
           child: CartButton(),
@@ -180,10 +186,21 @@ class ViewCaffPageState extends ConsumerState<ViewCaffPage> {
   editCaff() async {
     ref.read(caffStateNotifier).whenData((caffData) {
       showDialog(context: context, builder: (BuildContext context) {
-        return EditCaffDialog(caffData: caffData,);
+        return EditCaffDialog(caffData: caffData);
       });
     });
+  }
 
+  deleteCaff() async {
+    showLoading(context);
+    ref.read(shopNotifier.notifier).deleteCaff(widget.caffData.id).then((value){
+      hideLoading(context);  
+      showOkSnackbar(context, "Caff deleted 💣");
+      Navigator.of(context).pop();
+    }).catchError((error) {
+      hideLoading(context);
+      showErrorSnackbar(context, "Something went wrong 🙄");
+    });
   }
 }
 
