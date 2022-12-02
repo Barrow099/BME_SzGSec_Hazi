@@ -17,7 +17,7 @@ class SignupPage extends ConsumerStatefulWidget {
 
 class SignupPageState extends ConsumerState<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController userNameController = TextEditingController(text: "aa");
+  final TextEditingController userNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
