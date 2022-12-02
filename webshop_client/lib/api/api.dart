@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:jwt_decode/jwt_decode.dart';
@@ -153,12 +154,18 @@ class AppRestApi {
     }
   }
 
-  Future<List<CAFFData>> getCaffList() async {
+  Future<List<CAFFData>> getCaffList(int pageKey, int pageSize) async {
     List<CAFFData> caffs = [];
 
     try {
-      final response = await secureCaffDio.get("/Caff");
-      List<dynamic> caffMaps =  response.data;
+      final response = await secureCaffDio.get(
+          "/Caff/paged",
+          queryParameters: {
+            "PageSize": pageSize,
+            "PageNumber": pageKey
+          }
+      );
+      List<dynamic> caffMaps =  response.data["results"];
 
 
       for (var caffJson in caffMaps) {
@@ -176,17 +183,6 @@ class AppRestApi {
     return "$caffUrl/Caff/$caffId/preview";
   }
 
-  editReview(int reviewId, String content, int rating) async {
-    try {
-      await secureCaffDio.put("/Caff/comment/$reviewId", data: {
-        "content": content,
-        "rating": rating
-      });
-    } on DioError catch (e) {
-      return Future.error(e, e.stackTrace);
-    }
-  }
-
   Future<CAFFData> getCaff(int caffId) async {
     final response = await secureCaffDio.get("/Caff/$caffId");
     return CAFFData.fromJson(response.data);
@@ -200,6 +196,17 @@ class AppRestApi {
         "rating": rating
       });
     } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
+  }
+
+  editReview(int reviewId, String content, int? rating) async {
+    try {
+      await secureCaffDio.put("/Caff/comment/$reviewId", data: {
+        "content": content,
+        "rating": rating
+      });
+    } on DioError catch (e) {
       return Future.error(e, e.stackTrace);
     }
   }
@@ -276,5 +283,39 @@ class AppRestApi {
       return Future.error(e, e.stackTrace);
     }
     return users;
+  }
+
+  uploadCaff(File selectedCaff, int price) async {
+    try {
+      final formData = FormData.fromMap({
+        "File": await MultipartFile.fromFile(selectedCaff.path, filename: 'caff.caff'),
+        "Price": price
+      });
+
+      await secureCaffDio.post("/Caff/new", data: formData);
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
+  }
+
+  deleteCaff(int caffId) async {
+    try {
+      await secureCaffDio.delete("/Caff/delete/$caffId");
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
+  }
+
+  editCaff(int caffId, File selectedCaff, int price) async {
+    try {
+      final formData = FormData.fromMap({
+        "File": await MultipartFile.fromFile(selectedCaff.path, filename: 'caff.caff'),
+        "Price": price
+      });
+
+      await secureCaffDio.put("/Caff/$caffId", data: formData);
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
   }
 }

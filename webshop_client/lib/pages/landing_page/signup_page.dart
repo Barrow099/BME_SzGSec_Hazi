@@ -92,6 +92,7 @@ class SignupPageState extends ConsumerState<SignupPage> {
                           icon: Icons.person_rounded,
                           labelText: "Email",
                           hintText: "Enter an email address",
+                          inputType: TextInputType.emailAddress,
                         ),
                       ),
                       Padding(

@@ -70,7 +70,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
             title: const Text("Delete account"),
             leading: const Padding(
               padding: EdgeInsets.only(right: 8.0),
-              child: Icon(Icons.delete_forever),
+              child: Icon(Icons.delete_forever, color: Colors.red,),
             ),
             onTap: deleteAccount,
           ),
@@ -93,13 +93,12 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          color: Colors.white70,
           elevation: 4,
           child: ListTile(
             title: const Text("Log out"),
             leading: const Padding(
               padding: EdgeInsets.only(right: 8.0),
-              child: Icon(Icons.logout),
+              child: Icon(Icons.logout, color: Colors.red),
             ),
             onTap: logout,
           ),

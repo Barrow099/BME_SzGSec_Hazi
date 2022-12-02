@@ -13,7 +13,7 @@ class CaffPageNotifier extends StateNotifier<AsyncValue<CAFFData>> {
     state = await AsyncValue.guard(() => shopRepository.getFullCaff(caffId));
   }
 
-  Future addReview(String content, {int rating=0}) async {
+  Future addReview(String content, {int? rating}) async {
     if(currentCaffId==null) return;
 
     await shopRepository.addReview(currentCaffId!, content, rating);
@@ -26,7 +26,7 @@ class CaffPageNotifier extends StateNotifier<AsyncValue<CAFFData>> {
     await loadFullCaff(currentCaffId!);
   }
 
-  Future editReview(int reviewId, String content, {int rating=0}) async {
+  Future editReview(int reviewId, String content, {int? rating}) async {
     await shopRepository.editReview(reviewId, content, rating);
     if(currentCaffId==null) return;
     await loadFullCaff(currentCaffId!);
