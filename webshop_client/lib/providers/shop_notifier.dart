@@ -15,7 +15,13 @@ class ShopNotifier extends StateNotifier<AsyncValue<ShopModel>> {
   }
 
   refresh() async {
-    state = await AsyncValue.guard(() => shopRepository.refreshShopModel());
+    state = await AsyncValue.guard(() => shopRepository.initShopModel());
+  }
+
+  Future getPagedCaffs(int pageKey, int pageSize) async {
+    final List<CAFFData> pageCaffs = await shopRepository.loadPage(pageKey, pageSize);
+    state = await AsyncValue.guard(() => shopRepository.updateShopModel(pageCaffs));
+    return pageCaffs;
   }
 
   Future uploadCaff(File selectedCaff, int price) async {

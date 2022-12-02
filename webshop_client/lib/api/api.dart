@@ -141,12 +141,18 @@ class AppRestApi {
     }
   }
 
-  Future<List<CAFFData>> getCaffList() async {
+  Future<List<CAFFData>> getCaffList(int pageKey, int pageSize) async {
     List<CAFFData> caffs = [];
 
     try {
-      final response = await secureCaffDio.get("/Caff");
-      List<dynamic> caffMaps =  response.data;
+      final response = await secureCaffDio.get(
+          "/Caff/paged",
+          queryParameters: {
+            "PageSize": pageSize,
+            "PageNumber": pageKey
+          }
+      );
+      List<dynamic> caffMaps =  response.data["results"];
 
 
       for (var caffJson in caffMaps) {

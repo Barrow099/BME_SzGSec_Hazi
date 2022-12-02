@@ -16,9 +16,20 @@ class ShopRepository {
 
   ShopRepository(this.appRestApi);
 
-  Future<ShopModel> refreshShopModel() async {
-    final caffList = await appRestApi.getCaffList();
-    _shopModel = ShopModel(caffList);
+  Future<ShopModel> initShopModel() async {
+    _shopModel = ShopModel([]);
+    return _shopModel!;
+  }
+
+  Future<List<CAFFData>> loadPage(int pageKey, int pageSize) async {
+    return await appRestApi.getCaffList(pageKey, pageSize);
+  }
+
+  Future<ShopModel> updateShopModel(List<CAFFData> newPageCaffs) async {
+    _shopModel ??= ShopModel([]);
+
+    final List<CAFFData> sumCaffs = List.from(_shopModel!.caffList)..addAll(newPageCaffs);
+    _shopModel = ShopModel(sumCaffs);
     return _shopModel!;
   }
 

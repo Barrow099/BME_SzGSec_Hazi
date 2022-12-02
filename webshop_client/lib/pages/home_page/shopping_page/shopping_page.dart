@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
 import 'package:webshop_client/model/shop_model.dart';
 import 'package:webshop_client/pages/home_page/shopping_page/shopping_list_item.dart';
@@ -15,6 +16,31 @@ class ShoppingPage extends ConsumerStatefulWidget {
 }
 
 class ShoppingPageState extends ConsumerState<ShoppingPage> {
+  final int _pageSize = 3;
+  final PagingController<int, CAFFData> _pagingController = PagingController(firstPageKey: 1);
+
+  @override
+  void initState() {
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+    super.initState();
+  }
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final newItems = await ref.read(shopNotifier.notifier).getPagedCaffs(pageKey, _pageSize);
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final int nextPageKey = pageKey + newItems.length as int;
+        _pagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,30 +55,24 @@ class ShoppingPageState extends ConsumerState<ShoppingPage> {
   }
 
   Widget getCaffList(ShopModel shopModel) {
-    final caffs = shopModel.caffList;
+    //final caffs = shopModel.caffList;
 
     return RefreshIndicator(
-      onRefresh: () {
-        return ref.read(shopNotifier.notifier).refresh();
+      onRefresh: () async {
+        _pagingController.refresh();
       },
-      child:
-      caffs.isNotEmpty ?
-        ListView.builder(
+      child: PagedListView(
           physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          itemCount: caffs.length,
-          itemBuilder: (context, idx) {
-            return ShoppingListItem(
-              caffData: caffs[idx],
-              onClickFunction: goToCaffPage,
-            );
-          }
-        )
-      :
-        const SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Center(child: Text("Nothin to see here 👀"),)
-        )
-      ,
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<CAFFData>(
+            itemBuilder: (context, caff, idx) {
+              return ShoppingListItem(
+                        caffData: caff,
+                        onClickFunction: goToCaffPage,
+              );
+            }
+          )
+      ),
     );
   }
 
