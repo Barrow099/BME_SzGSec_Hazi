@@ -20,14 +20,16 @@ class KickUserItem extends ConsumerStatefulWidget {
 class _KickUserItemState extends ConsumerState<KickUserItem> {
   @override
   Widget build(BuildContext context) {
+    final myProfile = ref.read(userModelNotifier)?.userId == widget.user.userId;
+
     return RoundedCard(
         child: ListTile(
-          title: Text(widget.user.userName),
+          title: Text(myProfile ? "${widget.user.userName} (👈 me)" : widget.user.userName),
           subtitle: Text(widget.user.email),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              RoundIconButton(
+              if(!myProfile) RoundIconButton(
                 icon: Icons.delete,
                 onPressed: () {deleteUser(widget.user.userId);},
               ),
