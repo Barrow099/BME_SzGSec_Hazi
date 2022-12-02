@@ -56,7 +56,6 @@ class AppRestApi {
 
     // duplicated
     secureUserDio.options.baseUrl = userUrl;
-    secureUserDio.options.followRedirects = true;
     secureUserDio.interceptors
       ..add(PrettyDioLogger())
       ..add(InterceptorsWrapper(  //interceptor that refreshes old token if needed
@@ -101,6 +100,7 @@ class AppRestApi {
     this.accessToken = accessToken;
     secureCaffDio.options.headers["Authorization"] = 'Bearer $accessToken';
     secureUserDio.options.headers["Authorization"] = 'Bearer $accessToken';
+    secureUserDio.options.followRedirects = true;
   }
 
   Future<UserModel> login() async {

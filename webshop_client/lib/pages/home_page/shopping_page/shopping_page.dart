@@ -16,7 +16,7 @@ class ShoppingPage extends ConsumerStatefulWidget {
 }
 
 class ShoppingPageState extends ConsumerState<ShoppingPage> {
-  final int _pageSize = 3;
+  final int _pageSize = 1;
   final PagingController<int, CAFFData> _pagingController = PagingController(firstPageKey: 1);
 
   @override
@@ -46,6 +46,14 @@ class ShoppingPageState extends ConsumerState<ShoppingPage> {
   Widget build(BuildContext context) {
 
     final shopStateFuture = ref.watch(shopNotifier);
+
+    ref.listen(shopNotifier, (previous, next) {
+      if(next.hasValue) {
+        if(next.value?.caffList.isEmpty ?? false) {
+          _pagingController.refresh();
+        }
+      }
+    });
 
     return shopStateFuture.when(
         data: getCaffList,

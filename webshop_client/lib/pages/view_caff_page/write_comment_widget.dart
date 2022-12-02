@@ -162,7 +162,7 @@ class WriteCommentWidgetState extends ConsumerState<WriteCommentWidget> {
     ));
   }
 
-  sendReview(CAFFData data, {rating=0}) async {
+  sendReview(CAFFData data, {rating}) async {
     if(!_formKey.currentState!.validate()) {
       return;
     }
