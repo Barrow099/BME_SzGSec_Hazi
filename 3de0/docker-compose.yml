@@ -12,9 +12,7 @@ services:
     image: ${DOCKER_REGISTRY-}3de0api
     build:
       context: .
-      dockerfile: 3de0/Dockerfile
-    depends_on:
-        - 3de0_identity
+      dockerfile: 3de0/Dockerfile  
     entrypoint: /bin/sh -c "update-ca-certificates && dotnet 3de0_API.dll"
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
