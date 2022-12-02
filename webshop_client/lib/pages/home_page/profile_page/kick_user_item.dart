@@ -29,12 +29,13 @@ class _KickUserItemState extends ConsumerState<KickUserItem> {
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if(!myProfile) RoundIconButton(
+              if(!myProfile && widget.user.role != UserRole.admin) RoundIconButton(
                 icon: Icons.admin_panel_settings,
                 onPressed: () {promoteUser(widget.user.userId);},
               ),
               if(!myProfile) RoundIconButton(
                 icon: Icons.delete,
+                color: Colors.red,
                 onPressed: () {deleteUser(widget.user.userId);},
               ),
             ],

@@ -89,7 +89,7 @@ class SignupPageState extends ConsumerState<SignupPage> {
                           autofocus: true,
                           autofillHints: const [AutofillHints.email],
                           validator: signupValidator.validateEmailAddress,
-                          icon: Icons.person_rounded,
+                          icon: Icons.email,
                           labelText: "Email",
                           hintText: "Enter an email address",
                           inputType: TextInputType.emailAddress,
