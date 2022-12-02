@@ -61,6 +61,20 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
             onTap: editProfile,
           ),
         ),
+        if (userModel.role == UserRole.admin) Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 4,
+          child: ListTile(
+            title: const Text("Manage users"),
+            leading: const Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.remove_moderator),
+            ),
+            onTap: kickUserDialog,
+          ),
+        ),
         Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -73,20 +87,6 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
               child: Icon(Icons.delete_forever, color: Colors.red,),
             ),
             onTap: deleteAccount,
-          ),
-        ),
-        if (userModel.role == UserRole.admin) Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          elevation: 4,
-          child: ListTile(
-            title: const Text("Kick user"),
-            leading: const Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: Icon(Icons.remove_moderator),
-            ),
-            onTap: kickUserDialog,
           ),
         ),
         Card(
@@ -118,7 +118,9 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   editProfile() {
-    ref.read(appRestApi).modifyUserData('bobo', 'bob@bob.com', 'Pass123\$');
+    showDialog(context: context, builder: (BuildContext context) {
+      return const EditProfileDialog();
+    },);
   }
 
   kickUserDialog() {

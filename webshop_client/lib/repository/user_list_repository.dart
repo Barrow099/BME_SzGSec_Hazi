@@ -17,4 +17,8 @@ class UserListRepository {
   Future<void> deleteUser(String userId) async {
     await appRestApi.deleteAnotherUser(userId);
   }
+
+  Future<void> promoteUser(String userId) async {
+    await appRestApi.promoteUser(userId);
+  }
 }

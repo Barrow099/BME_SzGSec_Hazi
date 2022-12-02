@@ -47,4 +47,12 @@ class AuthRepository {
     return AuthState.loggedOut;
   }
 
+  Future<void> editeProfile(String email, String userName, String password) async {
+    if(userModel == null) {
+      return Future.error("Invalid user model state: is null, but shouldn't");
+    }
+
+    appRestApi.modifyUserData(userName, email, password);
+  }
+
 }

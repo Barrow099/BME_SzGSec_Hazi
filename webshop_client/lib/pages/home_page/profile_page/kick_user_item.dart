@@ -28,6 +28,10 @@ class _KickUserItemState extends ConsumerState<KickUserItem> {
             mainAxisSize: MainAxisSize.min,
             children: [
               RoundIconButton(
+                icon: Icons.admin_panel_settings,
+                onPressed: () {promoteUser(widget.user.userId);},
+              ),
+              RoundIconButton(
                 icon: Icons.delete,
                 onPressed: () {deleteUser(widget.user.userId);},
               ),
@@ -41,6 +45,14 @@ class _KickUserItemState extends ConsumerState<KickUserItem> {
     setState(() {
       ref.read(userListModelNotifier.notifier).deleteUser(id).catchError((error){
         showErrorSnackbar(context, "Couldn't delete user");
+      });
+    });
+  }
+
+  promoteUser(String id) {
+    setState(() {
+      ref.read(userListModelNotifier.notifier).promoteUser(id).catchError((error){
+        showErrorSnackbar(context, "Couldn't promote user");
       });
     });
   }

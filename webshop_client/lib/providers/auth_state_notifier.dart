@@ -42,4 +42,10 @@ class AuthStateNotifier extends StateNotifier<AsyncValue<AuthState>> {
       return authRepository.deleteAccount();
     });
   }
+
+  editeProfile(String email, String userName, String password) async {
+    state = const AsyncLoading();
+    return authRepository.editeProfile(email, userName, password);
+  }
+
 }

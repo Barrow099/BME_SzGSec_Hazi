@@ -15,12 +15,7 @@ class LoginValidator {
   }
 
   String? validatePassword(String? value){
-    // from an old project, rewrite this as needed
-    if(value == null) {
-      return "* Error?"; //TODO is this possible?
-    }
-
-    if(value.length < 8) {
+    if(value == null || value.length < 8) {
       return "* Password is too short";
     }
 

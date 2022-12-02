@@ -19,7 +19,7 @@ class _KickUsersDialogState extends ConsumerState<KickUsersDialog> {
     final _users = ref.watch(userListModelNotifier);
 
     return BaseDialogImplementation(
-        title: "Kick users",
+        title: "Manage users",
         onAcceptFunction: () { Navigator.of(context).pop(); },
         body: _users.when(
             data: (UserListModel users) {

@@ -19,5 +19,9 @@ class UserListNotifier extends StateNotifier<AsyncValue<UserListModel>> {
     await refresh();
   }
 
+  Future promoteUser(String userId) async {
+    await userListRepository.promoteUser(userId);
+    await refresh();
+  }
 
 }

@@ -146,6 +146,15 @@ class AppRestApi {
     }
   }
 
+  Future promoteUser(String userId) async {
+    try {
+      final response = await secureUserDio.put("/Identity/Roles/Promote",
+        queryParameters: {"userId": userId});
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
+  }
+
   Future deleteAccount(UserModel userModel) async {
     try {
       final response = await secureUserDio.delete("/Identity");
@@ -228,7 +237,7 @@ class AppRestApi {
 
     try {
       final response = await secureUserDio.put("/Identity/Profile", data: data);
-      return login();
+      // return login();
     } on DioError catch(e) {
       return Future.error(e);
     }

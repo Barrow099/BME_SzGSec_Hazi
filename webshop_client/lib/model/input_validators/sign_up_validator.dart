@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:string_validator/string_validator.dart';
 
 class SignupValidator {
   TextEditingController passwordController;
@@ -9,15 +8,16 @@ class SignupValidator {
 
   String? validateUserName(String? value) {
     //return null, if no errors, else return the error message
+    if(value == null || value.length < 2) {
+      return "* User name is too short";
+    }
 
     return null;
   }
 
   String? validateEmailAddress(String? value){
-    //do we need both checks?
-
-    if(value == null) {
-      return "* Error?"; //TODO is this possible?
+    if(value == null || value.isEmpty) {
+      return "* Email address cannot be empty";
     }
 
     bool emailValid = RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(value);
@@ -25,20 +25,11 @@ class SignupValidator {
       return "* Email address not valid";
     }
 
-    if(!isEmail(value)){
-      return "* Email address not valid";
-    }
-
     return null;
   }
 
   String? validatePassword(String? value){
-    // from an old project, rewrite this as needed
-    if(value == null) {
-      return "* Error?"; //TODO is this possible?
-    }
-
-    if(value.length < 8) {
+    if(value == null || value.length < 8) {
       return "* Password is too short";
     }
 
