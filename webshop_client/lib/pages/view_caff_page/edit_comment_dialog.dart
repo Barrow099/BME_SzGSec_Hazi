@@ -17,7 +17,7 @@ class EditCommentDialog extends ConsumerStatefulWidget {
 }
 
 class EditCommentDialogState extends ConsumerState<EditCommentDialog> with LoadableDialogMixin{
-  late int _currentReviewValue = widget.comment.rating ?? 0;
+  late int? _currentReviewValue = widget.comment.rating;
   late TextEditingController editingController = TextEditingController(text: widget.comment.content ?? "");
 
   @override
@@ -31,10 +31,10 @@ class EditCommentDialogState extends ConsumerState<EditCommentDialog> with Loada
           TextFormField(
             controller: editingController,
           ),
-          if(_currentReviewValue!=0) Padding(
+          if(_currentReviewValue!=null) Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: RateReviewWidget(
-                reviewValue: _currentReviewValue,
+                reviewValue: _currentReviewValue!,
               onReviewValueChanged: (int reviewValue) {
                 setState(() {
                   _currentReviewValue = reviewValue;
