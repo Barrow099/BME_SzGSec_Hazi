@@ -1,32 +1,18 @@
-import 'package:webshop_client/model/downloads_model.dart';
+import 'package:webshop_client/model/history_model.dart';
 
 import '../api/api.dart';
-import '../data/download_data.dart';
 
 class DownloadsRepository {
   final AppRestApi appRestApi;
 
-  DownloadsModel? _downloadsModel;
+  HistoryModel? _historyModel;
 
   DownloadsRepository(this.appRestApi);
 
-  Future<DownloadsModel> getDownloadsModel() async {
-    if(_downloadsModel != null) {
-      return _downloadsModel!;
-    }
-
-    final downloadData = await generateDummyList();
-
-    return DownloadsModel(downloadData);
+  Future<HistoryModel> refreshHistoryModel() async {
+    final downloads = await appRestApi.getCaffHistory();
+    _historyModel = HistoryModel(downloads);
+    return _historyModel!;
   }
 
-  Future<List<DownloadData>> generateDummyList() async {
-    List<DownloadData> downloads = [
-        DownloadData(caption: "Test Caption", creationDate: DateTime.parse("2022-11-20T12:31:17.912Z")),
-        DownloadData(caption: "Test Caption", creationDate: DateTime.parse("2022-11-20T12:31:17.912Z")),
-        DownloadData(caption: "Test Caption", creationDate: DateTime.parse("2022-11-20T12:31:17.912Z")),
-    ];
-
-    return downloads;
-  }
 }

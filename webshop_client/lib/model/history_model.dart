@@ -1,9 +1,9 @@
 import 'package:webshop_client/data/download_data.dart';
 
-class DownloadsModel {
+class HistoryModel {
 
   List<DownloadData> downloadsList;
 
-  DownloadsModel(this.downloadsList);
+  HistoryModel(this.downloadsList);
 
 }

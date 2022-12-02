@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:webshop_client/model/downloads_model.dart';
+import 'package:webshop_client/model/history_model.dart';
 import 'package:webshop_client/provider_objects.dart';
 
 import 'downloads_list_item.dart';
@@ -26,17 +26,17 @@ class DownloadsPageState extends ConsumerState<DownloadsPage> {
     );
   }
 
-  Widget getDownloadList(DownloadsModel downloadsModel) {
+  Widget getDownloadList(HistoryModel downloadsModel) {
     final downloads = downloadsModel.downloadsList;
 
     return RefreshIndicator(
       onRefresh: () {
-        return ref.read(shopNotifier.notifier).refresh();
+        return ref.read(downloadsNotifier.notifier).refresh();
       },
       child:
       downloads.isNotEmpty ?
       ListView.builder(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           itemCount: downloads.length,
           itemBuilder: (context, idx) {
             return DownloadsListItem(
@@ -45,7 +45,10 @@ class DownloadsPageState extends ConsumerState<DownloadsPage> {
           }
       )
           :
-      const Center(child: Text("Nothin to see here 👀"),)
+      const SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Center(child: Text("Nothin to see here 👀"),)
+      )
       ,
     );
   }

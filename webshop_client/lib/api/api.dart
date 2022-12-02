@@ -5,7 +5,10 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:webshop_client/api/webshop_oauth2_client.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
+import 'package:webshop_client/data/download_data.dart';
 import 'package:webshop_client/model/user_model.dart';
+
+import '../model/profile_model.dart';
 
 
 class AppRestApi {
@@ -51,8 +54,9 @@ class AppRestApi {
       ));
 
     // duplicated
-    unsecureUserDio.options.baseUrl = userUrl;
-    unsecureUserDio.interceptors
+    secureUserDio.options.baseUrl = userUrl;
+    secureUserDio.options.followRedirects = true;
+    secureUserDio.interceptors
       ..add(PrettyDioLogger())
       ..add(InterceptorsWrapper(  //interceptor that refreshes old token if needed
           onRequest:(options, handler) => handler.next(options),
@@ -127,9 +131,18 @@ class AppRestApi {
   }
 
   Future logout(UserModel userModel) async {
-    secureCaffDio.options.headers["Authorization"] = '';
-    secureUserDio.options.headers["Authorization"] = '';
-    // TODO check logout
+    // final res2 = await secureUserDio.getUri(revoke);
+    final res = await secureUserDio.postUri(revoke);
+    // secureCaffDio.options.headers["Authorization"] = '';
+    // secureUserDio.options.headers["Authorization"] = '';
+  }
+
+  Future deleteAnotherUser(String userId) async {
+    try {
+      final response = await secureUserDio.delete("/Identity/$userId");
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
   }
 
   Future deleteAccount(UserModel userModel) async {
@@ -199,7 +212,7 @@ class AppRestApi {
     }
   }
 
-  modifyUserData(String userName, String email, String password) {
+  modifyUserData(String userName, String email, String password) async {
     Map data = {
       "displayName": userName,
       "password": password,
@@ -207,7 +220,7 @@ class AppRestApi {
     };
 
     try {
-      final response = secureUserDio.put("/Identity/Profile", data: data);
+      final response = await secureUserDio.put("/Identity/Profile", data: data);
       return login();
     } on DioError catch(e) {
       return Future.error(e);
@@ -227,5 +240,41 @@ class AppRestApi {
       await Future.delayed(Duration(seconds: 3));
       await downloadProgressCallback(1.0, caffData);
     }
+  }
+
+  Future<List<DownloadData>> getCaffHistory() async {
+    List<DownloadData> caffs = [];
+
+    try {
+      final response = await secureCaffDio.get("/Caff/histories");
+      List<dynamic> downloadsMaps =  response.data;
+
+
+      for (var downloadJson in downloadsMaps) {
+        caffs.add(DownloadData.fromJson(downloadJson));
+      }
+
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
+
+    return caffs;
+  }
+
+  Future<List<ProfileModel>> getUsers() async {
+    List<ProfileModel> users = [];
+    try {
+      final response = await secureUserDio.get("/Identity");
+      List<dynamic> userMaps =  response.data;
+
+
+      for (var userJson in userMaps) {
+        users.add(ProfileModel.fromJson(userJson));
+      }
+
+    } on DioError catch(e) {
+      return Future.error(e, e.stackTrace);
+    }
+    return users;
   }
 }

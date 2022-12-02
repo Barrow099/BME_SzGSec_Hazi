@@ -16,9 +16,10 @@ enum UserRole {
 class UserModel {
   String userName;
   String userId;
+  String? email;
   UserRole role;
 
-  UserModel({required this.userId, required this.role, required this.userName});
+  UserModel({required this.userId, required this.role, required this.userName, required this.email});
 
   bool get isAdmin => role == UserRole.admin;
 
@@ -26,7 +27,8 @@ class UserModel {
     return UserModel(
         userId: json["sub"],
         userName: json["name"],
-        role: json["role"] == "admin" ? UserRole.admin : UserRole.basic
+        role: json["role"] == "admin" ? UserRole.admin : UserRole.basic,
+        email: json["email"],
     );
   }
 

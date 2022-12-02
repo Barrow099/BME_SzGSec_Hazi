@@ -17,8 +17,8 @@ class DownloadsListItem extends ConsumerWidget {
         child: Align(
           alignment: Alignment.centerLeft,
           child: ListTile(
-            title: Text(downloadData.caption),
-            subtitle: Text(timeago.format(downloadData.creationDate)),
+            title: Text(downloadData.caffFileName),
+            subtitle: Text(timeago.format(downloadData.downloadedDate)),
             leading: const Icon(Icons.image_outlined, color: Colors.green, size: 40.0)
           ),
         ),

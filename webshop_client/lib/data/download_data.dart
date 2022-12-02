@@ -4,13 +4,17 @@ part 'download_data.g.dart';
 
 @JsonSerializable()
 class DownloadData {
-  String caption;
+  String userId;
+  int caffFileId;
+  String caffFileName;
   @JsonKey(fromJson: dateTimeFromTimestamp)
-  DateTime creationDate;
+  DateTime downloadedDate;
 
   DownloadData({
-    required this.caption,
-    required this.creationDate,
+    required this.userId,
+    required this.caffFileId,
+    required this.caffFileName,
+    required this.downloadedDate,
   });
 
   factory DownloadData.fromJson(Map<String, dynamic> json) => _$DownloadDataFromJson(json);
