@@ -1,8 +1,10 @@
 using _3de0_BLL;
 using _3de0_BLL.Exceptions;
 using _3de0_BLL_DAL;
+using _3de0_Identity;
 using _3de0_Identity.Data;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -29,6 +31,28 @@ namespace _3de0
 
             builder.Services.AddScoped<ICaffService, CaffService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
+
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityAppDbContext>()
+                .AddDefaultTokenProviders();
+
+            builder.Services
+                .AddIdentityServer(options =>
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+
+                    // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
+                    options.EmitStaticAudienceClaim = true;
+                })
+                .AddInMemoryIdentityResources(Config.IdentityResources)
+                .AddInMemoryApiResources(Config.ApiResources)
+                .AddInMemoryApiScopes(Config.ApiScopes)
+                .AddInMemoryClients(Config.Clients(builder.Configuration))
+                .AddAspNetIdentity<IdentityUser>()
+                .AddProfileService<ProfileService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle           
@@ -90,7 +114,7 @@ namespace _3de0
                 policy.RequireAuthenticatedUser();
                 policy.RequireClaim("scope", "caffApi");
             }));
-
+            builder.Services.AddRazorPages();
 
             builder.Services.AddProblemDetails(opt =>
             {
@@ -140,14 +164,15 @@ namespace _3de0
             }
             app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
-
+            app.UseIdentityServer();
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseProblemDetails();
 
             app.MapControllers();
-
+            app.MapRazorPages()
+               .RequireAuthorization();
             app.Run();
         }
     }

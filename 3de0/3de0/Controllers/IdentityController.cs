@@ -32,7 +32,7 @@ namespace _3de0_Identity.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        [HideInDocs]
+        
         public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto dto)
         {
             var user = new IdentityUser()
@@ -90,7 +90,7 @@ namespace _3de0_Identity.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut]
-        [HideInDocs]
+        
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> PromoteUserToAdmin([FromQuery] string userId)
         {
@@ -122,7 +122,7 @@ namespace _3de0_Identity.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut]
         [Authorize]
-        [HideInDocs]
+        
         public async Task<IActionResult> UpdateProfile([FromBody] ProfileUpdateDto updateDto)
         {
             string userId = HttpContext.User.Claims.First(x => x.Type == "sub").Value;
@@ -147,7 +147,7 @@ namespace _3de0_Identity.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = "admin")]
-        [HideInDocs]
+        
         [HttpDelete]
         public async Task<IActionResult> DeleteAccount([FromRoute] string userId)
         {
@@ -166,7 +166,7 @@ namespace _3de0_Identity.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize]
-        [HideInDocs]
+        
         [HttpDelete]
         public async Task<IActionResult> DeleteAccount() 
         {
@@ -186,7 +186,7 @@ namespace _3de0_Identity.Controllers
 
         [Route("")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [HideInDocs]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAccounts() 
         {
