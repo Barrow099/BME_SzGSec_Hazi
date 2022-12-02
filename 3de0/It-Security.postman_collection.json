@@ -1,0 +1,847 @@
+{
+	"info": {
+		"_postman_id": "4522c8a9-1ed8-4a34-9f24-c5b10ca508bf",
+		"name": "It-Security",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13111834"
+	},
+	"item": [
+		{
+			"name": "Identity",
+			"item": [
+				{
+					"name": "Register users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"displayName\": \"testName\",\r\n  \"password\": \"Test123$\",\r\n  \"email\": \"test@mail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44315/Identity/Register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44315",
+							"path": [
+								"Identity",
+								"Register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const postRequest = {\r",
+									"  url: \"https://3de0_identity:44315/connect/token\",\r",
+									"  method: 'POST',\r",
+									"  header: {\r",
+									"    'Accept': 'application/json',\r",
+									"    'Content-Type': 'application/x-www-form-urlencoded'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'urlencoded',\r",
+									"      urlencoded: [\r",
+									"        {key: \"grant_type\", value: \"password\", disabled: false},\r",
+									"        {key: \"client_id\", value: \"test\", disabled: false},\r",
+									"        {key: \"client_secret\", value: \"test\", disabled: false},\r",
+									"        {key: \"scope\", value: \"openid profile apiScope\", disabled:false},\r",
+									"        {key: \"username\", value: \"bob\", disabled:false},\r",
+									"        {key: \"password\", value: \"Pass123$\", disabled:false}\r",
+									"      ]\r",
+									"  }\r",
+									"};\r",
+									"//console.log(\"start pre request script for your oauth protected API\");\r",
+									"// uncomment for debug purpose\r",
+									"//console.log(JSON.stringify(postRequest));\r",
+									"\r",
+									"pm.sendRequest(postRequest, function (err, response) {\r",
+									"    var responseData = response.json();\r",
+									"\t// uncomment for debug purpose\r",
+									"\t//console.log(\"access_token is ---> \"+responseData[\"access_token\"]);  \r",
+									"\tpm.collectionVariables.set(\"access_token\",responseData[\"access_token\"]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"var user = jsonData.find(u => u.displayName !== \"bob\");\r",
+									"pm.collectionVariables.set(\"user_id\", user.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44315/Identity",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44315",
+							"path": [
+								"Identity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Promote user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44315/Identity/Roles/Promote?userId={{user_id}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44315",
+							"path": [
+								"Identity",
+								"Roles",
+								"Promote"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userName\": \"\",\r\n  \"email\": \"test@mail.com\",\r\n  \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44315/Identity/Profile",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44315",
+							"path": [
+								"Identity",
+								"Profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "scope",
+									"value": "openid profile apiScope",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Pass123$",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "Bob",
+									"type": "string"
+								},
+								{
+									"key": "clientSecret",
+									"value": "test",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "test",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://localhost:44315/connect/token",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "password_credentials",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "Token",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "useBrowser",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "tokenType",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44315/Identity/{{user_id}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44315",
+							"path": [
+								"Identity",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Caff",
+			"item": [
+				{
+					"name": "Upload caff file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.collectionVariables.set(\"caff_id\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/BME_Anyagok/msc/it-sec/BME_SzGSec_Hazi/libCAFF/test_images/1.caff"
+								},
+								{
+									"key": "price",
+									"value": "100",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://3de0_api:44384/Caff/new",
+							"protocol": "https",
+							"host": [
+								"3de0_api"
+							],
+							"port": "44384",
+							"path": [
+								"Caff",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List caff files",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://3de0_api:44384/Caff",
+							"protocol": "https",
+							"host": [
+								"3de0_api"
+							],
+							"port": "44384",
+							"path": [
+								"Caff"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List paged caff files",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://3de0_api:44384/Caff/paged",
+							"protocol": "https",
+							"host": [
+								"3de0_api"
+							],
+							"port": "44384",
+							"path": [
+								"Caff",
+								"paged"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Caff file by Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => { \r",
+									"    console.log(pm.response);\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {   \r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://3de0_api:44384/Caff/{{caff_id}}",
+							"protocol": "https",
+							"host": [
+								"3de0_api"
+							],
+							"port": "44384",
+							"path": [
+								"Caff",
+								"{{caff_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update caff file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/BME_Anyagok/msc/it-sec/BME_SzGSec_Hazi/libCAFF/test_images/1.caff"
+								},
+								{
+									"key": "price",
+									"value": "200",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://3de0_api:44384/Caff/{{caff_id}}",
+							"protocol": "https",
+							"host": [
+								"3de0_api"
+							],
+							"port": "44384",
+							"path": [
+								"Caff",
+								"{{caff_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download caff file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://3de0_api:44384/Caff/{{caff_id}}/download",
+							"protocol": "https",
+							"host": [
+								"3de0_api"
+							],
+							"port": "44384",
+							"path": [
+								"Caff",
+								"{{caff_id}}",
+								"download"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Preview caff file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://3de0_api:44384/Caff/{{caff_id}}/preview",
+							"protocol": "https",
+							"host": [
+								"3de0_api"
+							],
+							"port": "44384",
+							"path": [
+								"Caff",
+								"{{caff_id}}",
+								"preview"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List caff file history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://3de0_api:44384/Caff/histories",
+							"protocol": "https",
+							"host": [
+								"3de0_api"
+							],
+							"port": "44384",
+							"path": [
+								"Caff",
+								"histories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List paged caff file history",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://3de0_api:44384/Caff/histories",
+							"protocol": "https",
+							"host": [
+								"3de0_api"
+							],
+							"port": "44384",
+							"path": [
+								"Caff",
+								"histories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete caff file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://3de0_api:44384/Caff/delete/{{caff_id}}",
+							"protocol": "https",
+							"host": [
+								"3de0_api"
+							],
+							"port": "44384",
+							"path": [
+								"Caff",
+								"delete",
+								"{{caff_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkNDOEU1NzE1MTM2OUQ1NTJGM0VBRUIwNzgyQTU0NzUyIiwidHlwIjoiYXQrand0In0.eyJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDMxNSIsIm5iZiI6MTY2OTk5NDk1OSwiaWF0IjoxNjY5OTk0OTU5LCJleHAiOjE2Njk5OTg1NTksImF1ZCI6WyJhcGlSZXNvdXJjZSIsImh0dHBzOi8vbG9jYWxob3N0OjQ0MzE1L3Jlc291cmNlcyJdLCJzY29wZSI6WyJhcGlTY29wZSIsIm9wZW5pZCIsInByb2ZpbGUiXSwiYW1yIjpbInB3ZCJdLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic3ViIjoiODQ5ZDVjOGItMTE4MC00MDQ3LTk5YjYtODk3YWFmZGVhYzI4IiwiYXV0aF90aW1lIjoxNjY5OTk0OTU5LCJpZHAiOiJsb2NhbCIsInJvbGUiOiJhZG1pbiIsIm5hbWUiOiJib2IiLCJqdGkiOiIzODg1ODYwQ0MzRUNFNTYyODc1Q0E5MUE4MjRBQkQyQSJ9.aXqQC6XxzLOb7K8h-BST9mUs77UmtcqWrvxhwLNEawjN7dDsQErDN4KvMpJ7IK0L1v_6R1AazrpJwCXU62t2f0ZD_3Yqqp69NE-d4nWA1in89Uc5-79BQvBsrBW5-ddXXuP0DYFCPHTBG82fY7WPkjFuOCh8mlS7EoGy2r94cW2hpX2quVWcw0CElvOqJfF-jg4P-ZVXb3VOj6rtdFMecta1h0hDlW8WSD0DjtDqwJ_JMmBKLdvMQSLcyjb4s9mIh1BmfYPFRRN0g_WX2go8GnjSMw5ynRklz32t0LL_dg8TRLCZ-zsLuKgul9-tTaKG5xFi1T8tcUIVZnavznsBow",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "caff_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

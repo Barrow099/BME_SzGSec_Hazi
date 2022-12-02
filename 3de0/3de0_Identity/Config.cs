@@ -30,6 +30,19 @@ namespace _3de0_Identity
         public static IEnumerable<Client> Clients(IConfiguration configuration) =>
             new Client[]
             {
+                new Client
+                {
+                    ClientId= "test",
+                    ClientSecrets = { new Secret("test".Sha256()) },
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "apiScope",
+                    },
+                },
+
                 // machine to machine client
                 new Client
                 {
