@@ -17,7 +17,7 @@ class SignupPage extends ConsumerStatefulWidget {
 
 class SignupPageState extends ConsumerState<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController(text: "aa");
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
@@ -92,6 +92,7 @@ class SignupPageState extends ConsumerState<SignupPage> {
                           icon: Icons.person_rounded,
                           labelText: "Email",
                           hintText: "Enter an email address",
+                          inputType: TextInputType.emailAddress,
                         ),
                       ),
                       Padding(

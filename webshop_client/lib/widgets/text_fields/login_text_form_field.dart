@@ -24,7 +24,7 @@ class LoginTextFormField extends StatefulWidget {
     this.obscureText=false,
     this.autofocus=false,
     this.textInputAction = TextInputAction.next,
-    this.inputType = TextInputType.none
+    this.inputType = TextInputType.text
   });
 
   @override
