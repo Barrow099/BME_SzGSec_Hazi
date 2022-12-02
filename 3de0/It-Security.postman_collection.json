@@ -20,6 +20,17 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -27,7 +38,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"displayName\": \"testName\",\r\n  \"password\": \"Test123$\",\r\n  \"email\": \"test@mail.com\"\r\n}",
+							"raw": "{\r\n  \"displayName\": \"{{$randomAlphaNumeric}}{{$randomAlphaNumeric}}{{$randomAlphaNumeric}}{{$randomAlphaNumeric}}{{$randomAlphaNumeric}}{{$randomAlphaNumeric}}\",\r\n  \"password\": \"Test123$\",\r\n  \"email\": \"{{$randomAlphaNumeric}}{{$randomAlphaNumeric}}{{$randomAlphaNumeric}}{{$randomAlphaNumeric}}@mail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -95,7 +106,11 @@
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);\r",
 									"var user = jsonData.find(u => u.displayName !== \"bob\");\r",
-									"pm.collectionVariables.set(\"user_id\", user.id);"
+									"pm.collectionVariables.set(\"user_id\", user.id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -136,6 +151,17 @@
 							"script": {
 								"exec": [
 									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -187,6 +213,17 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -228,6 +265,19 @@
 				},
 				{
 					"name": "Delete user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "oauth2",
@@ -479,10 +529,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", () => { \r",
-									"    console.log(pm.response);\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -491,10 +538,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status test\", function () {   \r",
+									"pm.test(\"Status code is 200\", () => { \r",
+									"    console.log(pm.response);\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									""
+									"});"
 								],
 								"type": "text/javascript"
 							}
