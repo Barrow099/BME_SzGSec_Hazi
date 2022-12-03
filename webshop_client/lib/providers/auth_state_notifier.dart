@@ -43,9 +43,8 @@ class AuthStateNotifier extends StateNotifier<AsyncValue<AuthState>> {
     });
   }
 
-  editeProfile(String email, String userName, String password) async {
-    state = const AsyncLoading();
-    return authRepository.editeProfile(email, userName, password);
+  Future editProfile(String email, String userName, String password) async {
+    return authRepository.editProfile(email, userName, password);
   }
 
 }

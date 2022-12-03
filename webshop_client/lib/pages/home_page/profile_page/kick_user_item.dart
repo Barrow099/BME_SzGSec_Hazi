@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/provider_objects.dart';
+import 'package:webshop_client/widgets/dialogs/loadable_dialog_mixin.dart';
 
 import '../../../model/profile_model.dart';
 import '../../../model/user_model.dart';
@@ -17,7 +18,7 @@ class KickUserItem extends ConsumerStatefulWidget {
   _KickUserItemState createState() => _KickUserItemState();
 }
 
-class _KickUserItemState extends ConsumerState<KickUserItem> {
+class _KickUserItemState extends ConsumerState<KickUserItem> with LoadableDialogMixin {
   @override
   Widget build(BuildContext context) {
     final myProfile = ref.read(userModelNotifier)?.userId == widget.user.userId;
@@ -45,18 +46,24 @@ class _KickUserItemState extends ConsumerState<KickUserItem> {
   }
 
   deleteUser(String id) {
-    setState(() {
-      ref.read(userListModelNotifier.notifier).deleteUser(id).catchError((error){
-        showErrorSnackbar(context, "Couldn't delete user");
-      });
+    showLoading(context);
+    ref.read(userListModelNotifier.notifier).deleteUser(id).then((value) {
+      hideLoading(context);
+      showOkSnackbar(context, "User deleted (mock)");
+    }).catchError((error){
+      hideLoading(context);
+      showErrorSnackbar(context, "Couldn't delete user");
     });
   }
 
   promoteUser(String id) {
-    setState(() {
-      ref.read(userListModelNotifier.notifier).promoteUser(id).catchError((error){
-        showErrorSnackbar(context, "Couldn't promote user");
-      });
+    showLoading(context);
+    ref.read(userListModelNotifier.notifier).promoteUser(id).then((value) {
+      hideLoading(context);
+      showOkSnackbar(context, "User promoted (mock)");
+    }).catchError((error){
+      hideLoading(context);
+      showErrorSnackbar(context, "Couldn't promote user");
     });
   }
 }

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -133,34 +132,44 @@ class AppRestApi {
 
   Future logout(UserModel userModel) async {
     // final res2 = await secureUserDio.getUri(revoke);
-    final res = await secureUserDio.postUri(revoke);
+    //final res = await secureUserDio.postUri(revoke);
     // secureCaffDio.options.headers["Authorization"] = '';
     // secureUserDio.options.headers["Authorization"] = '';
+
+    //this is only a mock, bc emulator bugs
+    await Future.delayed(const Duration(seconds: 2));
   }
 
   Future deleteAnotherUser(String userId) async {
-    try {
-      final response = await secureUserDio.delete("/Identity/$userId");
-    } on DioError catch(e) {
-      return Future.error(e, e.stackTrace);
-    }
+    // try {
+    //   final response = await secureUserDio.delete("/Identity/$userId");
+    // } on DioError catch(e) {
+    //   return Future.error(e, e.stackTrace);
+    // }
+    //this is only a mock, bc emulator bugs
+    await Future.delayed(const Duration(seconds: 2));
   }
 
   Future promoteUser(String userId) async {
-    try {
-      final response = await secureUserDio.put("/Identity/Roles/Promote",
-        queryParameters: {"userId": userId});
-    } on DioError catch(e) {
-      return Future.error(e, e.stackTrace);
-    }
+    // try {
+    //   final response = await secureUserDio.put("/Identity/Roles/Promote",
+    //     queryParameters: {"userId": userId});
+    // } on DioError catch(e) {
+    //   return Future.error(e, e.stackTrace);
+    // }
+    //this is only a mock, bc emulator bugs
+    await Future.delayed(const Duration(seconds: 2));
   }
 
   Future deleteAccount(UserModel userModel) async {
-    try {
-      final response = await secureUserDio.delete("/Identity");
-    } on DioError catch(e) {
-      return Future.error(e, e.stackTrace);
-    }
+    // try {
+    //   final response = await secureUserDio.delete("/Identity");
+    // } on DioError catch(e) {
+    //   return Future.error(e, e.stackTrace);
+    // }
+
+    //this is only a mock, bc emulator bugs
+    await Future.delayed(const Duration(seconds: 2));
   }
 
   Future<List<CAFFData>> getCaffList(int pageKey, int pageSize) async {
@@ -235,12 +244,17 @@ class AppRestApi {
       "email": email,
     };
 
-    try {
-      final response = await secureUserDio.put("/Identity/Profile", data: data);
-      // return login();
-    } on DioError catch(e) {
-      return Future.error(e);
-    }
+    // try {
+    //   final response = await secureUserDio.put("/Identity/Profile", data: data);
+    //   // return login();
+    // } on DioError catch(e) {
+    //   return Future.error(e);
+    // }
+    //return login();
+
+    //this is only a mock, bc emulator bugs
+    await Future.delayed(const Duration(seconds: 2));
+
   }
 
 

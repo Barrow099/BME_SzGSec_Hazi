@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/provider_objects.dart';
 import 'package:webshop_client/widgets/dialogs/base_dialog_implementation.dart';
 import 'package:webshop_client/widgets/dialogs/loadable_dialog_mixin.dart';
+import 'package:webshop_client/widgets/other/snackbars.dart';
 
 import '../../../model/input_validators/sign_up_validator.dart';
 import '../../../widgets/text_fields/login_text_form_field.dart';
@@ -32,7 +33,7 @@ class EditProfileDialogState extends ConsumerState<EditProfileDialog> with Loada
   @override
   Widget build(BuildContext context) {
     return BaseDialogImplementation(
-        title: "Edite profile",
+        title: "Edit profile",
         onAcceptFunction: validateAndEditProfile,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -101,9 +102,16 @@ class EditProfileDialogState extends ConsumerState<EditProfileDialog> with Loada
       final email = emailController.text;
       final userName = userNameController.text;
       final pwd = passwordController.text;
-      ref.read(authStateNotifier.notifier).editeProfile(
+      showLoading(context);
+      ref.read(authStateNotifier.notifier).editProfile(
         email, userName, pwd,
-      );
+      ).then((value) {
+        hideLoading(context);
+        showOkSnackbar(context, "Profile edited (mock)");
+      }).catchError((error) {
+        hideLoading(context);
+        showErrorSnackbar(context, "Something went wrong");
+      });
     }
   }
 }

@@ -42,17 +42,17 @@ class AuthRepository {
       return Future.error("Invalid user model state: is null, but shouldn't");
     }
 
-    appRestApi.deleteAccount(userModel!);
+    await appRestApi.deleteAccount(userModel!);
     userModel = null;
     return AuthState.loggedOut;
   }
 
-  Future<void> editeProfile(String email, String userName, String password) async {
+  Future<void> editProfile(String email, String userName, String password) async {
     if(userModel == null) {
       return Future.error("Invalid user model state: is null, but shouldn't");
     }
 
-    appRestApi.modifyUserData(userName, email, password);
+    await appRestApi.modifyUserData(userName, email, password);
   }
 
 }
