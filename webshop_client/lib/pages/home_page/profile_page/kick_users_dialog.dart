@@ -10,18 +10,18 @@ class KickUsersDialog extends ConsumerStatefulWidget {
   const KickUsersDialog({super.key});
 
   @override
-  _KickUsersDialogState createState() => _KickUsersDialogState();
+  KickUsersDialogState createState() => KickUsersDialogState();
 }
 
-class _KickUsersDialogState extends ConsumerState<KickUsersDialog> {
+class KickUsersDialogState extends ConsumerState<KickUsersDialog> {
   @override
   Widget build(BuildContext context) {
-    final _users = ref.watch(userListModelNotifier);
+    final users = ref.watch(userListModelNotifier);
 
     return BaseDialogImplementation(
         title: "Manage users",
         onAcceptFunction: () { Navigator.of(context).pop(); },
-        body: _users.when(
+        body: users.when(
             data: (UserListModel users) {
               return ListView.builder(
                 shrinkWrap: true,
@@ -34,7 +34,7 @@ class _KickUsersDialogState extends ConsumerState<KickUsersDialog> {
             error: (Object error, StackTrace stackTrace) {
               return Text("$error");
             },
-            loading: () => Center(child: CircularProgressIndicator(),)
+            loading: () => const Center(child: CircularProgressIndicator(),)
         )
     );
   }

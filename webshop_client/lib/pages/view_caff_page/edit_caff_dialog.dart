@@ -3,10 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
 import 'package:webshop_client/pages/upload_caff_page/upload_caff_widget.dart';
 import 'package:webshop_client/widgets/dialogs/base_dialog.dart';
-import 'package:webshop_client/widgets/dialogs/base_dialog_implementation.dart';
 import 'package:webshop_client/widgets/dialogs/loadable_dialog_mixin.dart';
-
-import '../../widgets/other/snackbars.dart';
 
 class EditCaffDialog extends ConsumerStatefulWidget {
   final CAFFData caffData;

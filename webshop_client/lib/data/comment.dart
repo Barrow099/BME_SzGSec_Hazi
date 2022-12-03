@@ -1,22 +1,24 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:webshop_client/data/string_to_datetime.dart';
 
 part 'comment.g.dart';
 
+@immutable
 @JsonSerializable()
 class Comment extends Equatable {
-  int id;
-  String? content;
+  final int id;
+  final String? content;
   @JsonKey(fromJson: dateTimeFromTimestamp)
-  DateTime creationDate;
-  int? rating;
-  String? userName;
-  String? userId;
-  int caffFileId;
+  final DateTime creationDate;
+  final int? rating;
+  final String? userName;
+  final String? userId;
+  final int caffFileId;
 
-  Comment({
+  const Comment({
     required this.id,
     this.content,
     required this.creationDate,

@@ -15,10 +15,10 @@ class KickUserItem extends ConsumerStatefulWidget {
   const KickUserItem(this.user, {super.key});
 
   @override
-  _KickUserItemState createState() => _KickUserItemState();
+  KickUserItemState createState() => KickUserItemState();
 }
 
-class _KickUserItemState extends ConsumerState<KickUserItem> with LoadableDialogMixin {
+class KickUserItemState extends ConsumerState<KickUserItem> with LoadableDialogMixin {
   @override
   Widget build(BuildContext context) {
     final myProfile = ref.read(userModelNotifier)?.userId == widget.user.userId;

@@ -5,11 +5,10 @@ class RoundIconButton extends StatelessWidget {
   final Function()? onPressed;
   final double size;
   final double iconSize;
-  final GlobalKey? key;
   final Color? color;
 
 
-  const RoundIconButton({required this.icon, required this.onPressed, this.size=40, this.iconSize=24, this.key, this.color});
+  const RoundIconButton({super.key, required this.icon, required this.onPressed, this.size=40, this.iconSize=24,  this.color});
 
   @override
   Widget build(BuildContext context) {

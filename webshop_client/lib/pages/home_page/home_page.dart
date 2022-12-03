@@ -27,7 +27,7 @@ class HomePageState extends ConsumerState<HomePage> {
     return Scaffold(
       floatingActionButton: _currentPageIndex==0 ? FloatingActionButton(
         onPressed: onShowUploadPage,
-        child: Icon(Icons.upload_rounded),
+        child: const Icon(Icons.upload_rounded),
       ) : null,
       appBar: AppBar(
         title: Text(_pageTitles[_currentPageIndex]),

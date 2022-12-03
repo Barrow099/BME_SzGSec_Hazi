@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as p;
 
 import 'package:flutter/material.dart';
@@ -39,15 +40,15 @@ class UploadCaffWidgetState extends ConsumerState<UploadCaffWidget> with Loadabl
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Spacer(flex: 10,),
+            const Spacer(flex: 10,),
             Center(child: Text(isEditing ? "Edit Caff" :"Upload caff", style: Theme.of(context).textTheme.headlineLarge,)),
-            Spacer(flex: 10,),
+            const Spacer(flex: 10,),
             OutlinedButton.icon(
                 onPressed: onSelectCaff,
                 icon: const Icon(Icons.file_open),
 
                 style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16)
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16)
                 ),
                 label: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
@@ -57,7 +58,7 @@ class UploadCaffWidgetState extends ConsumerState<UploadCaffWidget> with Loadabl
                       Text(selectedCaff==null ? "Select caff" : "Selected:"),
                       if(selectedCaff!=null) Padding(
                         padding: const EdgeInsets.only(left: 8),
-                        child: Text(p.basename(selectedCaff?.path ?? ''), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+                        child: Text(p.basename(selectedCaff?.path ?? ''), style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
                       ),
                     ],
                   ),
@@ -69,7 +70,7 @@ class UploadCaffWidgetState extends ConsumerState<UploadCaffWidget> with Loadabl
                   labelText: 'Price',
                   hintText: '',
                   controller: priceController,
-                  autofillHints: [],
+                  autofillHints: const [],
                   validator: (String? value) {
                     if(value==null || value.isEmpty) {
                       return "Can't be empty";
@@ -83,13 +84,13 @@ class UploadCaffWidgetState extends ConsumerState<UploadCaffWidget> with Loadabl
                   inputType: TextInputType.number,
                 )
             ),
-            Spacer(flex: 10,),
+            const Spacer(flex: 10,),
             ElevatedButton.icon(
               onPressed: selectedCaff!=null ? onUploadCaff : null,
-              icon: Icon(Icons.upload_outlined),
+              icon: const Icon(Icons.upload_outlined),
               label: Text( isEditing ? "Edit" : "Upload"),
             ),
-            Spacer(flex: 5,),
+            const Spacer(flex: 5,),
           ],
         ),
       ),

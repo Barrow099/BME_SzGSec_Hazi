@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:webshop_client/data/string_to_datetime.dart';
@@ -36,7 +38,7 @@ class CAFFData {
   }
 
   double? get rating {
-    double _rating=0;
+    double calcRating=0;
     if(comments == null) {
       return null;
     }
@@ -48,13 +50,13 @@ class CAFFData {
     int allRatings = 0;
     for (Comment c in comments!) {
       if(c.rating != null && c.rating != 0) {
-        _rating += c.rating!;
+        calcRating += c.rating!;
         allRatings++;
       }
     }
     if(allRatings==0) return 0;
-    _rating = _rating / allRatings;
-    return _rating;
+    calcRating = calcRating / allRatings;
+    return calcRating;
   }
 
   bool userHasReview(String userId) {

@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:webshop_client/data/CAFF_data.dart';
 
@@ -36,14 +35,12 @@ class CartState {
   }
 
   @override
+  // ignore: hash_and_equals
   bool operator ==(Object other) {
     return (other is CartState) &&
         listEquals(inCartCaffs, other.inCartCaffs) &&
         downloadProgress == other.downloadProgress;
   }
-
-  @override
-  int get hashCode => super.hashCode;
 
 
 

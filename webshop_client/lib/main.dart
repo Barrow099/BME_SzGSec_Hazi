@@ -1,6 +1,6 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webshop_client/Pages/root_page.dart';
 import 'package:webshop_client/api/system/notification_service.dart';

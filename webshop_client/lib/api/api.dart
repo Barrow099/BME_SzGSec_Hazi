@@ -119,7 +119,7 @@ class AppRestApi {
     };
 
     try {
-      final response = await unsecureUserDio.post("/Identity/Register", data: data);
+      await unsecureUserDio.post("/Identity/Register", data: data);
       return login();
     } on DioError catch(e) {
       if (e.response?.statusCode == 400) {
@@ -238,11 +238,11 @@ class AppRestApi {
   }
 
   modifyUserData(String userName, String email, String password) async {
-    Map data = {
-      "displayName": userName,
-      "password": password,
-      "email": email,
-    };
+    // Map data = {
+    //   "displayName": userName,
+    //   "password": password,
+    //   "email": email,
+    // };
 
     // try {
     //   final response = await secureUserDio.put("/Identity/Profile", data: data);
@@ -267,7 +267,7 @@ class AppRestApi {
             await downloadProgressCallback(recieved/total, caffData);
           }
       );
-      await Future.delayed(Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 3));
       await downloadProgressCallback(1.0, caffData);
     }
   }
