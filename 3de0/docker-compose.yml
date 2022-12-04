@@ -1,0 +1,55 @@
+version: '3.4'
+
+services:
+  db:
+    image: db
+    build:
+      context: .
+      dockerfile: Db/Dockerfile
+    ports:
+        - "1433:1433" 
+  3de0_identity:
+    image: ${DOCKER_REGISTRY-}3de0identity
+    build:
+      context: .
+      dockerfile: 3de0_Identity/Dockerfile
+    depends_on:
+        - db
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet 3de0_Identity.dll"
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=https://+:44315
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password0 
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
+        - ConnectionStrings__DefaultConnection=Server=db;Database=3de0db_Identity;User=sa;Password=S3cur3P@ssW0rd!;MultipleActiveResultSets=true
+        - Identity__RedirectUris__Swagger=https://3de0_api:44384/swagger/oauth2-redirect.html
+        - Identity__Cors__Swagger=https://3de0_api:44384
+    ports:
+        - "44315:44315"
+    volumes:
+        - ./localhost.pfx:/https/localhost.pfx:ro
+        - ./localhost.crt:/usr/local/share/ca-certificates/localhost.crt:ro
+  3de0_api:
+    image: ${DOCKER_REGISTRY-}3de0api
+    build:
+      context: .
+      dockerfile: 3de0/Dockerfile
+    depends_on:
+        - 3de0_identity
+    entrypoint: /bin/sh -c "update-ca-certificates && dotnet 3de0_API.dll"
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=https://+:44384
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password0 
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
+        - ConnectionStrings__DefaultConnection=Server=db;Database=3de0db;User=sa;Password=S3cur3P@ssW0rd!;
+        - ConnectionStrings__IdentityDbConnection=Server=db;Database=3de0db_Identity;User=sa;Password=S3cur3P@ssW0rd!;MultipleActiveResultSets=true
+        - Identity__AuthorizationUrl=https://3de0_identity:44315/connect/authorize
+        - Identity__TokenUrl=https://3de0_identity:44315/connect/token
+        - Identity__Authority=https://3de0_identity:44315
+        #  - LD_DEBUG=libs
+    ports:
+        - "44384:44384"
+    volumes:
+        - ./localhost.pfx:/https/localhost.pfx:ro
+        - ./localhost.crt:/usr/local/share/ca-certificates/localhost.crt:ro

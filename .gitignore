@@ -452,3 +452,13 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+libCAFF/build/CAFF.dll
+libCAFF/build/CAFFAnimation.o
+libCAFF/build/CAFFLoader.o
+libCAFF/build/capi.o
+libCAFF/build/CIFFImage.o
+libCAFF/build/CIFFLoader.o
+libCAFF/build/CIFFWriter.o
+libCAFF/build/caff_preview.exe
+libCAFF/build/libCAFF.a
+libCAFF/build/preview.o

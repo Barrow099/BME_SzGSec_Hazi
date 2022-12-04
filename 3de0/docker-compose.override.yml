@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  3de0_identity:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development    
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+  3de0_api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development   
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+  db:
+    ports:
+      - "1433"

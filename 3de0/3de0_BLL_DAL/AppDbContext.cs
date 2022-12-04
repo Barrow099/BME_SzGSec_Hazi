@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 
 namespace _3de0_BLL_DAL
 {
-    public class AppDbContext : IdentityDbContext<User>
+    public class AppDbContext : DbContext
     {
         public DbSet<CaffFile> Files { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<History> Histories { get; set; }
 
    
-        public AppDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
